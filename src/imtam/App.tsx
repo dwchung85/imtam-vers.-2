@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import { House, Booking, UserProfile } from './types';
-import Navbar from './components/Navbar';
-import HouseCard from './components/HouseCard';
-import HouseDetail from './components/HouseDetail';
-import HostDashboard from './components/HostDashboard';
-import GuestDashboard from './components/GuestDashboard';
-import AuthModal from './components/AuthModal';
-import { 
-  seedInitialDatabaseIfEmpty, 
-  fetchHouses, 
-  fetchBookings, 
-  addHouseListingDb, 
-  addBookingDb, 
+import { useState, useEffect } from "react";
+import { House, Booking, UserProfile } from "./types";
+import Navbar from "./components/Navbar";
+import HouseCard from "./components/HouseCard";
+import HouseDetail from "./components/HouseDetail";
+import HostDashboard from "./components/HostDashboard";
+import GuestDashboard from "./components/GuestDashboard";
+import AuthModal from "./components/AuthModal";
+import {
+  seedInitialDatabaseIfEmpty,
+  fetchHouses,
+  fetchBookings,
+  addHouseListingDb,
+  addBookingDb,
   updateBookingStatusDb,
   submitBookingReviewDb,
-  findUserByEmail
-} from './dbService';
-import { Search, Info, Sparkles, Landmark, Compass, LogIn, Loader2 } from 'lucide-react';
+  findUserByEmail,
+} from "./dbService";
+import { Search, Info, Sparkles, Landmark, Compass, LogIn, Loader2 } from "lucide-react";
 
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
@@ -26,15 +26,15 @@ export default function App() {
   // Current logged in user context
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
-  const [userRole, setUserRole] = useState<'guest' | 'host'>('guest');
-  const [activeTab, setActiveTab] = useState<'browse' | 'guest' | 'host'>('browse');
+  const [userRole, setUserRole] = useState<"guest" | "host">("guest");
+  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host">("browse");
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
 
   // Auth modal view controller
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   // App Search & Spec Filters
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [minRooms, setMinRooms] = useState<number>(0); // 0 means '전체' (any)
   const [minBathrooms, setMinBathrooms] = useState<number>(0); // 0 means '전체' (any)
   const [minArea, setMinArea] = useState<number>(0); // 0 means '전체' (any)
@@ -50,9 +50,9 @@ export default function App() {
         // If no user is logged in, auto-fill with standard demo credential and sync to local DB
         let user: UserProfile | null = null;
 
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           try {
-            const saved = window.localStorage.getItem('imtam_logged_in_user');
+            const saved = window.localStorage.getItem("imtam_logged_in_user");
             user = saved ? JSON.parse(saved) : null;
             if (user) setCurrentUser(user);
           } catch {
@@ -61,18 +61,18 @@ export default function App() {
         }
 
         if (!user) {
-          const demoUser = await findUserByEmail('test@imtam.com');
+          const demoUser = await findUserByEmail("test@imtam.com");
           if (demoUser) {
             user = demoUser;
             setCurrentUser(demoUser);
-            window.localStorage.setItem('imtam_logged_in_user', JSON.stringify(demoUser));
+            window.localStorage.setItem("imtam_logged_in_user", JSON.stringify(demoUser));
           }
         }
 
         // Step 2: Fetch houses & bookings
         const dbHouses = await fetchHouses();
         const dbBookings = await fetchBookings();
-        
+
         setHouses(dbHouses);
         setBookings(dbBookings);
       } catch (error) {
@@ -81,29 +81,29 @@ export default function App() {
         setLoading(false);
       }
     }
-    
+
     initApp();
   }, []);
 
   // Sync current user to local storage if it changes manually
   useEffect(() => {
     if (currentUser) {
-      if (typeof window === 'undefined') return;
-      localStorage.setItem('imtam_logged_in_user', JSON.stringify(currentUser));
+      if (typeof window === "undefined") return;
+      localStorage.setItem("imtam_logged_in_user", JSON.stringify(currentUser));
     } else {
-      if (typeof window === 'undefined') return;
-      localStorage.removeItem('imtam_logged_in_user');
+      if (typeof window === "undefined") return;
+      localStorage.removeItem("imtam_logged_in_user");
     }
   }, [currentUser]);
 
   // --- Actions ---
   const handleToggleRole = () => {
-    const nextRole = userRole === 'guest' ? 'host' : 'guest';
+    const nextRole = userRole === "guest" ? "host" : "guest";
     setUserRole(nextRole);
-    if (nextRole === 'host') {
-      setActiveTab('host');
+    if (nextRole === "host") {
+      setActiveTab("host");
     } else {
-      setActiveTab('browse');
+      setActiveTab("browse");
     }
   };
 
@@ -122,12 +122,14 @@ export default function App() {
 
   const handleLogout = () => {
     setCurrentUser(null);
-    setActiveTab('browse');
-    setUserRole('guest');
+    setActiveTab("browse");
+    setUserRole("guest");
   };
 
   // 1. Request House Tour (Guest Action)
-  const handleBookHouse = async (bookingData: Omit<Booking, 'id' | 'guestId' | 'guestName' | 'status' | 'createdAt'>) => {
+  const handleBookHouse = async (
+    bookingData: Omit<Booking, "id" | "guestId" | "guestName" | "status" | "createdAt">,
+  ) => {
     if (!currentUser) {
       setIsAuthModalOpen(true);
       return;
@@ -138,14 +140,14 @@ export default function App() {
       id: `booking-${Date.now()}`,
       guestId: currentUser.id,
       guestName: currentUser.name,
-      status: 'pending', // Pending host approval
-      createdAt: new Date().toISOString().split('T')[0],
+      status: "pending", // Pending host approval
+      createdAt: new Date().toISOString().split("T")[0],
     };
 
     try {
       // Optimitistic Local Update for snappiness
       setBookings((prev) => [newBooking, ...prev]);
-      
+
       // Real DB action
       await addBookingDb(newBooking);
     } catch (error) {
@@ -154,7 +156,9 @@ export default function App() {
   };
 
   // 2. Add a new House showcasing Listing (Host Action)
-  const handleAddHouseListing = async (newHouseData: Omit<House, 'id' | 'hostId' | 'hostName' | 'hostAvatar' | 'rating' | 'reviewsCount'>) => {
+  const handleAddHouseListing = async (
+    newHouseData: Omit<House, "id" | "hostId" | "hostName" | "hostAvatar" | "rating" | "reviewsCount">,
+  ) => {
     if (!currentUser) {
       setIsAuthModalOpen(true);
       return;
@@ -181,12 +185,10 @@ export default function App() {
   };
 
   // 3. Confirm / Cancel / Complete Booking Incoming (Host Action)
-  const handleUpdateBookingStatus = async (bookingId: string, status: 'confirmed' | 'cancelled' | 'completed') => {
+  const handleUpdateBookingStatus = async (bookingId: string, status: "confirmed" | "cancelled" | "completed") => {
     try {
       // Optimistic local update
-      setBookings((prev) =>
-        prev.map((b) => (b.id === bookingId ? { ...b, status } : b))
-      );
+      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status } : b)));
 
       // Real DB action
       await updateBookingStatusDb(bookingId, status);
@@ -199,12 +201,10 @@ export default function App() {
   const handleCancelBooking = async (bookingId: string) => {
     try {
       // Optimistic local update
-      setBookings((prev) =>
-        prev.map((b) => (b.id === bookingId ? { ...b, status: 'cancelled' as const } : b))
-      );
+      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status: "cancelled" as const } : b)));
 
       // Real DB action
-      await updateBookingStatusDb(bookingId, 'cancelled');
+      await updateBookingStatusDb(bookingId, "cancelled");
     } catch (error) {
       console.error("DB error cancelling booking:", error);
     }
@@ -214,9 +214,7 @@ export default function App() {
   const handleSubmitReview = async (bookingId: string, rating: number) => {
     try {
       const updatedHouse = await submitBookingReviewDb(bookingId, rating);
-      setBookings((prev) =>
-        prev.map((b) => (b.id === bookingId ? { ...b, rating } : b))
-      );
+      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, rating } : b)));
       if (updatedHouse) {
         setHouses((prev) =>
           prev.map((h) =>
@@ -230,10 +228,6 @@ export default function App() {
       console.error("DB error submitting review:", error);
     }
   };
-
-
-
-
 
   // --- Filtering listings ---
   const filteredHouses = houses.filter((house) => {
@@ -276,7 +270,6 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-        
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 space-y-4">
             <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
@@ -284,7 +277,7 @@ export default function App() {
           </div>
         ) : (
           <>
-            {activeTab === 'browse' && (
+            {activeTab === "browse" && (
               <div className="space-y-6 md:space-y-8 animate-fadeIn">
                 {/* Visual Header / Search / Filter row */}
                 <div className="bg-white rounded-3xl border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
@@ -366,7 +359,7 @@ export default function App() {
                             setMinRooms(0);
                             setMinBathrooms(0);
                             setMinArea(0);
-                            setSearchQuery('');
+                            setSearchQuery("");
                           }}
                           className="text-[11px] px-2.5 py-1.5 rounded-lg font-bold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-all cursor-pointer flex items-center gap-1 shrink-0"
                         >
@@ -381,16 +374,19 @@ export default function App() {
                 {filteredHouses.length === 0 ? (
                   <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
                     <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
-                    <h3 className="font-bold text-neutral-800 text-lg">해당 조건에 부합하는 오픈하우스 임장 매물을 찾을 수 없습니다</h3>
-                    <p className="text-neutral-500 text-xs mt-1.5 max-w-sm mx-auto leading-relaxed font-semibold">
-                      검색 조건을 변경해보시거나, 소유주 모드로 전환해 자가 주택을 직접 프리미엄 매물로 첫 번째로 리스팅 해보세요!
-                    </p>
+                    <h3 className="font-bold text-neutral-800 text-lg">
+                      해당 조건에 부합하는 오픈하우스를 찾을 수 없습니다
+                    </h3>
                   </div>
                 ) : (
                   <div>
                     <div className="flex items-center justify-between mb-4.5 px-1">
-                      <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">실시간 예약 일정 조율가능 매물 ({filteredHouses.length}개)</span>
-                      <span className="text-xs font-bold text-blue-600 bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-lg">전속 특약 한정권</span>
+                      <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">
+                        실시간 예약 일정 조율가능 매물 ({filteredHouses.length}개)
+                      </span>
+                      <span className="text-xs font-bold text-blue-600 bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-lg">
+                        전속 특약 한정권
+                      </span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
                       {filteredHouses.map((house) => (
@@ -408,7 +404,7 @@ export default function App() {
             )}
 
             {/* Guest Booking Dashboard Page */}
-            {activeTab === 'guest' && currentUser && (
+            {activeTab === "guest" && currentUser && (
               <GuestDashboard
                 bookings={bookings}
                 currentUserId={currentUser.id}
@@ -418,7 +414,7 @@ export default function App() {
             )}
 
             {/* Host Dashboard Page */}
-            {activeTab === 'host' && currentUser && (
+            {activeTab === "host" && currentUser && (
               <HostDashboard
                 houses={houses}
                 bookings={bookings}
@@ -430,10 +426,12 @@ export default function App() {
             )}
 
             {/* Guest fallback banner if on internal pages while logged out */}
-            {(activeTab === 'guest' || activeTab === 'host') && !currentUser && (
+            {(activeTab === "guest" || activeTab === "host") && !currentUser && (
               <div className="text-center py-16 bg-white border border-neutral-205 rounded-3xl p-6 max-w-md mx-auto space-y-4">
                 <LogIn className="w-12 h-12 text-blue-600 mx-auto animate-bounce" />
-                <h3 className="text-lg font-bold text-neutral-850">오픈하우스 실사 및 전속 리스팅 기능을 이용하려면 세션 입장이 필요합니다</h3>
+                <h3 className="text-lg font-bold text-neutral-850">
+                  오픈하우스 실사 및 전속 리스팅 기능을 이용하려면 세션 입장이 필요합니다
+                </h3>
                 <p className="text-xs text-neutral-400 font-semibold">
                   IMTAM은 빠르고 간편한 에이전트 이메일 로그인으로 나만의 전속 매물 및 스케줄 데이터를 영구 소장합니다.
                 </p>
@@ -456,22 +454,19 @@ export default function App() {
           onClose={() => setSelectedHouse(null)}
           onBook={handleBookHouse}
           currentUserRole={userRole}
-          currentUserId={currentUser?.id || ''}
+          currentUserId={currentUser?.id || ""}
         />
       )}
 
       {/* Auth Modal Trigger overlay */}
-      {isAuthModalOpen && (
-        <AuthModal
-          onClose={() => setIsAuthModalOpen(false)}
-          onLoginSuccess={handleLoginSuccess}
-        />
-      )}
+      {isAuthModalOpen && <AuthModal onClose={() => setIsAuthModalOpen(false)} onLoginSuccess={handleLoginSuccess} />}
 
       {/* Footer */}
       <footer className="bg-white border-t border-neutral-200 mt-16 py-6 text-center text-xs text-neutral-400">
         <div className="max-w-7xl mx-auto px-4 space-y-1">
-          <p className="font-bold text-neutral-500">🏢 IMTAM (임탐) - 하이엔드 전외주택 오픈하우스 & 매물의 현장 실사 임장 중개 테크 매칭 플랫폼</p>
+          <p className="font-bold text-neutral-500">
+            🏢 IMTAM (임탐) - 하이엔드 전외주택 오픈하우스 & 매물의 현장 실사 임장 중개 테크 매칭 플랫폼
+          </p>
           <p>© 2026 IMTAM Zillow-Style Engine for real estate workspace environment. All rights reserved.</p>
         </div>
       </footer>
