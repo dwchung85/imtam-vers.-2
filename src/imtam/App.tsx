@@ -288,10 +288,9 @@ export default function App() {
               <div className="space-y-6 md:space-y-8 animate-fadeIn">
                 {/* Visual Header / Search / Filter row */}
                 <div className="bg-white rounded-3xl border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
                     {/* Search Bar inside card */}
-                    <div className="relative w-full md:max-w-md">
+                    <div className="relative w-full">
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
                       <input
                         type="text"
@@ -304,7 +303,7 @@ export default function App() {
                   </div>
 
                   {/* Advanced Spec Filters (방 갯수, 화장실 갯수, 넓이 (평) 기준) */}
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-4 border-t border-blue-50">
+                  <div className="flex flex-col lg:flex-row lg:items-center gap-4 pt-4 border-t border-blue-50">
                     <div className="flex flex-wrap items-center gap-4">
                       {/* Filter label */}
                       <span className="text-xs text-neutral-500 font-extrabold flex items-center gap-1.5 shrink-0">
