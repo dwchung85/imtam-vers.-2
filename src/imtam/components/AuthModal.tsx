@@ -137,7 +137,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
         {/* Brand identity center header */}
         <div className="text-center mb-6">
           <h2 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight">
-            {isSignUp ? "IMTAM 파트너 가입" : "IMTAM 보안 대시보드 로그인"}
+            {isSignUp ? "IMTAM 가입" : "IMTAM 로그인"}
           </h2>
           <p className="text-xs text-neutral-400 mt-1 leading-relaxed font-bold">
             {isSignUp
@@ -145,7 +145,6 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
               : "인증 이메일 계정을 활용해 오픈하우스 배정 소식을 모니터링 합니다."}
           </p>
         </div>
-
 
         {/* Error / Success feedback blocks */}
         {errorMessage && (
