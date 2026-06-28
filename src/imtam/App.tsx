@@ -264,6 +264,7 @@ export default function App() {
         onToggleRole={handleToggleRole}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
+        onResetToHome={handleResetToHome}
       />
 
       {/* Main Content Area */}
