@@ -14,8 +14,8 @@ import {
   addBookingDb,
   updateBookingStatusDb,
   submitBookingReviewDb,
-  findUserByEmail,
 } from "./dbService";
+
 import { Search, Info, Compass, LogIn } from "lucide-react";
 
 export default function App() {
