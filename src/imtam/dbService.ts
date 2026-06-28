@@ -34,7 +34,7 @@ function writeJson<T>(key: string, value: T) {
   window.localStorage.setItem(key, JSON.stringify(value));
 }
 
-export async function seedInitialDatabaseIfEmpty() {
+export function seedInitialDatabaseIfEmpty() {
   const users = readJson<StoredUser[]>(USERS_KEY, []);
   if (users.length === 0) writeJson(USERS_KEY, [defaultUser]);
 
@@ -54,14 +54,14 @@ export async function seedInitialDatabaseIfEmpty() {
   }
 }
 
-export async function findUserByEmail(email: string): Promise<UserProfile | null> {
+export function findUserByEmail(email: string): UserProfile | null {
   const normEmail = email.trim().toLowerCase();
   const users = readJson<StoredUser[]>(USERS_KEY, [defaultUser]);
   const found = users.find((user) => user.email.toLowerCase() === normEmail);
   return found ? toUserProfile(found) : null;
 }
 
-export async function createUserProfile(email: string, name: string, avatar: string): Promise<UserProfile> {
+export function createUserProfile(email: string, name: string, avatar: string): UserProfile {
   const users = readJson<StoredUser[]>(USERS_KEY, [defaultUser]);
   const newUser: StoredUser = {
     id: `user_${Date.now()}`,
@@ -74,28 +74,28 @@ export async function createUserProfile(email: string, name: string, avatar: str
   return toUserProfile(newUser);
 }
 
-export async function fetchHouses(): Promise<House[]> {
+export function fetchHouses(): House[] {
   return readJson<House[]>(HOUSES_KEY, []);
 }
 
-export async function addHouseListingDb(house: House): Promise<void> {
+export function addHouseListingDb(house: House): void {
   const houses = readJson<House[]>(HOUSES_KEY, []);
   writeJson(HOUSES_KEY, [house, ...houses.filter((item) => item.id !== house.id)]);
 }
 
-export async function fetchBookings(): Promise<Booking[]> {
+export function fetchBookings(): Booking[] {
   return readJson<Booking[]>(BOOKINGS_KEY, []);
 }
 
-export async function addBookingDb(booking: Booking): Promise<void> {
+export function addBookingDb(booking: Booking): void {
   const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
   writeJson(BOOKINGS_KEY, [booking, ...bookings.filter((item) => item.id !== booking.id)]);
 }
 
-export async function updateBookingStatusDb(
+export function updateBookingStatusDb(
   bookingId: string,
   status: 'confirmed' | 'cancelled' | 'completed',
-): Promise<void> {
+): void {
   const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
   writeJson(
     BOOKINGS_KEY,
@@ -105,10 +105,10 @@ export async function updateBookingStatusDb(
 
 // 게스트가 임장 완료 후 별점을 등록하면 해당 booking에 rating을 저장하고,
 // 해당 매물의 전체 평균 평점/리뷰 수를 실제 작성된 리뷰 기준으로 다시 계산한다.
-export async function submitBookingReviewDb(
+export function submitBookingReviewDb(
   bookingId: string,
   rating: number,
-): Promise<House | null> {
+): House | null {
   const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
   const target = bookings.find((b) => b.id === bookingId);
   if (!target) return null;
@@ -139,6 +139,7 @@ export async function submitBookingReviewDb(
   writeJson(HOUSES_KEY, nextHouses);
   return updatedHouse;
 }
+
 
 function toUserProfile(user: StoredUser): UserProfile {
   return {
