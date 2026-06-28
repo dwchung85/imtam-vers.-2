@@ -21,7 +21,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
       className="group cursor-pointer bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 flex flex-col h-full"
     >
       {/* House Image Container */}
-      <div className="relative aspect-4/3 w-full bg-neutral-100 overflow-hidden">
+      <div className="relative aspect-[4/3] w-full bg-neutral-100 overflow-hidden">
         <img
           src={house.imageUrl}
           alt={house.title}

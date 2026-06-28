@@ -136,7 +136,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
               <div className="md:col-span-3 space-y-6">
                 {/* Large Beautiful Cover with Multi-Image Carousel / Gallery */}
                 <div className="space-y-3">
-                  <div className="relative aspect-16/10 rounded-2xl overflow-hidden bg-neutral-100 shadow-xs group">
+                  <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-100 shadow-xs group">
                     {/* Active image render */}
                     <img
                       src={
