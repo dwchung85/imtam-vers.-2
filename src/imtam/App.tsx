@@ -424,6 +424,7 @@ export default function App() {
                 bookings={bookings}
                 currentUserId={currentUser.id}
                 onCancelBooking={handleCancelBooking}
+                onSubmitReview={handleSubmitReview}
               />
             )}
 
