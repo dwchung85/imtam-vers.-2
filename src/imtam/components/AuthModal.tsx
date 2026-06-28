@@ -176,7 +176,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           {isSignUp && (
             <div>
               <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                사용자 실명 / 에이전트명 *
+                사용자명 *
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -196,7 +196,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           {/* Email Field */}
           <div>
             <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-              에이전트 로그인 이메일 *
+              로그인 이메일 *
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -238,15 +238,13 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
             className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 disabled:bg-blue-350 text-white font-bold text-xs md:text-sm py-3.5 px-4 rounded-xl shadow-md transition-all mt-2 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {isSignUp ? "약관 동의하고 파트너 가입하기" : "IMTAM 엔진 에 접속"}
+            {isSignUp ? "약관 동의하고 가입하기" : "IMTAM에 접속"}
           </button>
         </form>
 
         {/* Account Swap Switcher */}
         <div className="text-center mt-5 pt-4 border-t border-neutral-100 text-xs">
-          <span className="text-neutral-400">
-            {isSignUp ? "이미 에이전트 계정이 있으신가요?" : "중개 엔진에 첫 방문이신가요?"}
-          </span>{" "}
+          <span className="text-neutral-400">{isSignUp ? "이미 계정이 있으신가요?" : "첫 방문이신가요?"}</span>{" "}
           <button
             onClick={() => {
               if (!loading) {
