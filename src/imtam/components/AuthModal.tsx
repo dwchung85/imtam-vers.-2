@@ -139,11 +139,6 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           <h2 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight">
             {isSignUp ? "IMTAM 가입" : "IMTAM 로그인"}
           </h2>
-          <p className="text-xs text-neutral-400 mt-1 leading-relaxed font-bold">
-            {isSignUp
-              ? "이메일 계정을 생성해 실시간 매물 임장 예약 정보를 수령해 보세요."
-              : "인증 이메일 계정을 활용해 오픈하우스 배정 소식을 모니터링 합니다."}
-          </p>
         </div>
 
         {/* Error / Success feedback blocks */}
