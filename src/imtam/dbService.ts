@@ -1,5 +1,4 @@
 import { Booking, House, UserProfile } from './types';
-import { INITIAL_BOOKINGS, INITIAL_HOUSES } from './initialData';
 
 const USERS_KEY = 'imtam_users';
 const HOUSES_KEY = 'imtam_houses';
@@ -39,27 +38,23 @@ export async function seedInitialDatabaseIfEmpty() {
   const users = readJson<StoredUser[]>(USERS_KEY, []);
   if (users.length === 0) writeJson(USERS_KEY, [defaultUser]);
 
-  const houses = readJson<House[]>(HOUSES_KEY, []);
-  if (houses.length === 0) {
-    writeJson(
-      HOUSES_KEY,
-      INITIAL_HOUSES.map((house, index) => ({
-        ...house,
-        rooms: house.rooms ?? Math.min(4, index + 2),
-        bathrooms: house.bathrooms ?? (index % 2 === 0 ? 2 : 1),
-        area: house.area ?? 18 + index * 6,
-        availableDates: house.availableDates ?? getNextDays(4 + (index % 2)),
-        availableTimeSlots: house.availableTimeSlots ?? [
-          '오전 10:00 ~ 12:00',
-          '오후 02:00 ~ 04:00',
-          '저녁 07:00 ~ 09:00',
-        ],
-      })),
+  // Purge any previously-seeded demo houses (and their bookings) so the
+  // initial list only contains listings real users have registered.
+  if (canUseStorage()) {
+    const houses = readJson<House[]>(HOUSES_KEY, []);
+    const realOnly = houses.filter(
+      (h) => typeof h.id !== 'string' || !h.id.startsWith('house_seed_'),
     );
+    if (realOnly.length !== houses.length) {
+      writeJson(HOUSES_KEY, realOnly);
+      const realIds = new Set(realOnly.map((h) => h.id));
+      const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
+      writeJson(
+        BOOKINGS_KEY,
+        bookings.filter((b) => realIds.has(b.houseId)),
+      );
+    }
   }
-
-  const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
-  if (bookings.length === 0) writeJson(BOOKINGS_KEY, INITIAL_BOOKINGS);
 }
 
 export async function findUserByEmail(email: string): Promise<UserProfile | null> {
