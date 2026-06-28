@@ -262,13 +262,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 space-y-4">
-            <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-            <p className="text-xs text-neutral-500 font-bold">IMTAM 실시간 부동산 데모 데이터베이스 연결 중...</p>
-          </div>
-        ) : (
-          <>
+        <>
             {activeTab === "browse" && (
               <div className="space-y-6 md:space-y-8 animate-fadeIn">
                 {/* Visual Header / Search / Filter row */}
