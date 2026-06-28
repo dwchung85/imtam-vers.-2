@@ -303,7 +303,7 @@ export default function App() {
                   </div>
 
                   {/* Advanced Spec Filters (방 갯수, 화장실 갯수, 넓이 (평) 기준) */}
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-4 border-t border-blue-50">
+                  <div className="flex flex-col lg:flex-row lg:items-center gap-4 pt-4 border-t border-blue-50">
                     <div className="flex flex-wrap items-center gap-4">
                       {/* Filter label */}
                       <span className="text-xs text-neutral-500 font-extrabold flex items-center gap-1.5 shrink-0">
