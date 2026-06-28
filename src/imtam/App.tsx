@@ -16,12 +16,11 @@ import {
   submitBookingReviewDb,
   findUserByEmail,
 } from "./dbService";
-import { Search, Info, Sparkles, Landmark, Compass, LogIn, Loader2 } from "lucide-react";
+import { Search, Info, Compass, LogIn } from "lucide-react";
 
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   // Current logged in user context
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
@@ -41,48 +40,41 @@ export default function App() {
 
   // Load and sync local demo database data on mount
   useEffect(() => {
-    async function initApp() {
-      try {
-        setLoading(true);
-        // Step 1: Seed if database collections are empty
-        await seedInitialDatabaseIfEmpty();
+    try {
+      // Step 1: Seed if database collections are empty
+      seedInitialDatabaseIfEmpty();
 
-        // If no user is logged in, auto-fill with standard demo credential and sync to local DB
-        let user: UserProfile | null = null;
+      // If no user is logged in, auto-fill with standard demo credential and sync to local DB
+      let user: UserProfile | null = null;
 
-        if (typeof window !== "undefined") {
-          try {
-            const saved = window.localStorage.getItem("imtam_logged_in_user");
-            user = saved ? JSON.parse(saved) : null;
-            if (user) setCurrentUser(user);
-          } catch {
-            user = null;
-          }
+      if (typeof window !== "undefined") {
+        try {
+          const saved = window.localStorage.getItem("imtam_logged_in_user");
+          user = saved ? JSON.parse(saved) : null;
+          if (user) setCurrentUser(user);
+        } catch {
+          user = null;
         }
-
-        if (!user) {
-          const demoUser = await findUserByEmail("test@imtam.com");
-          if (demoUser) {
-            user = demoUser;
-            setCurrentUser(demoUser);
-            window.localStorage.setItem("imtam_logged_in_user", JSON.stringify(demoUser));
-          }
-        }
-
-        // Step 2: Fetch houses & bookings
-        const dbHouses = await fetchHouses();
-        const dbBookings = await fetchBookings();
-
-        setHouses(dbHouses);
-        setBookings(dbBookings);
-      } catch (error) {
-        console.error("Failed to fetch initial IMTAM data:", error);
-      } finally {
-        setLoading(false);
       }
-    }
 
-    initApp();
+      if (!user) {
+        const demoUser = findUserByEmail("test@imtam.com");
+        if (demoUser) {
+          user = demoUser;
+          setCurrentUser(demoUser);
+          window.localStorage.setItem("imtam_logged_in_user", JSON.stringify(demoUser));
+        }
+      }
+
+      // Step 2: Fetch houses & bookings
+      const dbHouses = fetchHouses();
+      const dbBookings = fetchBookings();
+
+      setHouses(dbHouses);
+      setBookings(dbBookings);
+    } catch (error) {
+      console.error("Failed to fetch initial IMTAM data:", error);
+    }
   }, []);
 
   // Sync current user to local storage if it changes manually
@@ -270,13 +262,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 space-y-4">
-            <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-            <p className="text-xs text-neutral-500 font-bold">IMTAM 실시간 부동산 데모 데이터베이스 연결 중...</p>
-          </div>
-        ) : (
-          <>
+        <>
             {activeTab === "browse" && (
               <div className="space-y-6 md:space-y-8 animate-fadeIn">
                 {/* Visual Header / Search / Filter row */}
@@ -444,7 +430,6 @@ export default function App() {
               </div>
             )}
           </>
-        )}
       </main>
 
       {/* House Details Modal */}
