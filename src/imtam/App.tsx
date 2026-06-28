@@ -24,6 +24,7 @@ export default function App() {
 
   // Current logged in user context
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
+    if (typeof window === 'undefined') return null;
     const saved = localStorage.getItem('imtam_logged_in_user');
     return saved ? JSON.parse(saved) : null;
   });
@@ -79,8 +80,10 @@ export default function App() {
   // Sync current user to local storage if it changes manually
   useEffect(() => {
     if (currentUser) {
+      if (typeof window === 'undefined') return;
       localStorage.setItem('imtam_logged_in_user', JSON.stringify(currentUser));
     } else {
+      if (typeof window === 'undefined') return;
       localStorage.removeItem('imtam_logged_in_user');
     }
   }, [currentUser]);

@@ -336,7 +336,7 @@ export default function HostDashboard({
             </div>
           )}
 
-          <form onSubmit={handleAddHouseSubmit} className="space-y-5Heading">
+          <form onSubmit={handleAddHouseSubmit} className="space-y-5">
             {/* Title / Description */}
             <div className="space-y-4">
               <div>
