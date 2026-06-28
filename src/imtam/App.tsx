@@ -165,8 +165,7 @@ export default function App() {
       hostId: currentUser.id,
       hostName: currentUser.name,
       hostAvatar: currentUser.avatar,
-      rating: 4.8 + Math.random() * 0.2, // Premium design rating scale
-      reviewsCount: 1,
+      // 평점은 실제 리뷰가 작성되기 전까지는 비어 있음
     };
 
     try {
