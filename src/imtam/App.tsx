@@ -16,7 +16,7 @@ import {
   submitBookingReviewDb,
   findUserByEmail
 } from './dbService';
-import { Search, Info, Sparkles, Building, Landmark, Compass, LogIn, Loader2 } from 'lucide-react';
+import { Search, Info, Sparkles, Landmark, Compass, LogIn, Loader2 } from 'lucide-react';
 
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
@@ -289,12 +289,6 @@ export default function App() {
                 {/* Visual Header / Search / Filter row */}
                 <div className="bg-white rounded-3xl border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                      <h1 className="text-xl md:text-3xl font-black text-neutral-900 tracking-tight flex items-center gap-2">
-                        <Building className="w-7 h-7 text-blue-600 inline shrink-0" />
-                        <span>전국 프리미엄 실주택 매물 오픈하우스 임장 매칭</span>
-                      </h1>
-                    </div>
 
                     {/* Search Bar inside card */}
                     <div className="relative w-full md:max-w-md">
