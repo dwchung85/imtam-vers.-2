@@ -58,13 +58,10 @@ export default function App() {
       }
 
       if (!user) {
-        const demoUser = findUserByEmail("test@imtam.com");
-        if (demoUser) {
-          user = demoUser;
-          setCurrentUser(demoUser);
-          window.localStorage.setItem("imtam_logged_in_user", JSON.stringify(demoUser));
-        }
+        // 로그인이 필요한 서비스이므로 비로그인 시 인증 모달 자동 노출
+        setIsAuthModalOpen(true);
       }
+
 
       // Step 2: Fetch houses & bookings
       const dbHouses = fetchHouses();
