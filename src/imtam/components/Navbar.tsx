@@ -9,6 +9,7 @@ interface NavbarProps {
   onToggleRole: () => void;
   onOpenAuth: () => void;
   onLogout: () => void;
+  onResetToHome?: () => void;
 }
 
 export default function Navbar({
@@ -19,13 +20,14 @@ export default function Navbar({
   onToggleRole,
   onOpenAuth,
   onLogout,
+  onResetToHome,
 }: NavbarProps) {
   return (
     <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo / Brand */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setTab('browse')}>
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => onResetToHome ? onResetToHome() : setTab('browse')}>
             <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-xs">
               <Home className="w-5 h-5" />
             </div>
