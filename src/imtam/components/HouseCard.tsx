@@ -37,11 +37,17 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
             오픈하우스 진행중
           </span>
         )}
-        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-xs font-semibold px-2 py-1 rounded-lg text-neutral-800 flex items-center gap-1 shadow-xs">
-          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-          <span>{house.rating.toFixed(1)}</span>
-          <span className="text-neutral-400 font-normal">({house.reviewsCount})</span>
-        </div>
+        {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === 'number' ? (
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-xs font-semibold px-2 py-1 rounded-lg text-neutral-800 flex items-center gap-1 shadow-xs">
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            <span>{house.rating.toFixed(1)}</span>
+            <span className="text-neutral-400 font-normal">({house.reviewsCount})</span>
+          </div>
+        ) : (
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-[10px] font-bold px-2 py-1 rounded-lg text-neutral-500 shadow-xs">
+            평점 없음
+          </div>
+        )}
       </div>
 
       {/* House Details Content */}
