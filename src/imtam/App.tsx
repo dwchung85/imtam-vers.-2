@@ -13,6 +13,7 @@ import {
   addHouseListingDb, 
   addBookingDb, 
   updateBookingStatusDb,
+  submitBookingReviewDb,
   findUserByEmail
 } from './dbService';
 import { Search, Info, Sparkles, Building, Landmark, Compass, LogIn, Loader2 } from 'lucide-react';
@@ -165,8 +166,7 @@ export default function App() {
       hostId: currentUser.id,
       hostName: currentUser.name,
       hostAvatar: currentUser.avatar,
-      rating: 4.8 + Math.random() * 0.2, // Premium design rating scale
-      reviewsCount: 1,
+      // 평점은 실제 리뷰가 작성되기 전까지는 비어 있음
     };
 
     try {
@@ -180,8 +180,8 @@ export default function App() {
     }
   };
 
-  // 3. Confirm / Cancel Booking Incoming (Host Action)
-  const handleUpdateBookingStatus = async (bookingId: string, status: 'confirmed' | 'cancelled') => {
+  // 3. Confirm / Cancel / Complete Booking Incoming (Host Action)
+  const handleUpdateBookingStatus = async (bookingId: string, status: 'confirmed' | 'cancelled' | 'completed') => {
     try {
       // Optimistic local update
       setBookings((prev) =>
@@ -209,6 +209,29 @@ export default function App() {
       console.error("DB error cancelling booking:", error);
     }
   };
+
+  // 5. Submit Star Rating after Tour Completion (Guest Action)
+  const handleSubmitReview = async (bookingId: string, rating: number) => {
+    try {
+      const updatedHouse = await submitBookingReviewDb(bookingId, rating);
+      setBookings((prev) =>
+        prev.map((b) => (b.id === bookingId ? { ...b, rating } : b))
+      );
+      if (updatedHouse) {
+        setHouses((prev) =>
+          prev.map((h) =>
+            h.id === updatedHouse.id
+              ? { ...h, rating: updatedHouse.rating, reviewsCount: updatedHouse.reviewsCount }
+              : h,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("DB error submitting review:", error);
+    }
+  };
+
+
 
 
 
@@ -401,6 +424,7 @@ export default function App() {
                 bookings={bookings}
                 currentUserId={currentUser.id}
                 onCancelBooking={handleCancelBooking}
+                onSubmitReview={handleSubmitReview}
               />
             )}
 

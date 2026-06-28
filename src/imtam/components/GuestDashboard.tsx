@@ -1,15 +1,19 @@
+import { useState } from 'react';
 import { Booking } from '../types';
-import { Calendar, Receipt, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Calendar, Receipt, CheckCircle, Clock, AlertCircle, Star, Award } from 'lucide-react';
 
 interface GuestDashboardProps {
   bookings: Booking[];
   currentUserId: string;
   onCancelBooking: (bookingId: string) => void;
+  onSubmitReview: (bookingId: string, rating: number) => void;
 }
 
-export default function GuestDashboard({ bookings, currentUserId, onCancelBooking }: GuestDashboardProps) {
+export default function GuestDashboard({ bookings, currentUserId, onCancelBooking, onSubmitReview }: GuestDashboardProps) {
   // Filter bookings belonging to current user
   const guestBookings = bookings.filter((b) => b.guestId === currentUserId);
+  const [draftRatings, setDraftRatings] = useState<Record<string, number>>({});
+  const [hoverRatings, setHoverRatings] = useState<Record<string, number>>({});
 
   return (
     <div className="space-y-6 animate-fadeIn pb-10">
@@ -35,9 +39,15 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
             const isPending = booking.status === 'pending';
             const isConfirmed = booking.status === 'confirmed';
             const isCancelled = booking.status === 'cancelled';
+            const isCompleted = booking.status === 'completed';
 
             const baseTicketTotal = (booking.housePricePerVisit || 0) * (booking.totalVisitors || 1);
             const extraFees = booking.totalPrice - baseTicketTotal;
+
+            const draft = draftRatings[booking.id] ?? 0;
+            const hover = hoverRatings[booking.id] ?? 0;
+            const display = hover || draft || booking.rating || 0;
+            const alreadyReviewed = typeof booking.rating === 'number';
 
             return (
               <div
@@ -54,7 +64,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                       referrerPolicy="no-referrer"
                     />
                     <div className="min-w-0">
-                      <div className="flex items-center gap-1.5 mb-11">
+                      <div className="flex items-center gap-1.5 mb-11 flex-wrap">
                         {isConfirmed && (
                           <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-0.5">
                             <CheckCircle className="w-3 h-3 text-emerald-600" />
@@ -71,6 +81,12 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                           <span className="bg-red-50 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-0.5">
                             <AlertCircle className="w-3 h-3 text-red-600" />
                             <span>임장 거절·취소됨</span>
+                          </span>
+                        )}
+                        {isCompleted && (
+                          <span className="bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-0.5">
+                            <Award className="w-3 h-3 text-indigo-600" />
+                            <span>임장 가이드 완료</span>
                           </span>
                         )}
                       </div>
@@ -115,10 +131,75 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                       <span className="text-blue-600 font-black">₩{booking.totalPrice.toLocaleString()}</span>
                     </div>
                   </div>
+
+                  {/* Star rating block for completed tours */}
+                  {isCompleted && (
+                    <div className="border-t border-neutral-100 pt-3.5">
+                      <div className="flex items-center text-xs font-bold text-neutral-500 mb-2">
+                        <Star className="w-3.5 h-3.5 mr-1 text-amber-500" />
+                        <span>{alreadyReviewed ? '내가 남긴 임장 가이드 평점' : '임장 가이드 별점 평가'}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        {[1, 2, 3, 4, 5].map((star) => {
+                          const filled = star <= display;
+                          return (
+                            <button
+                              key={star}
+                              type="button"
+                              disabled={alreadyReviewed}
+                              onClick={() => {
+                                if (alreadyReviewed) return;
+                                setDraftRatings((prev) => ({ ...prev, [booking.id]: star }));
+                              }}
+                              onMouseEnter={() => {
+                                if (alreadyReviewed) return;
+                                setHoverRatings((prev) => ({ ...prev, [booking.id]: star }));
+                              }}
+                              onMouseLeave={() => {
+                                if (alreadyReviewed) return;
+                                setHoverRatings((prev) => ({ ...prev, [booking.id]: 0 }));
+                              }}
+                              className={`p-0.5 transition-transform ${alreadyReviewed ? 'cursor-default' : 'cursor-pointer hover:scale-110'}`}
+                              aria-label={`${star}점`}
+                            >
+                              <Star
+                                className={`w-6 h-6 ${
+                                  filled ? 'fill-amber-400 text-amber-400' : 'text-neutral-300'
+                                }`}
+                              />
+                            </button>
+                          );
+                        })}
+                        <span className="text-xs font-bold text-neutral-600 ml-2">
+                          {display ? `${display}.0 / 5.0` : '별점을 선택하세요'}
+                        </span>
+                      </div>
+                      {!alreadyReviewed && (
+                        <div className="mt-3 flex justify-end">
+                          <button
+                            type="button"
+                            disabled={!draft}
+                            onClick={() => {
+                              if (!draft) return;
+                              onSubmitReview(booking.id, draft);
+                            }}
+                            className="text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-400 bg-blue-600 hover:bg-blue-700 text-white"
+                          >
+                            별점 평가 등록
+                          </button>
+                        </div>
+                      )}
+                      {alreadyReviewed && (
+                        <p className="text-[11px] text-neutral-400 mt-2 font-semibold">
+                          평가가 등록되었습니다. 매물 평점에 반영됩니다.
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Cancel button */}
-                {!isCancelled && (
+                {!isCancelled && !isCompleted && (
                   <div className="mt-4 pt-3.5 border-t border-neutral-100 flex justify-end">
                     <button
                       onClick={() => {

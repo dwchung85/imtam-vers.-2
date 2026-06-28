@@ -11,8 +11,8 @@ export interface House {
   hostAvatar: string;
   amenities: string[]; // 제공 혜택 (예: 웰컴 미니 드링크, 인테리어 가구 구매 정보, 호스트 가이드 투어 등)
   maxGuests: number; // 타임 슬롯당 동시 관람 최대 인원
-  rating: number;
-  reviewsCount: number;
+  rating?: number; // 실제 받은 평균 평점 (리뷰가 1개 이상일 때만 존재)
+  reviewsCount?: number; // 실제 작성된 리뷰 수 (없으면 undefined)
   availableDates?: string[]; // 방문 가능 지정 날짜 목록 (예: ["2026-06-25", "2026-06-26"])
   availableTimeSlots?: string[]; // 방문 가능 지정 시간 목록 (예: ["오전 10:00 ~ 12:00", ...])
   rooms?: number; // 방 갯수
@@ -32,8 +32,9 @@ export interface Booking {
   visitTimeSlot: string; // 탐방 시간대 (예: 오전 10시, 오후 2시, 저녁 7시 등)
   totalVisitors: number; // 관람 탐방객 인원수
   totalPrice: number; // 최종 결제 집 구경 요금
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   createdAt: string;
+  rating?: number; // 1-5 별점 (게스트가 임장 완료 후 작성한 평점)
 }
 
 export interface UserProfile {

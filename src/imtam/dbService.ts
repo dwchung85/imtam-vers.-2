@@ -92,12 +92,52 @@ export async function addBookingDb(booking: Booking): Promise<void> {
   writeJson(BOOKINGS_KEY, [booking, ...bookings.filter((item) => item.id !== booking.id)]);
 }
 
-export async function updateBookingStatusDb(bookingId: string, status: 'confirmed' | 'cancelled'): Promise<void> {
+export async function updateBookingStatusDb(
+  bookingId: string,
+  status: 'confirmed' | 'cancelled' | 'completed',
+): Promise<void> {
   const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
   writeJson(
     BOOKINGS_KEY,
     bookings.map((booking) => (booking.id === bookingId ? { ...booking, status } : booking)),
   );
+}
+
+// 게스트가 임장 완료 후 별점을 등록하면 해당 booking에 rating을 저장하고,
+// 해당 매물의 전체 평균 평점/리뷰 수를 실제 작성된 리뷰 기준으로 다시 계산한다.
+export async function submitBookingReviewDb(
+  bookingId: string,
+  rating: number,
+): Promise<House | null> {
+  const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
+  const target = bookings.find((b) => b.id === bookingId);
+  if (!target) return null;
+
+  const updatedBookings = bookings.map((b) =>
+    b.id === bookingId ? { ...b, rating } : b,
+  );
+  writeJson(BOOKINGS_KEY, updatedBookings);
+
+  // 해당 매물에 작성된 모든 실제 리뷰 평균 재계산
+  const houseReviews = updatedBookings.filter(
+    (b) => b.houseId === target.houseId && typeof b.rating === 'number',
+  );
+  const reviewsCount = houseReviews.length;
+  const avg =
+    reviewsCount === 0
+      ? undefined
+      : houseReviews.reduce((sum, b) => sum + (b.rating ?? 0), 0) / reviewsCount;
+
+  const houses = readJson<House[]>(HOUSES_KEY, []);
+  let updatedHouse: House | null = null;
+  const nextHouses = houses.map((h) => {
+    if (h.id !== target.houseId) return h;
+    const next: House = { ...h, rating: avg, reviewsCount };
+    updatedHouse = next;
+    return next;
+  });
+  writeJson(HOUSES_KEY, nextHouses);
+  return updatedHouse;
 }
 
 function toUserProfile(user: StoredUser): UserProfile {
@@ -107,12 +147,4 @@ function toUserProfile(user: StoredUser): UserProfile {
     avatar: user.avatar,
     balance: user.balance,
   };
-}
-
-function getNextDays(count: number) {
-  return Array.from({ length: count }, (_, index) => {
-    const date = new Date();
-    date.setDate(date.getDate() + index + 1);
-    return date.toISOString().split('T')[0];
-  });
 }
