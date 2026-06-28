@@ -38,22 +38,19 @@ export async function seedInitialDatabaseIfEmpty() {
   const users = readJson<StoredUser[]>(USERS_KEY, []);
   if (users.length === 0) writeJson(USERS_KEY, [defaultUser]);
 
-  // Purge any previously-seeded demo houses (and their bookings) so the
-  // initial list only contains listings real users have registered.
+  // Purge previously-seeded demo houses and bookings so the initial
+  // listing only contains entries real users have registered.
   if (canUseStorage()) {
+    const DEMO_HOUSE_IDS = new Set(['house-1', 'house-2', 'house-3', 'house-4', 'house-5']);
+    const DEMO_BOOKING_IDS = new Set(['booking-mock-1', 'booking-mock-2']);
     const houses = readJson<House[]>(HOUSES_KEY, []);
-    const realOnly = houses.filter(
-      (h) => typeof h.id !== 'string' || !h.id.startsWith('house_seed_'),
+    const realHouses = houses.filter((h) => !DEMO_HOUSE_IDS.has(h.id));
+    if (realHouses.length !== houses.length) writeJson(HOUSES_KEY, realHouses);
+    const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
+    const realBookings = bookings.filter(
+      (b) => !DEMO_BOOKING_IDS.has(b.id) && !DEMO_HOUSE_IDS.has(b.houseId),
     );
-    if (realOnly.length !== houses.length) {
-      writeJson(HOUSES_KEY, realOnly);
-      const realIds = new Set(realOnly.map((h) => h.id));
-      const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
-      writeJson(
-        BOOKINGS_KEY,
-        bookings.filter((b) => realIds.has(b.houseId)),
-      );
-    }
+    if (realBookings.length !== bookings.length) writeJson(BOOKINGS_KEY, realBookings);
   }
 }
 
