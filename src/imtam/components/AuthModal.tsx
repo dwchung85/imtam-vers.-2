@@ -13,6 +13,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [canAutoRegister, setCanAutoRegister] = useState<string | null>(null);
