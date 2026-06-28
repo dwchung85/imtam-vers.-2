@@ -13,6 +13,7 @@ import {
   addHouseListingDb, 
   addBookingDb, 
   updateBookingStatusDb,
+  submitBookingReviewDb,
   findUserByEmail
 } from './dbService';
 import { Search, Info, Sparkles, Building, Landmark, Compass, LogIn, Loader2 } from 'lucide-react';
