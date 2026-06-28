@@ -1,29 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ImtamApp from "../imtam/App";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "IMTAM 임탐 오픈하우스 매칭" },
+      { name: "description", content: "프리미엄 실주택 오픈하우스 임장 예약과 소유주 매물 등록을 연결하는 IMTAM 플랫폼입니다." },
+      { property: "og:title", content: "IMTAM 임탐 오픈하우스 매칭" },
+      { property: "og:description", content: "프리미엄 실주택 오픈하우스 임장 예약과 소유주 매물 등록을 연결하는 IMTAM 플랫폼입니다." },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <ImtamApp />;
 }
