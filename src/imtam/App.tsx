@@ -115,6 +115,15 @@ export default function App() {
     setUserRole("guest");
   };
 
+  const handleResetToHome = () => {
+    setActiveTab("browse");
+    setSelectedHouse(null);
+    setSearchQuery("");
+    setMinRooms(0);
+    setMinBathrooms(0);
+    setMinArea(0);
+  };
+
   // 1. Request House Tour (Guest Action)
   const handleBookHouse = async (
     bookingData: Omit<Booking, "id" | "guestId" | "guestName" | "status" | "createdAt">,
