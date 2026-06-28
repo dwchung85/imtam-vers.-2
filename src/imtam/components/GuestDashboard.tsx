@@ -1,15 +1,19 @@
+import { useState } from 'react';
 import { Booking } from '../types';
-import { Calendar, Receipt, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Calendar, Receipt, CheckCircle, Clock, AlertCircle, Star, Award } from 'lucide-react';
 
 interface GuestDashboardProps {
   bookings: Booking[];
   currentUserId: string;
   onCancelBooking: (bookingId: string) => void;
+  onSubmitReview: (bookingId: string, rating: number) => void;
 }
 
-export default function GuestDashboard({ bookings, currentUserId, onCancelBooking }: GuestDashboardProps) {
+export default function GuestDashboard({ bookings, currentUserId, onCancelBooking, onSubmitReview }: GuestDashboardProps) {
   // Filter bookings belonging to current user
   const guestBookings = bookings.filter((b) => b.guestId === currentUserId);
+  const [draftRatings, setDraftRatings] = useState<Record<string, number>>({});
+  const [hoverRatings, setHoverRatings] = useState<Record<string, number>>({});
 
   return (
     <div className="space-y-6 animate-fadeIn pb-10">
