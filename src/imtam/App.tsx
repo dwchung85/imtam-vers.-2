@@ -16,7 +16,7 @@ import {
   submitBookingReviewDb,
   findUserByEmail,
 } from "./dbService";
-import { Search, Info, Sparkles, Landmark, Compass, LogIn, Loader2 } from "lucide-react";
+import { Search, Info, Compass, LogIn } from "lucide-react";
 
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
