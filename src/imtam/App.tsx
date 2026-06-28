@@ -430,7 +430,6 @@ export default function App() {
               </div>
             )}
           </>
-        )}
       </main>
 
       {/* House Details Modal */}
