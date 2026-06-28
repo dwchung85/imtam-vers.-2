@@ -23,11 +23,7 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
 
   // Current logged in user context
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const saved = localStorage.getItem('imtam_logged_in_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
   const [userRole, setUserRole] = useState<'guest' | 'host'>('guest');
   const [activeTab, setActiveTab] = useState<'browse' | 'guest' | 'host'>('browse');
@@ -42,7 +38,7 @@ export default function App() {
   const [minBathrooms, setMinBathrooms] = useState<number>(0); // 0 means '전체' (any)
   const [minArea, setMinArea] = useState<number>(0); // 0 means '전체' (any)
 
-  // Load and sync Firestore database data on mount
+  // Load and sync local demo database data on mount
   useEffect(() => {
     async function initApp() {
       try {
@@ -50,14 +46,25 @@ export default function App() {
         // Step 1: Seed if database collections are empty
         await seedInitialDatabaseIfEmpty();
 
-        // If no user is logged in, auto-fill with standard demo credential and sync to DB
-        let user = currentUser;
+        // If no user is logged in, auto-fill with standard demo credential and sync to local DB
+        let user: UserProfile | null = null;
+
+        if (typeof window !== 'undefined') {
+          try {
+            const saved = window.localStorage.getItem('imtam_logged_in_user');
+            user = saved ? JSON.parse(saved) : null;
+            if (user) setCurrentUser(user);
+          } catch {
+            user = null;
+          }
+        }
+
         if (!user) {
           const demoUser = await findUserByEmail('test@imtam.com');
           if (demoUser) {
             user = demoUser;
             setCurrentUser(demoUser);
-            localStorage.setItem('imtam_logged_in_user', JSON.stringify(demoUser));
+            window.localStorage.setItem('imtam_logged_in_user', JSON.stringify(demoUser));
           }
         }
 
@@ -68,7 +75,7 @@ export default function App() {
         setHouses(dbHouses);
         setBookings(dbBookings);
       } catch (error) {
-        console.error("Failed to fetch initial Firestore data:", error);
+        console.error("Failed to fetch initial IMTAM data:", error);
       } finally {
         setLoading(false);
       }
@@ -250,7 +257,7 @@ export default function App() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 space-y-4">
             <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-            <p className="text-xs text-neutral-500 font-bold">공식 런칭용 Firestore 실시간 부동산 데이터베이스 연결 중...</p>
+            <p className="text-xs text-neutral-500 font-bold">IMTAM 실시간 부동산 데모 데이터베이스 연결 중...</p>
           </div>
         ) : (
           <>

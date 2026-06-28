@@ -18,7 +18,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
   const [canAutoRegister, setCanAutoRegister] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Submit Handler using real Firestore DB Service
+  // Submit Handler using local IMTAM demo DB Service
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
@@ -58,7 +58,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
         ];
         const randomAvatar = randomAvatars[Math.floor(Math.random() * randomAvatars.length)];
 
-        // Create new user in Firestore database
+        // Create new user in the local demo database
         const createdUser = await createUserProfile(email, name, randomAvatar);
         
         setSuccessMessage('🎉 회원 가입이 완료되었습니다! 안전한 중개 세션을 시작합니다.');
@@ -69,7 +69,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
         }, 1500);
 
       } else {
-        // Sign In Flow with Firestore
+        // Sign In Flow with local demo database
         const foundUser = await findUserByEmail(email);
 
         if (!foundUser) {
@@ -88,7 +88,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
       }
     } catch (err: any) {
       console.error(err);
-      setErrorMessage('서버 및 데이터베이스 통신 중 오류가 발생했습니다. 라이브 네트워크 상태를 체크해 주세요.');
+      setErrorMessage('로컬 데이터베이스 처리 중 오류가 발생했습니다. 입력값을 확인해 주세요.');
       setLoading(false);
     }
   };
