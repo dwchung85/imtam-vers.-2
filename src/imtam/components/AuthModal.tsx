@@ -13,6 +13,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [canAutoRegister, setCanAutoRegister] = useState<string | null>(null);
@@ -34,6 +35,12 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
 
     if (isSignUp && !name.trim()) {
       setErrorMessage("이름을 입력해주세요.");
+      setLoading(false);
+      return;
+    }
+
+    if (isSignUp && password !== confirmPassword) {
+      setErrorMessage("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
       setLoading(false);
       return;
     }
@@ -215,7 +222,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           {/* Password Field */}
           <div>
             <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-              비밀번호 설정 *
+              {isSignUp ? "비밀번호 설정 *" : "비밀번호 *"}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -230,6 +237,27 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
               />
             </div>
           </div>
+
+          {/* Confirm Password Field - Show only on Sign Up */}
+          {isSignUp && (
+            <div>
+              <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
+                비밀번호 확인 *
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                <input
+                  type="password"
+                  placeholder="••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={loading}
+                  className="w-full text-xs font-bold pl-10 pr-3 py-3 border border-neutral-200 rounded-xl bg-neutral-50/50 focus:bg-white focus:border-blue-400 focus:outline-hidden text-neutral-800"
+                  required
+                />
+              </div>
+            </div>
+          )}
 
           {/* Submit Action */}
           <button
@@ -251,6 +279,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
                 setIsSignUp(!isSignUp);
                 setErrorMessage("");
                 setSuccessMessage("");
+                setConfirmPassword("");
               }
             }}
             className="text-blue-600 hover:text-blue-800 underline font-bold ml-1 cursor-pointer"
