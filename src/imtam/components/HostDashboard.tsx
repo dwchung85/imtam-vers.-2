@@ -759,9 +759,17 @@ export default function HostDashboard({
                           ? 'bg-emerald-100 text-emerald-700'
                           : bk.status === 'cancelled'
                             ? 'bg-neutral-200 text-neutral-600'
-                            : 'bg-blue-100 text-blue-700'
+                            : bk.status === 'completed'
+                              ? 'bg-indigo-100 text-indigo-700'
+                              : 'bg-blue-100 text-blue-700'
                       }`}>
-                        {bk.status === 'confirmed' ? '임장확정' : bk.status === 'cancelled' ? '배정취소' : '조율대기'}
+                        {bk.status === 'confirmed'
+                          ? '임장확정'
+                          : bk.status === 'cancelled'
+                            ? '배정취소'
+                            : bk.status === 'completed'
+                              ? '가이드완료'
+                              : '조율대기'}
                       </span>
                     </div>
 
@@ -787,6 +795,22 @@ export default function HostDashboard({
                           className="py-1 px-2 bg-blue-600 hover:bg-blue-700 font-bold text-white rounded-lg cursor-pointer transition-all"
                         >
                           임장 예약 수락
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Confirmed → Complete tour guide */}
+                    {bk.status === 'confirmed' && (
+                      <div className="border-t border-neutral-150 pt-2">
+                        <button
+                          onClick={() => {
+                            if (confirm('이 임장 가이드를 완료 처리합니까? 완료 후 게스트가 별점 평가를 등록할 수 있습니다.')) {
+                              onUpdateBookingStatus(bk.id, 'completed');
+                            }
+                          }}
+                          className="w-full py-1.5 px-2 bg-indigo-600 hover:bg-indigo-700 font-bold text-white rounded-lg cursor-pointer transition-all text-xs"
+                        >
+                          임장 가이드 완료 처리
                         </button>
                       </div>
                     )}
