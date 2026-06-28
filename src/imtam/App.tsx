@@ -294,10 +294,6 @@ export default function App() {
                         <Building className="w-7 h-7 text-blue-600 inline shrink-0" />
                         <span>전국 프리미엄 실주택 매물 오픈하우스 임장 매칭</span>
                       </h1>
-                      <p className="text-neutral-500 text-xs md:text-sm mt-1.5 font-medium leading-relaxed">
-                        <strong>IMTAM(임탐)</strong>은 단순 숙박을 넘어 실제 중개 의뢰중인 트렌디한 인테리어 주택과 오두막 쇼룸을 탐방하는 플랫폼입니다. <br className="hidden md:inline" />
-                        동기부여를 위한 수입 가구 배치 실사 및 실제 매수 목적의 맞춤형 실사 오픈하우스 일정을 예약해 직접 임장해 보세요.
-                      </p>
                     </div>
 
                     {/* Search Bar inside card */}
