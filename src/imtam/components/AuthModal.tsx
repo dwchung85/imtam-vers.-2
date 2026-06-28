@@ -149,54 +149,6 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           </p>
         </div>
 
-        {/* Banner with presets for fast tester login */}
-        {!isSignUp && (
-          <button
-            type="button"
-            onClick={async () => {
-              if (!loading) {
-                setLoading(true);
-                setEmail("test@imtam.com");
-                setPassword("123456");
-                setErrorMessage("");
-                setSuccessMessage("");
-                try {
-                  const demoUser = await findUserByEmail("test@imtam.com");
-                  if (demoUser) {
-                    setSuccessMessage("💡 프리셋 로그인 성공! 실시간 IMTAM 중개 엔진에 접속합니다.");
-                    setTimeout(() => {
-                      onLoginSuccess(demoUser);
-                      setLoading(false);
-                    }, 1200);
-                  } else {
-                    const created = await createUserProfile(
-                      "test@imtam.com",
-                      "임탐테스터 (나)",
-                      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
-                    );
-                    setSuccessMessage("💡 신규 프리셋 계정 자동 생성 및 로그인에 성공했습니다.");
-                    setTimeout(() => {
-                      onLoginSuccess(created);
-                      setLoading(false);
-                    }, 1200);
-                  }
-                } catch (e) {
-                  console.error(e);
-                  setErrorMessage(
-                    "서버 및 데이터베이스 통신 중 오류가 발생했습니다. 라이브 네트워크 상태를 체크해 주세요.",
-                  );
-                  setLoading(false);
-                }
-              }
-            }}
-            className="w-full mb-4 text-left border border-dashed border-blue-200 bg-blue-50/50 hover:bg-blue-50 p-3 rounded-xl text-xs cursor-pointer transition-colors block"
-          >
-            <p className="font-bold text-blue-700">💡 1초 테스트 에이전트 프리셋 로그인</p>
-            <p className="text-[10px] text-neutral-500 font-semibold mt-0.5">
-              체험용이시면 이 배너를 터치 시 즉각 자동 로그인 및 입정이 승인됩니다.
-            </p>
-          </button>
-        )}
 
         {/* Error / Success feedback blocks */}
         {errorMessage && (
