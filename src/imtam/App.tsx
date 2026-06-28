@@ -21,7 +21,6 @@ import { Search, Info, Compass, LogIn } from "lucide-react";
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   // Current logged in user context
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
