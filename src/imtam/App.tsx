@@ -40,48 +40,41 @@ export default function App() {
 
   // Load and sync local demo database data on mount
   useEffect(() => {
-    async function initApp() {
-      try {
-        setLoading(true);
-        // Step 1: Seed if database collections are empty
-        await seedInitialDatabaseIfEmpty();
+    try {
+      // Step 1: Seed if database collections are empty
+      seedInitialDatabaseIfEmpty();
 
-        // If no user is logged in, auto-fill with standard demo credential and sync to local DB
-        let user: UserProfile | null = null;
+      // If no user is logged in, auto-fill with standard demo credential and sync to local DB
+      let user: UserProfile | null = null;
 
-        if (typeof window !== "undefined") {
-          try {
-            const saved = window.localStorage.getItem("imtam_logged_in_user");
-            user = saved ? JSON.parse(saved) : null;
-            if (user) setCurrentUser(user);
-          } catch {
-            user = null;
-          }
+      if (typeof window !== "undefined") {
+        try {
+          const saved = window.localStorage.getItem("imtam_logged_in_user");
+          user = saved ? JSON.parse(saved) : null;
+          if (user) setCurrentUser(user);
+        } catch {
+          user = null;
         }
-
-        if (!user) {
-          const demoUser = await findUserByEmail("test@imtam.com");
-          if (demoUser) {
-            user = demoUser;
-            setCurrentUser(demoUser);
-            window.localStorage.setItem("imtam_logged_in_user", JSON.stringify(demoUser));
-          }
-        }
-
-        // Step 2: Fetch houses & bookings
-        const dbHouses = await fetchHouses();
-        const dbBookings = await fetchBookings();
-
-        setHouses(dbHouses);
-        setBookings(dbBookings);
-      } catch (error) {
-        console.error("Failed to fetch initial IMTAM data:", error);
-      } finally {
-        setLoading(false);
       }
-    }
 
-    initApp();
+      if (!user) {
+        const demoUser = findUserByEmail("test@imtam.com");
+        if (demoUser) {
+          user = demoUser;
+          setCurrentUser(demoUser);
+          window.localStorage.setItem("imtam_logged_in_user", JSON.stringify(demoUser));
+        }
+      }
+
+      // Step 2: Fetch houses & bookings
+      const dbHouses = fetchHouses();
+      const dbBookings = fetchBookings();
+
+      setHouses(dbHouses);
+      setBookings(dbBookings);
+    } catch (error) {
+      console.error("Failed to fetch initial IMTAM data:", error);
+    }
   }, []);
 
   // Sync current user to local storage if it changes manually
