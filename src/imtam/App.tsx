@@ -428,25 +428,10 @@ export default function App() {
               />
             )}
 
-            {/* Guest fallback banner if on internal pages while logged out */}
-            {(activeTab === "guest" || activeTab === "host") && !currentUser && (
-              <div className="text-center py-16 bg-white border border-neutral-205 rounded-3xl p-6 max-w-md mx-auto space-y-4">
-                <LogIn className="w-12 h-12 text-blue-600 mx-auto animate-bounce" />
-                <h3 className="text-lg font-bold text-neutral-850">
-                  오픈하우스 실사 및 전속 리스팅 기능을 이용하려면 세션 입장이 필요합니다
-                </h3>
-                <p className="text-xs text-neutral-400 font-semibold">
-                  IMTAM은 빠르고 간편한 에이전트 이메일 로그인으로 나만의 전속 매물 및 스케줄 데이터를 영구 소장합니다.
-                </p>
-                <button
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
-                >
-                  에이전트 로그인 및 파트너 가입
-                </button>
-              </div>
+            </>
             )}
           </>
+
       </main>
 
       {/* House Details Modal */}
