@@ -222,7 +222,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           {/* Password Field */}
           <div>
             <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-              비밀번호 설정 *
+              {isSignUp ? "비밀번호 설정 *" : "비밀번호 *"}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -237,6 +237,27 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
               />
             </div>
           </div>
+
+          {/* Confirm Password Field - Show only on Sign Up */}
+          {isSignUp && (
+            <div>
+              <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
+                비밀번호 확인 *
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                <input
+                  type="password"
+                  placeholder="••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={loading}
+                  className="w-full text-xs font-bold pl-10 pr-3 py-3 border border-neutral-200 rounded-xl bg-neutral-50/50 focus:bg-white focus:border-blue-400 focus:outline-hidden text-neutral-800"
+                  required
+                />
+              </div>
+            </div>
+          )}
 
           {/* Submit Action */}
           <button
