@@ -1,5 +1,4 @@
 import { Booking, House, UserProfile } from './types';
-import { INITIAL_BOOKINGS, INITIAL_HOUSES } from './initialData';
 
 const USERS_KEY = 'imtam_users';
 const HOUSES_KEY = 'imtam_houses';
@@ -39,27 +38,20 @@ export async function seedInitialDatabaseIfEmpty() {
   const users = readJson<StoredUser[]>(USERS_KEY, []);
   if (users.length === 0) writeJson(USERS_KEY, [defaultUser]);
 
-  const houses = readJson<House[]>(HOUSES_KEY, []);
-  if (houses.length === 0) {
-    writeJson(
-      HOUSES_KEY,
-      INITIAL_HOUSES.map((house, index) => ({
-        ...house,
-        rooms: house.rooms ?? Math.min(4, index + 2),
-        bathrooms: house.bathrooms ?? (index % 2 === 0 ? 2 : 1),
-        area: house.area ?? 18 + index * 6,
-        availableDates: house.availableDates ?? getNextDays(4 + (index % 2)),
-        availableTimeSlots: house.availableTimeSlots ?? [
-          '오전 10:00 ~ 12:00',
-          '오후 02:00 ~ 04:00',
-          '저녁 07:00 ~ 09:00',
-        ],
-      })),
+  // Purge previously-seeded demo houses and bookings so the initial
+  // listing only contains entries real users have registered.
+  if (canUseStorage()) {
+    const DEMO_HOUSE_IDS = new Set(['house-1', 'house-2', 'house-3', 'house-4', 'house-5']);
+    const DEMO_BOOKING_IDS = new Set(['booking-mock-1', 'booking-mock-2']);
+    const houses = readJson<House[]>(HOUSES_KEY, []);
+    const realHouses = houses.filter((h) => !DEMO_HOUSE_IDS.has(h.id));
+    if (realHouses.length !== houses.length) writeJson(HOUSES_KEY, realHouses);
+    const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
+    const realBookings = bookings.filter(
+      (b) => !DEMO_BOOKING_IDS.has(b.id) && !DEMO_HOUSE_IDS.has(b.houseId),
     );
+    if (realBookings.length !== bookings.length) writeJson(BOOKINGS_KEY, realBookings);
   }
-
-  const bookings = readJson<Booking[]>(BOOKINGS_KEY, []);
-  if (bookings.length === 0) writeJson(BOOKINGS_KEY, INITIAL_BOOKINGS);
 }
 
 export async function findUserByEmail(email: string): Promise<UserProfile | null> {
