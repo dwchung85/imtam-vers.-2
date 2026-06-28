@@ -39,6 +39,12 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
       return;
     }
 
+    if (isSignUp && password !== confirmPassword) {
+      setErrorMessage("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
+      setLoading(false);
+      return;
+    }
+
     try {
       if (isSignUp) {
         // Find if user already exists
