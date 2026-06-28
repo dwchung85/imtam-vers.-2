@@ -179,8 +179,8 @@ export default function App() {
     }
   };
 
-  // 3. Confirm / Cancel Booking Incoming (Host Action)
-  const handleUpdateBookingStatus = async (bookingId: string, status: 'confirmed' | 'cancelled') => {
+  // 3. Confirm / Cancel / Complete Booking Incoming (Host Action)
+  const handleUpdateBookingStatus = async (bookingId: string, status: 'confirmed' | 'cancelled' | 'completed') => {
     try {
       // Optimistic local update
       setBookings((prev) =>
@@ -208,6 +208,29 @@ export default function App() {
       console.error("DB error cancelling booking:", error);
     }
   };
+
+  // 5. Submit Star Rating after Tour Completion (Guest Action)
+  const handleSubmitReview = async (bookingId: string, rating: number) => {
+    try {
+      const updatedHouse = await submitBookingReviewDb(bookingId, rating);
+      setBookings((prev) =>
+        prev.map((b) => (b.id === bookingId ? { ...b, rating } : b))
+      );
+      if (updatedHouse) {
+        setHouses((prev) =>
+          prev.map((h) =>
+            h.id === updatedHouse.id
+              ? { ...h, rating: updatedHouse.rating, reviewsCount: updatedHouse.reviewsCount }
+              : h,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("DB error submitting review:", error);
+    }
+  };
+
+
 
 
 
