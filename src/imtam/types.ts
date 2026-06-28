@@ -32,8 +32,9 @@ export interface Booking {
   visitTimeSlot: string; // 탐방 시간대 (예: 오전 10시, 오후 2시, 저녁 7시 등)
   totalVisitors: number; // 관람 탐방객 인원수
   totalPrice: number; // 최종 결제 집 구경 요금
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   createdAt: string;
+  rating?: number; // 1-5 별점 (게스트가 임장 완료 후 작성한 평점)
 }
 
 export interface UserProfile {
