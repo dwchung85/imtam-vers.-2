@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Mail, Lock, User, Sparkles, CheckCircle2, Loader2, Landmark } from "lucide-react";
+import { X, Mail, Lock, User, Sparkles, CheckCircle2, Loader2 } from "lucide-react";
 import { UserProfile } from "../types";
 import { findUserByEmail, createUserProfile } from "../dbService";
 
@@ -136,9 +136,6 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
 
         {/* Brand identity center header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto shadow-md mb-3 animate-pulse">
-            <Landmark className="w-6 h-6" />
-          </div>
           <h2 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight">
             {isSignUp ? "IMTAM 파트너 가입" : "IMTAM 보안 대시보드 로그인"}
           </h2>
