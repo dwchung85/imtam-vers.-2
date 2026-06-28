@@ -9,6 +9,7 @@ interface NavbarProps {
   onToggleRole: () => void;
   onOpenAuth: () => void;
   onLogout: () => void;
+  onResetToHome?: () => void;
 }
 
 export default function Navbar({
