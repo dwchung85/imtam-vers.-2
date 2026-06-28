@@ -258,6 +258,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
                 setIsSignUp(!isSignUp);
                 setErrorMessage("");
                 setSuccessMessage("");
+                setConfirmPassword("");
               }
             }}
             className="text-blue-600 hover:text-blue-800 underline font-bold ml-1 cursor-pointer"
