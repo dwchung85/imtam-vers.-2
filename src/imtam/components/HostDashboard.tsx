@@ -7,7 +7,7 @@ interface HostDashboardProps {
   bookings: Booking[];
   currentUserId: string;
   onAddHouse: (newHouse: Omit<House, 'id' | 'hostId' | 'hostName' | 'hostAvatar' | 'rating' | 'reviewsCount'>) => void;
-  onUpdateBookingStatus: (bookingId: string, status: 'confirmed' | 'cancelled') => void;
+  onUpdateBookingStatus: (bookingId: string, status: 'confirmed' | 'cancelled' | 'completed') => void;
   onSelectHouse: (house: House) => void;
 }
 
