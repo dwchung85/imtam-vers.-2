@@ -6,10 +6,11 @@ import HouseDetail from "./components/HouseDetail";
 import HostDashboard from "./components/HostDashboard";
 import GuestDashboard from "./components/GuestDashboard";
 import AuthModal from "./components/AuthModal";
+import { supabase } from "@/integrations/supabase/client";
 import {
-  seedInitialDatabaseIfEmpty,
   fetchHouses,
   fetchBookings,
+  fetchProfile,
   addHouseListingDb,
   addBookingDb,
   updateBookingStatusDb,
@@ -22,85 +23,75 @@ export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  // Current logged in user context
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
-
   const [userRole, setUserRole] = useState<"guest" | "host">("guest");
   const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host">("browse");
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
-
-  // Auth modal view controller
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
-  // App Search & Spec Filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [minRooms, setMinRooms] = useState<number>(0); // 0 means '전체' (any)
-  const [minBathrooms, setMinBathrooms] = useState<number>(0); // 0 means '전체' (any)
-  const [minArea, setMinArea] = useState<number>(0); // 0 means '전체' (any)
+  const [minRooms, setMinRooms] = useState<number>(0);
+  const [minBathrooms, setMinBathrooms] = useState<number>(0);
+  const [minArea, setMinArea] = useState<number>(0);
 
-  // Load and sync local demo database data on mount
+  // Load houses (public) on mount
   useEffect(() => {
-    try {
-      // Step 1: Seed if database collections are empty
-      seedInitialDatabaseIfEmpty();
-
-      // If no user is logged in, auto-fill with standard demo credential and sync to local DB
-      let user: UserProfile | null = null;
-
-      if (typeof window !== "undefined") {
-        try {
-          const saved = window.localStorage.getItem("imtam_logged_in_user");
-          user = saved ? JSON.parse(saved) : null;
-          if (user) setCurrentUser(user);
-        } catch {
-          user = null;
-        }
-      }
-
-      if (!user) {
-        // 로그인이 필요한 서비스이므로 비로그인 시 인증 모달 자동 노출
-        setIsAuthModalOpen(true);
-      }
-
-
-      // Step 2: Fetch houses & bookings
-      const dbHouses = fetchHouses();
-      const dbBookings = fetchBookings();
-
-      setHouses(dbHouses);
-      setBookings(dbBookings);
-    } catch (error) {
-      console.error("Failed to fetch initial IMTAM data:", error);
-    }
+    fetchHouses().then(setHouses).catch((e) => console.error(e));
   }, []);
 
-  // Sync current user to local storage if it changes manually
+  // Wire Supabase auth: listener + initial session check
   useEffect(() => {
-    if (currentUser) {
-      if (typeof window === "undefined") return;
-      localStorage.setItem("imtam_logged_in_user", JSON.stringify(currentUser));
-    } else {
-      if (typeof window === "undefined") return;
-      localStorage.removeItem("imtam_logged_in_user");
-    }
-  }, [currentUser]);
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      const userId = session?.user?.id;
+      if (userId) {
+        // Defer extra calls to avoid deadlock
+        setTimeout(() => {
+          fetchProfile(userId).then((p) => {
+            if (p) {
+              setCurrentUser(p);
+              setIsAuthModalOpen(false);
+              fetchBookings().then(setBookings).catch(() => {});
+              fetchHouses().then(setHouses).catch(() => {});
+            }
+          });
+        }, 0);
+      } else {
+        setCurrentUser(null);
+        setBookings([]);
+      }
+    });
 
-  // --- Actions ---
+    // Initial session
+    supabase.auth.getSession().then(({ data }) => {
+      const userId = data.session?.user?.id;
+      if (userId) {
+        fetchProfile(userId).then((p) => {
+          if (p) {
+            setCurrentUser(p);
+            fetchBookings().then(setBookings).catch(() => {});
+          } else {
+            setIsAuthModalOpen(true);
+          }
+        });
+      } else {
+        setIsAuthModalOpen(true);
+      }
+    });
+
+    return () => {
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
   const handleToggleRole = () => {
     const nextRole = userRole === "guest" ? "host" : "guest";
     setUserRole(nextRole);
-    if (nextRole === "host") {
-      setActiveTab("host");
-    } else {
-      setActiveTab("browse");
-    }
+    setActiveTab(nextRole === "host" ? "host" : "browse");
   };
 
-  // Auth Handlers
   const handleLoginSuccess = async (user: UserProfile) => {
     setCurrentUser(user);
     setIsAuthModalOpen(false);
-    // Refresh bookings & houses list for user specificity
     try {
       const dbBookings = await fetchBookings();
       setBookings(dbBookings);
@@ -109,10 +100,13 @@ export default function App() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setCurrentUser(null);
+    setBookings([]);
     setActiveTab("browse");
     setUserRole("guest");
+    setIsAuthModalOpen(true);
   };
 
   const handleResetToHome = () => {
@@ -132,22 +126,13 @@ export default function App() {
       setIsAuthModalOpen(true);
       return;
     }
-
-    const newBooking: Booking = {
-      ...bookingData,
-      id: `booking-${Date.now()}`,
-      guestId: currentUser.id,
-      guestName: currentUser.name,
-      status: "pending", // Pending host approval
-      createdAt: new Date().toISOString().split("T")[0],
-    };
-
     try {
-      // Optimitistic Local Update for snappiness
-      setBookings((prev) => [newBooking, ...prev]);
-
-      // Real DB action
-      await addBookingDb(newBooking);
+      const created = await addBookingDb({
+        ...bookingData,
+        guestId: currentUser.id,
+        guestName: currentUser.name,
+      });
+      if (created) setBookings((prev) => [created, ...prev]);
     } catch (error) {
       console.error("DB error booking house:", error);
     }
@@ -161,22 +146,14 @@ export default function App() {
       setIsAuthModalOpen(true);
       return;
     }
-
-    const newHouse: House = {
-      ...newHouseData,
-      id: `house-${Date.now()}`,
-      hostId: currentUser.id,
-      hostName: currentUser.name,
-      hostAvatar: currentUser.avatar,
-      // 평점은 실제 리뷰가 작성되기 전까지는 비어 있음
-    };
-
     try {
-      // Optimistic Local Update
-      setHouses((prev) => [newHouse, ...prev]);
-
-      // Real DB action
-      await addHouseListingDb(newHouse);
+      const created = await addHouseListingDb({
+        ...newHouseData,
+        hostId: currentUser.id,
+        hostName: currentUser.name,
+        hostAvatar: currentUser.avatar,
+      });
+      if (created) setHouses((prev) => [created, ...prev]);
     } catch (error) {
       console.error("DB error listing house:", error);
     }
@@ -185,10 +162,7 @@ export default function App() {
   // 3. Confirm / Cancel / Complete Booking Incoming (Host Action)
   const handleUpdateBookingStatus = async (bookingId: string, status: "confirmed" | "cancelled" | "completed") => {
     try {
-      // Optimistic local update
       setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status } : b)));
-
-      // Real DB action
       await updateBookingStatusDb(bookingId, status);
     } catch (error) {
       console.error("DB error updating booking:", error);
@@ -198,10 +172,7 @@ export default function App() {
   // 4. Cancel Guest Reservation (Guest Action)
   const handleCancelBooking = async (bookingId: string) => {
     try {
-      // Optimistic local update
       setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status: "cancelled" as const } : b)));
-
-      // Real DB action
       await updateBookingStatusDb(bookingId, "cancelled");
     } catch (error) {
       console.error("DB error cancelling booking:", error);
