@@ -17,7 +17,6 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
 
   return (
     <div className="space-y-6 animate-fadeIn pb-10">
-    <div className="space-y-6 animate-fadeIn pb-10">
 
       {guestBookings.length === 0 ? (
         <div className="text-center py-16 bg-white border border-neutral-200 rounded-3xl flex flex-col items-center justify-center p-6">
