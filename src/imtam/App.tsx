@@ -36,7 +36,9 @@ export default function App() {
 
   // Load houses (public) on mount
   useEffect(() => {
-    fetchHouses().then(setHouses).catch((e) => console.error(e));
+    fetchHouses()
+      .then(setHouses)
+      .catch((e) => console.error(e));
   }, []);
 
   // Wire Supabase auth: listener + initial session check
@@ -50,8 +52,12 @@ export default function App() {
             if (p) {
               setCurrentUser(p);
               setIsAuthModalOpen(false);
-              fetchBookings().then(setBookings).catch(() => {});
-              fetchHouses().then(setHouses).catch(() => {});
+              fetchBookings()
+                .then(setBookings)
+                .catch(() => {});
+              fetchHouses()
+                .then(setHouses)
+                .catch(() => {});
             }
           });
         }, 0);
@@ -68,7 +74,9 @@ export default function App() {
         fetchProfile(userId).then((p) => {
           if (p) {
             setCurrentUser(p);
-            fetchBookings().then(setBookings).catch(() => {});
+            fetchBookings()
+              .then(setBookings)
+              .catch(() => {});
           } else {
             setIsAuthModalOpen(true);
           }
@@ -241,178 +249,172 @@ export default function App() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <>
-
-            {!currentUser ? (
-              <div className="text-center py-20 bg-white border border-neutral-205 rounded-3xl p-6 max-w-md mx-auto space-y-4 animate-fadeIn">
-                <LogIn className="w-12 h-12 text-blue-600 mx-auto" />
-                <h3 className="text-lg font-bold text-neutral-850">
-                  IMTAM 이용을 위해 로그인이 필요합니다
-                </h3>
-                <p className="text-xs text-neutral-400 font-semibold">
-                  회원 가입 또는 로그인 후 매물 및 임장 정보를 확인할 수 있습니다.
-                </p>
-                <button
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
-                >
-                  로그인 / 회원가입
-                </button>
-              </div>
-            ) : (
+          {!currentUser ? (
+            <div className="text-center py-20 bg-white border border-neutral-205 rounded-3xl p-6 max-w-md mx-auto space-y-4 animate-fadeIn">
+              <LogIn className="w-12 h-12 text-blue-600 mx-auto" />
+              <h3 className="text-lg font-bold text-neutral-850">IMTAM 이용을 위해 로그인이 필요합니다</h3>
+              <p className="text-xs text-neutral-400 font-semibold">
+                회원 가입 또는 로그인 후 매물 및 임장 정보를 확인할 수 있습니다.
+              </p>
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
+              >
+                로그인 / 회원가입
+              </button>
+            </div>
+          ) : (
             <>
-            {activeTab === "browse" && (
-
-              <div className="space-y-6 md:space-y-8 animate-fadeIn">
-                {/* Visual Header / Search / Filter row */}
-                <div className="bg-white rounded-3xl border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                    {/* Search Bar inside card */}
-                    <div className="relative w-full">
-                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
-                      <input
-                        type="text"
-                        placeholder="매물 건축 타입, 옵션, 수입 가구 태그 등으로 서칭..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-xl border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Advanced Spec Filters (방 갯수, 화장실 갯수, 넓이 (평) 기준) */}
-                  <div className="flex flex-col lg:flex-row lg:items-center gap-4 pt-4 border-t border-blue-50">
-                    <div className="flex flex-wrap items-center gap-4">
-                      {/* Filter label */}
-                      <span className="text-xs text-neutral-500 font-extrabold flex items-center gap-1.5 shrink-0">
-                        <Compass className="w-4 h-4 text-blue-600" />
-                        <span>매물 상세 필터 조건 :</span>
-                      </span>
-
-                      {/* Rooms Filter */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-neutral-600">방 개수</span>
-                        <select
-                          value={minRooms}
-                          onChange={(e) => setMinRooms(Number(e.target.value))}
-                          className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
-                        >
-                          <option value="0">전체</option>
-                          <option value="1">1개 이상</option>
-                          <option value="2">2개 이상</option>
-                          <option value="3">3개 이상</option>
-                          <option value="4">4개 이상</option>
-                        </select>
-                      </div>
-
-                      {/* Bathrooms Filter */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-neutral-600">화장실 개수</span>
-                        <select
-                          value={minBathrooms}
-                          onChange={(e) => setMinBathrooms(Number(e.target.value))}
-                          className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
-                        >
-                          <option value="0">전체</option>
-                          <option value="1">1개 이상</option>
-                          <option value="2">2개 이상</option>
-                          <option value="3">3개 이상</option>
-                        </select>
-                      </div>
-
-                      {/* Area Filter */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-neutral-600">넓이 (평)</span>
-                        <select
-                          value={minArea}
-                          onChange={(e) => setMinArea(Number(e.target.value))}
-                          className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
-                        >
-                          <option value="0">전체</option>
-                          <option value="10">10평 이상</option>
-                          <option value="20">20평 이상</option>
-                          <option value="30">30평 이상</option>
-                          <option value="40">40평 이상</option>
-                        </select>
-                      </div>
-
-                      {/* Reset filter button if any filter is active */}
-                      {(minRooms > 0 || minBathrooms > 0 || minArea > 0 || searchQuery) && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setMinRooms(0);
-                            setMinBathrooms(0);
-                            setMinArea(0);
-                            setSearchQuery("");
-                          }}
-                          className="text-[11px] px-2.5 py-1.5 rounded-lg font-bold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-all cursor-pointer flex items-center gap-1 shrink-0"
-                        >
-                          🔄 필터 초기화
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Platform Houses Grid */}
-                {filteredHouses.length === 0 ? (
-                  <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
-                    <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
-                    <h3 className="font-bold text-neutral-800 text-lg">
-                      조건에 부합하는 오픈하우스를 찾을 수 없습니다
-                    </h3>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="flex items-center justify-between mb-4.5 px-1">
-                      <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">
-                        실시간 예약 일정 조율가능 매물 ({filteredHouses.length}개)
-                      </span>
-                      <span className="text-xs font-bold text-blue-600 bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-lg">
-                        전속 특약 한정권
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
-                      {filteredHouses.map((house) => (
-                        <HouseCard
-                          key={house.id}
-                          house={house}
-                          onClick={() => setSelectedHouse(house)}
-                          isOwnListing={currentUser ? house.hostId === currentUser.id : false}
+              {activeTab === "browse" && (
+                <div className="space-y-6 md:space-y-8 animate-fadeIn">
+                  {/* Visual Header / Search / Filter row */}
+                  <div className="bg-white rounded-3xl border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
+                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                      {/* Search Bar inside card */}
+                      <div className="relative w-full">
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
+                        <input
+                          type="text"
+                          placeholder="매물 건축 타입, 옵션, 수입 가구 태그 등으로 서칭..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-xl border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
                         />
-                      ))}
+                      </div>
+                    </div>
+
+                    {/* Advanced Spec Filters (방 갯수, 화장실 갯수, 넓이 (평) 기준) */}
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-4 pt-4 border-t border-blue-50">
+                      <div className="flex flex-wrap items-center gap-4">
+                        {/* Filter label */}
+                        <span className="text-xs text-neutral-500 font-extrabold flex items-center gap-1.5 shrink-0">
+                          <Compass className="w-4 h-4 text-blue-600" />
+                          <span>매물 상세 필터 조건 :</span>
+                        </span>
+
+                        {/* Rooms Filter */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-neutral-600">방 개수</span>
+                          <select
+                            value={minRooms}
+                            onChange={(e) => setMinRooms(Number(e.target.value))}
+                            className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
+                          >
+                            <option value="0">전체</option>
+                            <option value="1">1개 이상</option>
+                            <option value="2">2개 이상</option>
+                            <option value="3">3개 이상</option>
+                            <option value="4">4개 이상</option>
+                          </select>
+                        </div>
+
+                        {/* Bathrooms Filter */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-neutral-600">화장실 개수</span>
+                          <select
+                            value={minBathrooms}
+                            onChange={(e) => setMinBathrooms(Number(e.target.value))}
+                            className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
+                          >
+                            <option value="0">전체</option>
+                            <option value="1">1개 이상</option>
+                            <option value="2">2개 이상</option>
+                            <option value="3">3개 이상</option>
+                          </select>
+                        </div>
+
+                        {/* Area Filter */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-neutral-600">넓이 (평)</span>
+                          <select
+                            value={minArea}
+                            onChange={(e) => setMinArea(Number(e.target.value))}
+                            className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
+                          >
+                            <option value="0">전체</option>
+                            <option value="10">10평 이상</option>
+                            <option value="20">20평 이상</option>
+                            <option value="30">30평 이상</option>
+                            <option value="40">40평 이상</option>
+                          </select>
+                        </div>
+
+                        {/* Reset filter button if any filter is active */}
+                        {(minRooms > 0 || minBathrooms > 0 || minArea > 0 || searchQuery) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMinRooms(0);
+                              setMinBathrooms(0);
+                              setMinArea(0);
+                              setSearchQuery("");
+                            }}
+                            className="text-[11px] px-2.5 py-1.5 rounded-lg font-bold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                          >
+                            🔄 필터 초기화
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
-            )}
 
-            {/* Guest Booking Dashboard Page */}
-            {activeTab === "guest" && currentUser && (
-              <GuestDashboard
-                bookings={bookings}
-                currentUserId={currentUser.id}
-                onCancelBooking={handleCancelBooking}
-                onSubmitReview={handleSubmitReview}
-              />
-            )}
+                  {/* Platform Houses Grid */}
+                  {filteredHouses.length === 0 ? (
+                    <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
+                      <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
+                      <h3 className="font-bold text-neutral-800 text-lg">
+                        조건에 부합하는 오픈하우스를 찾을 수 없습니다
+                      </h3>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex items-center justify-between mb-4.5 px-1">
+                        <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">
+                          실시간 예약 일정 조율가능 매물 ({filteredHouses.length}개)
+                        </span>
+                        <span className="text-xs font-bold text-blue-600 bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-lg">
+                          전속 특약 한정권
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+                        {filteredHouses.map((house) => (
+                          <HouseCard
+                            key={house.id}
+                            house={house}
+                            onClick={() => setSelectedHouse(house)}
+                            isOwnListing={currentUser ? house.hostId === currentUser.id : false}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
-            {/* Host Dashboard Page */}
-            {activeTab === "host" && currentUser && (
-              <HostDashboard
-                houses={houses}
-                bookings={bookings}
-                currentUserId={currentUser.id}
-                onAddHouse={handleAddHouseListing}
-                onUpdateBookingStatus={handleUpdateBookingStatus}
-                onSelectHouse={(h) => setSelectedHouse(h)}
-              />
-            )}
+              {/* Guest Booking Dashboard Page */}
+              {activeTab === "guest" && currentUser && (
+                <GuestDashboard
+                  bookings={bookings}
+                  currentUserId={currentUser.id}
+                  onCancelBooking={handleCancelBooking}
+                  onSubmitReview={handleSubmitReview}
+                />
+              )}
 
+              {/* Host Dashboard Page */}
+              {activeTab === "host" && currentUser && (
+                <HostDashboard
+                  houses={houses}
+                  bookings={bookings}
+                  currentUserId={currentUser.id}
+                  onAddHouse={handleAddHouseListing}
+                  onUpdateBookingStatus={handleUpdateBookingStatus}
+                  onSelectHouse={(h) => setSelectedHouse(h)}
+                />
+              )}
             </>
-            )}
-          </>
-
+          )}
+        </>
       </main>
 
       {/* House Details Modal */}
@@ -432,10 +434,7 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-neutral-200 mt-16 py-6 text-center text-xs text-neutral-400">
         <div className="max-w-7xl mx-auto px-4 space-y-1">
-          <p className="font-bold text-neutral-500">
-            🏢 IMTAM (임탐) - 하이엔드 전외주택 오픈하우스 & 매물의 현장 실사 임장 중개 테크 매칭 플랫폼
-          </p>
-          <p>© 2026 IMTAM Zillow-Style Engine for real estate workspace environment. All rights reserved.</p>
+          <p>© 2026 IMTAM. All rights reserved.</p>
         </div>
       </footer>
     </div>
