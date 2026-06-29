@@ -17,13 +17,6 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
 
   return (
     <div className="space-y-6 animate-fadeIn pb-10">
-      {/* Overview stats or guide */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 text-white shadow-md">
-        <h2 className="text-xl md:text-2xl font-black tracking-tight mb-1">내 매물 투어 & 현장 임장 계획표</h2>
-        <p className="text-xs opacity-95 leading-relaxed max-w-xl font-medium">
-          신청하신 현장 임장 및 오픈하우스 투어 일정 상태를 실시간 진척 관리합니다. 매물 소유자 및 담당 중개사가 예약을 수락 및 배정하면 &apos;현장 임장 확정&apos;으로 실시간 전환됩니다.
-        </p>
-      </div>
 
       {guestBookings.length === 0 ? (
         <div className="text-center py-16 bg-white border border-neutral-200 rounded-3xl flex flex-col items-center justify-center p-6">
