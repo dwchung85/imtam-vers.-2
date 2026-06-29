@@ -340,7 +340,7 @@ export default function HostDashboard({
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">매물 한 줄 소개 (제목) *</label>
                 <input
                   type="text"
-                  placeholder="예: 분당 정자동 테라스 타운하우스 및 정밀 조경 조망 오픈하우스"
+                  placeholder="예: 분당 정자동 오픈하우스"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -353,7 +353,7 @@ export default function HostDashboard({
                   실내 실사 및 인테리어 건축 핵심 제원 가이드제공 *
                 </label>
                 <textarea
-                  placeholder="공간의 지분 가치, 우수한 정주권, 사용된 수입 조명 및 수입 가구 배치 옵션 등 탐방 및 투어에 나서는 투자 바이어가 확인해야 할 프리미엄 요점을 남겨주세요."
+                  placeholder="공간의 가치, 우수한 정주권 등 탐방 및 투어에 나서는 방문자가 확인해야 할 요점을 남겨주세요."
                   rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -366,9 +366,7 @@ export default function HostDashboard({
             {/* Pricing & Location & Guests count */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5">
-                  1인 임장 수수료 가이드 가격 (원) *
-                </label>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5">1인당 가격 (원) *</label>
                 <input
                   type="number"
                   placeholder="50,000"
@@ -466,7 +464,7 @@ export default function HostDashboard({
             {/* Image Upload Dropzone (Max 8 photos, Supports Drag & Drop) */}
             <div className="space-y-3">
               <div className="flex justify-between items-center text-xs font-bold text-neutral-700">
-                <span>실제 매물 전경 및 실내 사진 등록 (최대 8장) *</span>
+                <span>실제 전경 및 실내 사진 등록 (최대 8장) *</span>
                 <span className={`text-[11px] ${uploadedImages.length === 8 ? "text-amber-600" : "text-neutral-400"}`}>
                   {uploadedImages.length} / 8 장 업로드 완료
                 </span>
@@ -500,7 +498,7 @@ export default function HostDashboard({
                     실제 공간 사진들을 드래그 앤 드롭 하거나 클릭하여 탐색기에서 선택
                   </p>
                   <p className="text-[10px] text-neutral-400 mt-1 leading-normal">
-                    매물 신뢰도를 높이기 위해 실물 등기 및 인테리어 실사 원본 등록을 권장합니다. (개별 최대 5MB)
+                    신뢰도를 높이기 위해 실물 등기 및 인테리어 실사 원본 등록을 권장합니다. (개별 최대 5MB)
                   </p>
                 </div>
               </label>
@@ -551,7 +549,7 @@ export default function HostDashboard({
                   <span>방문객 맞이 가능 날짜 설정 *</span>
                 </label>
                 <p className="text-[11px] text-neutral-450 leading-normal">
-                  바이어들이 현장 임장을 예약하고 직접 내방할 수 있는 날짜들을 하나씩 추가해주세요.
+                  직접 내방할 수 있는 날짜들을 하나씩 추가해주세요.
                 </p>
 
                 <div className="flex gap-2">
@@ -678,7 +676,7 @@ export default function HostDashboard({
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-xl cursor-pointer shadow-md transition-all mt-4"
             >
-              공식 투어 오픈하우스 리스트에 부동산 매물 올려두기
+              공식 투어 오픈하우스 리스트에 업로드
             </button>
           </form>
         </div>
@@ -689,12 +687,12 @@ export default function HostDashboard({
           <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4">
             <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
               <ListFilter className="w-4 h-4 text-blue-600" />
-              <span>현재 전속 등록한 내 오픈하우스 매물 목록 ({hostHouses.length}지점)</span>
+              <span>현재 등록한 내 오픈하우스 목록 ({hostHouses.length}지점)</span>
             </h4>
 
             {hostHouses.length === 0 ? (
               <p className="text-neutral-400 text-xs text-center py-6 font-semibold">
-                아직 리스팅 완료된 부동산 실소유 개방 매물이 없습니다.
+                아직 리스팅 완료된 오픈하우스 목록이 없습니다.
               </p>
             ) : (
               <div className="divide-y divide-neutral-105 max-h-[190px] overflow-y-auto pr-1">
@@ -737,7 +735,7 @@ export default function HostDashboard({
             <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ClipboardCheck className="w-4 h-4 text-blue-600" />
-                <span>오픈하우스 수강 및 현장 임장 신청자 목록</span>
+                <span>오픈하우스 신청자 목록</span>
               </div>
               {pendingCount > 0 && (
                 <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
