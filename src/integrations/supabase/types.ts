@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string
+          guest_id: string
+          guest_name: string
+          house_id: string
+          house_image: string
+          house_price_per_visit: number
+          house_title: string
+          id: string
+          rating: number | null
+          status: string
+          total_price: number
+          total_visitors: number
+          updated_at: string
+          visit_date: string
+          visit_time_slot: string
+        }
+        Insert: {
+          created_at?: string
+          guest_id: string
+          guest_name?: string
+          house_id: string
+          house_image?: string
+          house_price_per_visit?: number
+          house_title?: string
+          id?: string
+          rating?: number | null
+          status?: string
+          total_price?: number
+          total_visitors?: number
+          updated_at?: string
+          visit_date?: string
+          visit_time_slot?: string
+        }
+        Update: {
+          created_at?: string
+          guest_id?: string
+          guest_name?: string
+          house_id?: string
+          house_image?: string
+          house_price_per_visit?: number
+          house_title?: string
+          id?: string
+          rating?: number | null
+          status?: string
+          total_price?: number
+          total_visitors?: number
+          updated_at?: string
+          visit_date?: string
+          visit_time_slot?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_house_id_fkey"
+            columns: ["house_id"]
+            isOneToOne: false
+            referencedRelation: "houses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      houses: {
+        Row: {
+          amenities: Json
+          area: number | null
+          available_dates: Json
+          available_time_slots: Json
+          bathrooms: number | null
+          created_at: string
+          description: string
+          host_avatar: string
+          host_id: string
+          host_name: string
+          id: string
+          image_url: string
+          image_urls: Json
+          location: string
+          max_guests: number
+          price_per_visit: number
+          rating: number | null
+          reviews_count: number
+          rooms: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          amenities?: Json
+          area?: number | null
+          available_dates?: Json
+          available_time_slots?: Json
+          bathrooms?: number | null
+          created_at?: string
+          description?: string
+          host_avatar?: string
+          host_id: string
+          host_name?: string
+          id?: string
+          image_url?: string
+          image_urls?: Json
+          location?: string
+          max_guests?: number
+          price_per_visit?: number
+          rating?: number | null
+          reviews_count?: number
+          rooms?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          amenities?: Json
+          area?: number | null
+          available_dates?: Json
+          available_time_slots?: Json
+          bathrooms?: number | null
+          created_at?: string
+          description?: string
+          host_avatar?: string
+          host_id?: string
+          host_name?: string
+          id?: string
+          image_url?: string
+          image_urls?: Json
+          location?: string
+          max_guests?: number
+          price_per_visit?: number
+          rating?: number | null
+          reviews_count?: number
+          rooms?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar: string
+          balance: number
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          avatar?: string
+          balance?: number
+          created_at?: string
+          id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          avatar?: string
+          balance?: number
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
