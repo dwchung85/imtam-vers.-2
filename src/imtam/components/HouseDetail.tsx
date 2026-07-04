@@ -112,10 +112,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
             className="bg-white rounded-3xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl"
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white z-10 border-b border-blue-100 flex items-center justify-between px-6 py-4">
-              <div className="flex items-center gap-2">
-                <span className="text-neutral-400 text-xs font-medium">매물의뢰 에이전트: {house.hostName}</span>
-              </div>
+            <div className="sticky top-0 bg-white z-10 border-b border-blue-100 flex items-center justify-end px-6 py-4">
               <button
                 id="close-detail-modal"
                 onClick={onClose}
