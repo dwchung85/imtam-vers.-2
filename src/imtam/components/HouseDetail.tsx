@@ -50,11 +50,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
   const [successBooking, setSuccessBooking] = useState<boolean>(false);
   const [activeImageIdx, setActiveImageIdx] = useState<number>(0);
 
-  // Home tour math
+  // Home tour math — 호스트가 등록한 입장 개방료 외 추가 비용은 부과하지 않음
   const rawPrice = house.pricePerVisit * guestsCount;
-  const platformFee = Math.round(rawPrice * 0.05); // 5% matching fee
-  const guidingFee = Math.round(rawPrice * 0.03); // 3% host materials / welcoming tea prep
-  const totalPrice = rawPrice + platformFee + guidingFee;
+  const totalPrice = rawPrice;
 
   const isOwnListing = house.hostId === currentUserId;
 
