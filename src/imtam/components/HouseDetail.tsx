@@ -114,10 +114,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
             {/* Modal Header */}
             <div className="sticky top-0 bg-white z-10 border-b border-blue-100 flex items-center justify-between px-6 py-4">
               <div className="flex items-center gap-2">
-                <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
-                  Zilllow Style Imjang Detail
-                </span>
-                <span className="text-neutral-400 text-xs font-medium">| 매물의뢰 에이전트: {house.hostName}</span>
+                <span className="text-neutral-400 text-xs font-medium">매물의뢰 에이전트: {house.hostName}</span>
               </div>
               <button
                 id="close-detail-modal"
@@ -272,7 +269,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                   </div>
                   <div>
                     <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Building className="w-4 h-4 text-blue-600" /> [매물의 건축학적 가치 및 실내 디테일 소개]
+                      <Building className="w-4 h-4 text-blue-600" /> [오픈하우스 소개]
                     </h5>
                     <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
                       {house.description}
@@ -303,7 +300,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                 <div className="sticky top-0 bg-blue-50/10 rounded-3xl border border-blue-100 p-5 space-y-4">
                   <div>
                     <span className="text-2xl font-black text-blue-600">₩{house.pricePerVisit.toLocaleString()}</span>
-                    <span className="text-xs text-neutral-500 font-bold block mt-1"> / 현장 투어 코디네이팅 & 임장 개방비</span>
+                    <span className="text-xs text-neutral-500 font-bold block mt-1"> / 오픈하우스 투어 비용</span>
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4">
@@ -372,7 +369,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                         </div>
                       </div>
                       <p className="text-[10px] text-neutral-400 mt-1.5 leading-relaxed">
-                        중개자나 소유주가 설정한 회차별 쾌적한 동반 임장 한도는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>입니다.
+                        중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>입니다.
                       </p>
                     </div>
 
@@ -387,7 +384,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                         <span>없음</span>
                       </div>
                       <div className="flex justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-2.5 text-sm">
-                        <span>총 임장 서비스 예산</span>
+                        <span>오픈하우스 투어 비용</span>
                         <span className="text-blue-600 font-black text-base">₩{totalPrice.toLocaleString()}</span>
                       </div>
                     </div>
