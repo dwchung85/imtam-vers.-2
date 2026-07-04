@@ -382,13 +382,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                         <span className="underline">오픈하우스 입장 개방료 (₩{house.pricePerVisit.toLocaleString()} × {guestsCount}인)</span>
                         <span>₩{rawPrice.toLocaleString()}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="underline">다과 및 현장 가이드 브리핑 (3%)</span>
-                        <span>₩{guidingFee.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="underline">IMTAM 안심 중개 매칭 플랫폼 삼자 매칭비 (5%)</span>
-                        <span>₩{platformFee.toLocaleString()}</span>
+                      <div className="flex justify-between text-[11px] text-neutral-400">
+                        <span>추가 수수료</span>
+                        <span>없음</span>
                       </div>
                       <div className="flex justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-2.5 text-sm">
                         <span>총 임장 서비스 예산</span>
