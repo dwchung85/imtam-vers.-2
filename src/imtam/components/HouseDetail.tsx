@@ -50,11 +50,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
   const [successBooking, setSuccessBooking] = useState<boolean>(false);
   const [activeImageIdx, setActiveImageIdx] = useState<number>(0);
 
-  // Home tour math
+  // Home tour math — 호스트가 등록한 입장 개방료 외 추가 비용은 부과하지 않음
   const rawPrice = house.pricePerVisit * guestsCount;
-  const platformFee = Math.round(rawPrice * 0.05); // 5% matching fee
-  const guidingFee = Math.round(rawPrice * 0.03); // 3% host materials / welcoming tea prep
-  const totalPrice = rawPrice + platformFee + guidingFee;
+  const totalPrice = rawPrice;
 
   const isOwnListing = house.hostId === currentUserId;
 
@@ -384,13 +382,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                         <span className="underline">오픈하우스 입장 개방료 (₩{house.pricePerVisit.toLocaleString()} × {guestsCount}인)</span>
                         <span>₩{rawPrice.toLocaleString()}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="underline">다과 및 현장 가이드 브리핑 (3%)</span>
-                        <span>₩{guidingFee.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="underline">IMTAM 안심 중개 매칭 플랫폼 삼자 매칭비 (5%)</span>
-                        <span>₩{platformFee.toLocaleString()}</span>
+                      <div className="flex justify-between text-[11px] text-neutral-400">
+                        <span>추가 수수료</span>
+                        <span>없음</span>
                       </div>
                       <div className="flex justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-2.5 text-sm">
                         <span>총 임장 서비스 예산</span>
