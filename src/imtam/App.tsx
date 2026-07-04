@@ -275,7 +275,7 @@ export default function App() {
                         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
                         <input
                           type="text"
-                          placeholder="매물 건축 타입, 옵션, 수입 가구 태그 등으로 서칭..."
+                          placeholder="경기도 성남시 분당구 판교원로 82번길"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-xl border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
@@ -289,7 +289,7 @@ export default function App() {
                         {/* Filter label */}
                         <span className="text-xs text-neutral-500 font-extrabold flex items-center gap-1.5 shrink-0">
                           <Compass className="w-4 h-4 text-blue-600" />
-                          <span>매물 상세 필터 조건 :</span>
+                          <span>상세 필터 조건 :</span>
                         </span>
 
                         {/* Rooms Filter */}
@@ -362,15 +362,13 @@ export default function App() {
                   {filteredHouses.length === 0 ? (
                     <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
                       <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
-                      <h3 className="font-bold text-neutral-800 text-lg">
-                        조건에 부합하는 오픈하우스를 찾을 수 없습니다
-                      </h3>
+                      <h3 className="font-bold text-neutral-800 text-lg">조건에 부합하는 오픈하우스가 없습니다</h3>
                     </div>
                   ) : (
                     <div>
                       <div className="flex items-center justify-between mb-4.5 px-1">
                         <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">
-                          실시간 예약 일정 조율가능 매물 ({filteredHouses.length}개)
+                          예약 일정 조율가능 매물 ({filteredHouses.length}개)
                         </span>
                         <span className="text-xs font-bold text-blue-600 bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-lg">
                           전속 특약 한정권
