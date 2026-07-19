@@ -283,79 +283,90 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Advanced Spec Filters (방 갯수, 화장실 갯수, 넓이 (평) 기준) */}
-                    <div className="flex flex-col lg:flex-row lg:items-center gap-4 pt-4 border-t border-blue-50">
-                      <div className="flex flex-wrap items-center gap-4">
-                        {/* Filter label */}
-                        <span className="text-xs text-neutral-500 font-extrabold flex items-center gap-1.5 shrink-0">
-                          <Compass className="w-4 h-4 text-blue-600" />
-                          <span>상세 필터 조건 :</span>
-                        </span>
-
-                        {/* Rooms Filter */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-neutral-600">방 개수</span>
-                          <select
-                            value={minRooms}
-                            onChange={(e) => setMinRooms(Number(e.target.value))}
-                            className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
-                          >
-                            <option value="0">전체</option>
-                            <option value="1">1개 이상</option>
-                            <option value="2">2개 이상</option>
-                            <option value="3">3개 이상</option>
-                            <option value="4">4개 이상</option>
-                          </select>
-                        </div>
-
-                        {/* Bathrooms Filter */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-neutral-600">화장실 개수</span>
-                          <select
-                            value={minBathrooms}
-                            onChange={(e) => setMinBathrooms(Number(e.target.value))}
-                            className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
-                          >
-                            <option value="0">전체</option>
-                            <option value="1">1개 이상</option>
-                            <option value="2">2개 이상</option>
-                            <option value="3">3개 이상</option>
-                          </select>
-                        </div>
-
-                        {/* Area Filter */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-neutral-600">넓이 (평)</span>
-                          <select
-                            value={minArea}
-                            onChange={(e) => setMinArea(Number(e.target.value))}
-                            className="text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50 hover:bg-white transition-all text-neutral-850 cursor-pointer"
-                          >
-                            <option value="0">전체</option>
-                            <option value="10">10평 이상</option>
-                            <option value="20">20평 이상</option>
-                            <option value="30">30평 이상</option>
-                            <option value="40">40평 이상</option>
-                          </select>
-                        </div>
-
-                        {/* Reset filter button if any filter is active */}
-                        {(minRooms > 0 || minBathrooms > 0 || minArea > 0 || searchQuery) && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setMinRooms(0);
-                              setMinBathrooms(0);
-                              setMinArea(0);
-                              setSearchQuery("");
-                            }}
-                            className="text-[11px] px-2.5 py-1.5 rounded-lg font-bold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-all cursor-pointer flex items-center gap-1 shrink-0"
-                          >
-                            🔄 필터 초기화
-                          </button>
-                        )}
+                    {/* Advanced Spec Filters — unified pill selects */}
+                    <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-blue-50">
+                      {/* Rooms */}
+                      <div className="relative">
+                        <select
+                          value={minRooms}
+                          onChange={(e) => setMinRooms(Number(e.target.value))}
+                          className={`appearance-none text-xs font-bold pl-4 pr-9 py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden ${
+                            minRooms > 0
+                              ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
+                          }`}
+                        >
+                          <option value="0">방 개수</option>
+                          <option value="1">방 1개 이상</option>
+                          <option value="2">방 2개 이상</option>
+                          <option value="3">방 3개 이상</option>
+                          <option value="4">방 4개 이상</option>
+                        </select>
+                        <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" viewBox="0 0 12 12" fill="none">
+                          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={minRooms > 0 ? "text-white" : "text-neutral-500"}/>
+                        </svg>
                       </div>
+
+                      {/* Bathrooms */}
+                      <div className="relative">
+                        <select
+                          value={minBathrooms}
+                          onChange={(e) => setMinBathrooms(Number(e.target.value))}
+                          className={`appearance-none text-xs font-bold pl-4 pr-9 py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden ${
+                            minBathrooms > 0
+                              ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
+                          }`}
+                        >
+                          <option value="0">화장실 개수</option>
+                          <option value="1">화장실 1개 이상</option>
+                          <option value="2">화장실 2개 이상</option>
+                          <option value="3">화장실 3개 이상</option>
+                        </select>
+                        <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" viewBox="0 0 12 12" fill="none">
+                          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={minBathrooms > 0 ? "text-white" : "text-neutral-500"}/>
+                        </svg>
+                      </div>
+
+                      {/* Area */}
+                      <div className="relative">
+                        <select
+                          value={minArea}
+                          onChange={(e) => setMinArea(Number(e.target.value))}
+                          className={`appearance-none text-xs font-bold pl-4 pr-9 py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden ${
+                            minArea > 0
+                              ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
+                          }`}
+                        >
+                          <option value="0">넓이 (평)</option>
+                          <option value="10">10평 이상</option>
+                          <option value="20">20평 이상</option>
+                          <option value="30">30평 이상</option>
+                          <option value="40">40평 이상</option>
+                        </select>
+                        <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" viewBox="0 0 12 12" fill="none">
+                          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={minArea > 0 ? "text-white" : "text-neutral-500"}/>
+                        </svg>
+                      </div>
+
+                      {/* Reset */}
+                      {(minRooms > 0 || minBathrooms > 0 || minArea > 0 || searchQuery) && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMinRooms(0);
+                            setMinBathrooms(0);
+                            setMinArea(0);
+                            setSearchQuery("");
+                          }}
+                          className="ml-auto text-xs px-3 py-2.5 rounded-full font-bold text-neutral-500 hover:text-blue-600 transition-colors cursor-pointer"
+                        >
+                          초기화
+                        </button>
+                      )}
                     </div>
+
                   </div>
 
                   {/* Platform Houses Grid */}
