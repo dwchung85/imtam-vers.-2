@@ -387,22 +387,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                     </div>
 
                     {/* Actions */}
-                    {isOwnListing ? (
-                      <div className="bg-amber-50 text-amber-800 text-xs rounded-xl p-3 border border-amber-200 text-center font-medium">
-                        소유주로 전속 리스팅한 주택은 자가 자격으로 임장을 신청할 수 없습니다.
-                      </div>
-                    ) : currentUserRole === 'host' ? (
-                      <div className="bg-blue-50 text-blue-800 text-xs rounded-xl p-3 border border-blue-100 text-center font-medium leading-relaxed">
-                        다른 매물 임장을 원하시면 상단 바의 역할스위치에서 <strong>계정 모드를 &quot;임장 희망자&quot;</strong>로 전환해주세요!
-                      </div>
-                    ) : (
-                      <button
-                        type="submit"
-                        className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block"
-                      >
-                        현장 오픈하우스 임장 희망 예약하기
-                      </button>
-                    )}
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block"
+                    >
+                      현장 오픈하우스 임장 희망 예약하기
+                    </button>
                   </form>
 
                   <div className="flex items-center gap-2 text-[10px] text-neutral-500 justify-center">
