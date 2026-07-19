@@ -284,13 +284,13 @@ export default function App() {
                     </div>
 
                     {/* Advanced Spec Filters — unified pill selects */}
-                    <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-blue-50">
+                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-blue-50 md:flex md:flex-wrap md:items-center">
                       {/* Rooms */}
-                      <div className="relative">
+                      <div className="relative min-w-0">
                         <select
                           value={minRooms}
                           onChange={(e) => setMinRooms(Number(e.target.value))}
-                          className={`appearance-none text-xs font-bold pl-4 pr-9 py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden ${
+                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minRooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minRooms > 0
                               ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
@@ -302,17 +302,28 @@ export default function App() {
                           <option value="3">방 3개 이상</option>
                           <option value="4">방 4개 이상</option>
                         </select>
-                        <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" viewBox="0 0 12 12" fill="none">
-                          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={minRooms > 0 ? "text-white" : "text-neutral-500"}/>
-                        </svg>
+                        {minRooms > 0 ? (
+                          <button
+                            type="button"
+                            onClick={() => setMinRooms(0)}
+                            aria-label="방 개수 필터 초기화"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
+                          >
+                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                          </button>
+                        ) : (
+                          <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
                       </div>
 
                       {/* Bathrooms */}
-                      <div className="relative">
+                      <div className="relative min-w-0">
                         <select
                           value={minBathrooms}
                           onChange={(e) => setMinBathrooms(Number(e.target.value))}
-                          className={`appearance-none text-xs font-bold pl-4 pr-9 py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden ${
+                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minBathrooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minBathrooms > 0
                               ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
@@ -323,17 +334,28 @@ export default function App() {
                           <option value="2">화장실 2개 이상</option>
                           <option value="3">화장실 3개 이상</option>
                         </select>
-                        <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" viewBox="0 0 12 12" fill="none">
-                          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={minBathrooms > 0 ? "text-white" : "text-neutral-500"}/>
-                        </svg>
+                        {minBathrooms > 0 ? (
+                          <button
+                            type="button"
+                            onClick={() => setMinBathrooms(0)}
+                            aria-label="화장실 개수 필터 초기화"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
+                          >
+                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                          </button>
+                        ) : (
+                          <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
                       </div>
 
                       {/* Area */}
-                      <div className="relative">
+                      <div className="relative min-w-0">
                         <select
                           value={minArea}
                           onChange={(e) => setMinArea(Number(e.target.value))}
-                          className={`appearance-none text-xs font-bold pl-4 pr-9 py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden ${
+                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minArea > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minArea > 0
                               ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
@@ -345,27 +367,23 @@ export default function App() {
                           <option value="30">30평 이상</option>
                           <option value="40">40평 이상</option>
                         </select>
-                        <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" viewBox="0 0 12 12" fill="none">
-                          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={minArea > 0 ? "text-white" : "text-neutral-500"}/>
-                        </svg>
+                        {minArea > 0 ? (
+                          <button
+                            type="button"
+                            onClick={() => setMinArea(0)}
+                            aria-label="넓이 필터 초기화"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
+                          >
+                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                          </button>
+                        ) : (
+                          <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
                       </div>
-
-                      {/* Reset */}
-                      {(minRooms > 0 || minBathrooms > 0 || minArea > 0 || searchQuery) && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setMinRooms(0);
-                            setMinBathrooms(0);
-                            setMinArea(0);
-                            setSearchQuery("");
-                          }}
-                          className="ml-auto text-xs px-3 py-2.5 rounded-full font-bold text-neutral-500 hover:text-blue-600 transition-colors cursor-pointer"
-                        >
-                          초기화
-                        </button>
-                      )}
                     </div>
+
 
                   </div>
 
