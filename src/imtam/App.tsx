@@ -395,14 +395,6 @@ export default function App() {
                     </div>
                   ) : (
                     <div>
-                      <div className="flex items-center justify-between mb-4.5 px-1">
-                        <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">
-                          예약 일정 조율가능 매물 ({filteredHouses.length}개)
-                        </span>
-                        <span className="text-xs font-bold text-blue-600 bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-lg">
-                          전속 특약 한정권
-                        </span>
-                      </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
                         {filteredHouses.map((house) => (
                           <HouseCard
