@@ -1,12 +1,10 @@
 import { UserProfile } from '../types';
-import { Home, Compass, Calendar, Briefcase, RefreshCw, LogIn, LogOut } from 'lucide-react';
+import { Home, Compass, Calendar, Briefcase, LogIn, LogOut } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: 'browse' | 'guest' | 'host';
   setTab: (tab: 'browse' | 'guest' | 'host') => void;
   currentUser: UserProfile | null;
-  userRole: 'guest' | 'host';
-  onToggleRole: () => void;
   onOpenAuth: () => void;
   onLogout: () => void;
   onResetToHome?: () => void;
@@ -16,8 +14,6 @@ export default function Navbar({
   currentTab,
   setTab,
   currentUser,
-  userRole,
-  onToggleRole,
   onOpenAuth,
   onLogout,
   onResetToHome,

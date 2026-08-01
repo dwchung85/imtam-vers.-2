@@ -108,7 +108,7 @@ export default function App() {
     setCurrentUser(null);
     setBookings([]);
     setActiveTab("browse");
-    setUserRole("guest");
+    
     setIsAuthModalOpen(true);
   };
 
