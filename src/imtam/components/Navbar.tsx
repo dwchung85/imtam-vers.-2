@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../types';
-import { Home, Compass, Calendar, Briefcase, LogIn, LogOut } from 'lucide-react';
+import { Home, Compass, Calendar, Briefcase, LogIn, LogOut, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: 'browse' | 'guest' | 'host';
