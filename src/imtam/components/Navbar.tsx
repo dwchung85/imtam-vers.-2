@@ -81,21 +81,8 @@ export default function Navbar({
             </button>
           </nav>
 
-          {/* User profile & Role switcher */}
+          {/* User profile */}
           <div className="flex items-center gap-3">
-            {currentUser && (
-              /* Role switcher badge */
-              <button
-                onClick={onToggleRole}
-                className="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-full border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer"
-                title="역할을 임장 신청자(Guest) 및 중개/매도인(Agent) 간 전환합니다"
-              >
-                <RefreshCw className="w-3 h-3 shrink-0" />
-                <span className="hidden sm:inline">전환:</span>
-                <span className="underline decoration-dotted">{userRole === 'host' ? '중개인·소유주' : '임장 희망자'}</span>
-              </button>
-            )}
-
             {/* Profile widget or Login Trigger */}
             {currentUser ? (
               <div className="flex items-center gap-2.5">
@@ -107,7 +94,6 @@ export default function Navbar({
                   />
                   <div className="hidden lg:block text-left leading-tight">
                     <p className="text-xs font-bold text-neutral-800 truncate max-w-[80px]">{currentUser.name}</p>
-                    <p className="text-[9px] text-neutral-400 capitalize">{userRole === 'host' ? '전문 에이전트' : '투자자/매수 희망'}</p>
                   </div>
                 </div>
                 {/* Logout action */}
