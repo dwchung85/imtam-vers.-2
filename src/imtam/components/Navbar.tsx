@@ -103,7 +103,7 @@ export default function Navbar({
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-neutral-100 cursor-pointer transition-colors"
+                  className="rounded-full hover:opacity-80 cursor-pointer transition-opacity"
                   aria-haspopup="menu"
                   aria-expanded={menuOpen}
                   aria-label="사용자 메뉴"
@@ -113,14 +113,10 @@ export default function Navbar({
                     alt={currentUser.name}
                     className="w-8 h-8 rounded-full object-cover border border-neutral-300 ring-2 ring-neutral-50"
                   />
-                  <ChevronDown className={`w-3.5 h-3.5 text-neutral-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-neutral-200 overflow-hidden z-50">
-                    <div className="px-3 py-2.5 border-b border-neutral-100">
-                      <p className="text-xs font-bold text-neutral-800 truncate">{currentUser.name}</p>
-                    </div>
+                  <div className="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg border border-neutral-200 overflow-hidden z-50">
                     <button
                       onClick={() => {
                         setMenuOpen(false);
@@ -133,6 +129,7 @@ export default function Navbar({
                     </button>
                   </div>
                 )}
+
               </div>
             ) : (
               <button
