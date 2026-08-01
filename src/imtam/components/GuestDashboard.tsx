@@ -23,7 +23,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
           <Calendar className="w-12 h-12 text-blue-500/40 mb-2" />
           <h3 className="font-bold text-neutral-800 text-base">신청 완료된 현장 임장 및 홈투어 예약이 없습니다.</h3>
           <p className="text-neutral-400 text-xs mt-1 max-w-xs leading-relaxed font-semibold">
-            매물 탐색 목록에서 관심이 가는 하이엔드 오두막 상가, 리노베이션 주택을 찾아 오픈하우스 임장을 제안하고 예약해보세요!
+            매물 탐색 목록에서 관심이 가는 하이엔드 오두막 상가, 리노베이션 주택을 찾아 임탐을 제안하고 예약해보세요!
           </p>
         </div>
       ) : (
@@ -112,7 +112,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                       <span>임장 가이드 & 청구 영수증 상세</span>
                     </div>
                     <div className="flex justify-between text-xs text-neutral-500 font-semibold">
-                      <span>오픈하우스 입장 개방료 (₩{booking.housePricePerVisit?.toLocaleString()} × {booking.totalVisitors}인)</span>
+                      <span>임탐 입장 개방료 (₩{booking.housePricePerVisit?.toLocaleString()} × {booking.totalVisitors}인)</span>
                       <span>₩{baseTicketTotal.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-xs text-neutral-500 font-semibold">

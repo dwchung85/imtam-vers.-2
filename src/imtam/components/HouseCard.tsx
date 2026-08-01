@@ -34,7 +34,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           </span>
         ) : (
           <span className="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
-            오픈하우스 진행중
+            임탐 진행중
           </span>
         )}
         {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === 'number' ? (

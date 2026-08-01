@@ -391,7 +391,7 @@ export default function App() {
                   {filteredHouses.length === 0 ? (
                     <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
                       <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
-                      <h3 className="font-bold text-neutral-800 text-lg">조건에 부합하는 오픈하우스가 없습니다</h3>
+                      <h3 className="font-bold text-neutral-800 text-lg">조건에 부합하는 임탐 매물이 없습니다</h3>
                     </div>
                   ) : (
                     <div>

@@ -266,7 +266,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                   </div>
                   <div>
                     <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Building className="w-4 h-4 text-blue-600" /> [오픈하우스 소개]
+                      <Building className="w-4 h-4 text-blue-600" /> [임탐 소개]
                     </h5>
                     <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
                       {house.description}
@@ -297,7 +297,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                 <div className="sticky top-0 bg-blue-50/10 rounded-3xl border border-blue-100 p-5 space-y-4">
                   <div>
                     <span className="text-2xl font-black text-blue-600">₩{house.pricePerVisit.toLocaleString()}</span>
-                    <span className="text-xs text-neutral-500 font-bold block mt-1"> / 오픈하우스 투어 비용</span>
+                    <span className="text-xs text-neutral-500 font-bold block mt-1"> / 임탐 투어 비용</span>
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4">
@@ -373,7 +373,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                     {/* Cost Split block */}
                     <div className="space-y-2 pt-3.5 border-t border-neutral-200 text-xs text-neutral-600">
                       <div className="flex justify-between">
-                        <span className="underline">오픈하우스 입장 개방료 (₩{house.pricePerVisit.toLocaleString()} × {guestsCount}인)</span>
+                        <span className="underline">임탐 입장 개방료 (₩{house.pricePerVisit.toLocaleString()} × {guestsCount}인)</span>
                         <span>₩{rawPrice.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between text-[11px] text-neutral-400">
@@ -381,7 +381,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                         <span>없음</span>
                       </div>
                       <div className="flex justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-2.5 text-sm">
-                        <span>오픈하우스 투어 비용</span>
+                        <span>임탐 투어 비용</span>
                         <span className="text-blue-600 font-black text-base">₩{totalPrice.toLocaleString()}</span>
                       </div>
                     </div>
@@ -391,7 +391,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                       type="submit"
                       className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block"
                     >
-                      현장 오픈하우스 임장 희망 예약하기
+                      현장 임탐 희망 예약하기
                     </button>
                   </form>
 
