@@ -391,7 +391,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
                       type="submit"
                       className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block"
                     >
-                      현장 임탐 임장 희망 예약하기
+                      현장 임탐 희망 예약하기
                     </button>
                   </form>
 
