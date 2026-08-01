@@ -7,7 +7,6 @@ interface HouseDetailProps {
   house: House;
   onClose: () => void;
   onBook: (bookingData: Omit<Booking, 'id' | 'guestId' | 'guestName' | 'status' | 'createdAt'>) => void;
-  currentUserRole: 'guest' | 'host';
   currentUserId: string;
 }
 
@@ -18,7 +17,7 @@ const TIME_SLOTS = [
   '저녁 07:00 ~ 09:00'
 ];
 
-export default function HouseDetail({ house, onClose, onBook, currentUserRole, currentUserId }: HouseDetailProps) {
+export default function HouseDetail({ house, onClose, onBook, currentUserId }: HouseDetailProps) {
   const today = new Date();
   const formatTodayString = (date: Date) => {
     return date.toISOString().split('T')[0];
@@ -58,10 +57,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserRole, c
 
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (currentUserRole !== 'guest') {
-      alert('게스트(매수 희망자) 모드에서만 매물 임장 투어를 신청할 수 있습니다. 상단의 역할 선택에서 변경해주세요!');
-      return;
-    }
+
     
     if (guestsCount > house.maxGuests) {
       alert(`해당 매물의 회차별 최대 가이드 인원(${house.maxGuests}명)을 초과해 동행할 수 없습니다.`);

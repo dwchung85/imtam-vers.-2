@@ -24,7 +24,7 @@ export default function App() {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
-  const [userRole, setUserRole] = useState<"guest" | "host">("guest");
+  
   const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host">("browse");
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
@@ -91,11 +91,6 @@ export default function App() {
     };
   }, []);
 
-  const handleToggleRole = () => {
-    const nextRole = userRole === "guest" ? "host" : "guest";
-    setUserRole(nextRole);
-    setActiveTab(nextRole === "host" ? "host" : "browse");
-  };
 
   const handleLoginSuccess = async (user: UserProfile) => {
     setCurrentUser(user);
@@ -239,8 +234,6 @@ export default function App() {
         currentTab={activeTab}
         setTab={setActiveTab}
         currentUser={currentUser}
-        userRole={userRole}
-        onToggleRole={handleToggleRole}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
         onResetToHome={handleResetToHome}
@@ -442,7 +435,7 @@ export default function App() {
           house={selectedHouse}
           onClose={() => setSelectedHouse(null)}
           onBook={handleBookHouse}
-          currentUserRole={userRole}
+          
           currentUserId={currentUser?.id || ""}
         />
       )}
