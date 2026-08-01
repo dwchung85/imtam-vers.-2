@@ -85,26 +85,39 @@ export default function Navbar({
           <div className="flex items-center gap-3">
             {/* Profile widget or Login Trigger */}
             {currentUser ? (
-              <div className="flex items-center gap-2.5">
-                <div className="flex items-center gap-2 border-r border-neutral-200 pr-2.5">
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={() => setMenuOpen((v) => !v)}
+                  className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-neutral-100 cursor-pointer transition-colors"
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  aria-label="사용자 메뉴"
+                >
                   <img
                     src={currentUser.avatar}
                     alt={currentUser.name}
                     className="w-8 h-8 rounded-full object-cover border border-neutral-300 ring-2 ring-neutral-50"
                   />
-                  <div className="hidden lg:block text-left leading-tight">
-                    <p className="text-xs font-bold text-neutral-800 truncate max-w-[80px]">{currentUser.name}</p>
-                  </div>
-                </div>
-                {/* Logout action */}
-                <button
-                  onClick={onLogout}
-                  className="p-1 px-2.5 hover:bg-neutral-100 text-neutral-400 hover:text-rose-500 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
-                  title="로그아웃"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">로그아웃</span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-neutral-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
                 </button>
+
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-neutral-200 overflow-hidden z-50">
+                    <div className="px-3 py-2.5 border-b border-neutral-100">
+                      <p className="text-xs font-bold text-neutral-800 truncate">{currentUser.name}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        onLogout();
+                      }}
+                      className="w-full text-left px-3 py-2.5 text-xs font-bold text-neutral-600 hover:bg-neutral-50 hover:text-rose-500 flex items-center gap-2 cursor-pointer transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      로그아웃
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <button
