@@ -321,7 +321,7 @@ export default function HostDashboard({
         {/* Form to List new house (3/5 width) */}
         <div className="xl:col-span-3 bg-white rounded-3xl border border-neutral-200 p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
-            <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">오픈하우스 등록</h3>
+            <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">임탐 등록</h3>
           </div>
 
           {isSuccess && (
@@ -340,7 +340,7 @@ export default function HostDashboard({
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">매물 한 줄 소개 (제목) *</label>
                 <input
                   type="text"
-                  placeholder="예: 분당 정자동 오픈하우스"
+                  placeholder="예: 분당 정자동 임탐"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -676,7 +676,7 @@ export default function HostDashboard({
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-xl cursor-pointer shadow-md transition-all mt-4"
             >
-              공식 투어 오픈하우스 리스트에 업로드
+              공식 투어 임탐 리스트에 업로드
             </button>
           </form>
         </div>
@@ -687,12 +687,12 @@ export default function HostDashboard({
           <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4">
             <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
               <ListFilter className="w-4 h-4 text-blue-600" />
-              <span>현재 등록한 내 오픈하우스 목록 ({hostHouses.length}지점)</span>
+              <span>현재 등록한 내 임탐 목록 ({hostHouses.length}지점)</span>
             </h4>
 
             {hostHouses.length === 0 ? (
               <p className="text-neutral-400 text-xs text-center py-6 font-semibold">
-                아직 리스팅 완료된 오픈하우스 목록이 없습니다.
+                아직 리스팅 완료된 임탐 목록이 없습니다.
               </p>
             ) : (
               <div className="divide-y divide-neutral-105 max-h-[190px] overflow-y-auto pr-1">
@@ -735,7 +735,7 @@ export default function HostDashboard({
             <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ClipboardCheck className="w-4 h-4 text-blue-600" />
-                <span>오픈하우스 신청자 목록</span>
+                <span>임탐 신청자 목록</span>
               </div>
               {pendingCount > 0 && (
                 <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
