@@ -121,25 +121,29 @@ export default function App() {
     setMinArea(0);
   };
 
-  // 1. Request House Tour (Guest Action)
+  // 1. Request House Tour (Guest Action) — 실패 시 사유 문구를 반환
   const handleBookHouse = async (
     bookingData: Omit<Booking, "id" | "guestId" | "guestName" | "status" | "createdAt">,
-  ) => {
+  ): Promise<string | null> => {
     if (!currentUser) {
       setIsAuthModalOpen(true);
-      return;
+      return "로그인이 필요합니다.";
     }
     try {
-      const created = await addBookingDb({
+      const { booking, error } = await addBookingDb({
         ...bookingData,
         guestId: currentUser.id,
         guestName: currentUser.name,
       });
-      if (created) setBookings((prev) => [created, ...prev]);
+      if (error) return error;
+      if (booking) setBookings((prev) => [booking, ...prev]);
+      return null;
     } catch (error) {
       console.error("DB error booking house:", error);
+      return "예약 신청 중 오류가 발생했습니다.";
     }
   };
+
 
   // 2. Add a new House showcasing Listing (Host Action)
   const handleAddHouseListing = async (
