@@ -94,6 +94,8 @@ export default function Navbar({
             >
               <Calendar className="w-3.5 h-3.5" />
               내 현장 임장 예약
+              <Badge count={guestBadge} />
+
             </button>
             <button
               onClick={() => {
@@ -111,6 +113,8 @@ export default function Navbar({
             >
               <Briefcase className="w-3.5 h-3.5" />
               내 매물·투어 리스팅 관리
+              <Badge count={hostBadge} tone="rose" />
+
             </button>
           </nav>
 
