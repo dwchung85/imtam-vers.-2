@@ -324,6 +324,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <span className="text-xs text-neutral-500 font-bold block mt-1"> / 임탐 투어 비용</span>
                   </div>
 
+                  {!hasSchedule && (
+                    <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-[11px] font-bold text-amber-700">
+                      호스트가 아직 방문 가능 일정을 등록하지 않아 예약할 수 없습니다.
+                    </div>
+                  )}
+
                   <form onSubmit={handleBookingSubmit} className="space-y-4">
                     {/* Visitor inputs mapping host-configured arrays: resolvedDates and resolvedTimeSlots */}
                     <div className="border border-neutral-200 rounded-2xl overflow-hidden bg-white divide-y divide-neutral-150">
@@ -357,14 +363,32 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           className="w-full text-xs font-bold focus:outline-hidden text-neutral-850 bg-transparent py-1 cursor-pointer border-none outline-hidden"
                           required
                         >
-                          {resolvedTimeSlots.map((slot) => (
-                            <option key={slot} value={slot}>
-                              {slot}
-                            </option>
-                          ))}
+                          {resolvedTimeSlots.map((slot) => {
+                            const left = remainingFor(visitDate, slot);
+                            return (
+                              <option key={slot} value={slot} disabled={left === 0}>
+                                {slot} {left === 0 ? '· 마감' : `· 남은 자리 ${left}명`}
+                              </option>
+                            );
+                          })}
                         </select>
                       </div>
                     </div>
+
+                    {hasSchedule && (
+                      <div
+                        className={`rounded-xl px-3 py-2 text-[11px] font-bold ${
+                          isSlotFull
+                            ? 'bg-rose-50 border border-rose-200 text-rose-600'
+                            : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                        }`}
+                      >
+                        {isSlotFull
+                          ? '선택한 시간대는 정원이 마감되었습니다.'
+                          : `선택한 시간대 남은 자리 ${remainingSeats}명 / 정원 ${house.maxGuests}명`}
+                      </div>
+                    )}
+
 
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-2xl p-3 bg-white">
