@@ -406,7 +406,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           <span className="text-sm font-bold text-neutral-800 w-4 text-center">{guestsCount}</span>
                           <button
                             type="button"
-                            onClick={() => setGuestsCount(Math.min(house.maxGuests, guestsCount + 1))}
+                            onClick={() =>
+                              setGuestsCount(Math.min(Math.min(house.maxGuests, remainingSeats || 1), guestsCount + 1))
+                            }
                             className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded-full text-xs font-bold hover:bg-neutral-100 cursor-pointer"
                           >
                             +
@@ -414,7 +416,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         </div>
                       </div>
                       <p className="text-[10px] text-neutral-400 mt-1.5 leading-relaxed">
-                        중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>입니다.
+                        중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>이며, 선택한 시간대에는 <strong className="text-neutral-700">{remainingSeats}명</strong>까지 예약할 수 있습니다.
                       </p>
                     </div>
 
@@ -434,13 +436,21 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </div>
                     </div>
 
+                    {bookingError && (
+                      <div className="rounded-xl bg-rose-50 border border-rose-200 px-3 py-2 text-[11px] font-bold text-rose-600">
+                        {bookingError}
+                      </div>
+                    )}
+
                     {/* Actions */}
                     <button
                       type="submit"
-                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block"
+                      disabled={!hasSchedule || isSlotFull || submitting}
+                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
                     >
-                      현장 임탐 희망 예약하기
+                      {submitting ? '예약 신청 중...' : isSlotFull ? '해당 시간대 마감' : '현장 임탐 희망 예약하기'}
                     </button>
+
                   </form>
 
                   <div className="flex items-center gap-2 text-[10px] text-neutral-500 justify-center">
