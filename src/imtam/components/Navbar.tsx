@@ -207,8 +207,16 @@ export default function Navbar({
               currentTab === 'guest' ? 'text-blue-600' : 'text-neutral-400'
             }`}
           >
-            <Calendar className="w-4 h-4" />
+            <div className="relative">
+              <Calendar className="w-4 h-4" />
+              {guestBadge > 0 && (
+                <span className="absolute -top-1 -right-2 min-w-[14px] h-3.5 px-1 inline-flex items-center justify-center rounded-full bg-blue-600 text-white text-[8px] font-black">
+                  {guestBadge > 9 ? '9+' : guestBadge}
+                </span>
+              )}
+            </div>
             <span>예약 내역</span>
+
           </button>
           <button
             onClick={() => {
