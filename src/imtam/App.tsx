@@ -91,6 +91,22 @@ export default function App() {
     };
   }, []);
 
+  // 예약 상태가 바뀌면(승인/거절/완료) 양쪽 화면에 실시간 반영
+  useEffect(() => {
+    if (!currentUser) return;
+    const channel = supabase
+      .channel("imtam-bookings")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, () => {
+        fetchBookings()
+          .then(setBookings)
+          .catch(() => {});
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [currentUser?.id]);
+
 
   const handleLoginSuccess = async (user: UserProfile) => {
     setCurrentUser(user);
