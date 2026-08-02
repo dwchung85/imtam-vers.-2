@@ -247,6 +247,19 @@ export default function App() {
     return searchMatch && roomsMatch && bathroomsMatch && areaMatch;
   });
 
+  // --- 알림 배지: 내가 처리해야 할 항목 개수 ---
+  const myHouseIds = currentUser ? houses.filter((h) => h.hostId === currentUser.id).map((h) => h.id) : [];
+  const hostBadge = currentUser
+    ? bookings.filter((b) => myHouseIds.includes(b.houseId) && b.status === "pending").length
+    : 0;
+  const guestBadge = currentUser
+    ? bookings.filter(
+        (b) =>
+          b.guestId === currentUser.id &&
+          (b.status === "confirmed" || (b.status === "completed" && typeof b.rating !== "number")),
+      ).length
+    : 0;
+
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans">
       {/* Dynamic Header / Navigation bar */}
@@ -257,7 +270,10 @@ export default function App() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
         onResetToHome={handleResetToHome}
+        guestBadge={guestBadge}
+        hostBadge={hostBadge}
       />
+
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
