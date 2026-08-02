@@ -103,7 +103,7 @@ export default function Navbar({
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setMenuOpen((v) => !v)}
-                  className="rounded-full hover:opacity-80 cursor-pointer transition-opacity"
+                  className="rounded-full cursor-pointer transition-all"
                   aria-haspopup="menu"
                   aria-expanded={menuOpen}
                   aria-label="사용자 메뉴"
@@ -111,26 +111,45 @@ export default function Navbar({
                   <img
                     src={currentUser.avatar}
                     alt={currentUser.name}
-                    className="w-8 h-8 rounded-full object-cover border border-neutral-300 ring-2 ring-neutral-50"
+                    className={`w-9 h-9 rounded-full object-cover transition-all ${
+                      menuOpen
+                        ? 'ring-2 ring-blue-500 ring-offset-2'
+                        : 'ring-1 ring-neutral-200 hover:ring-neutral-300'
+                    }`}
                   />
                 </button>
 
                 {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg border border-neutral-200 overflow-hidden z-50">
-                    <button
-                      onClick={() => {
-                        setMenuOpen(false);
-                        onLogout();
-                      }}
-                      className="w-full text-left px-3 py-2.5 text-xs font-bold text-neutral-600 hover:bg-neutral-50 hover:text-rose-500 flex items-center gap-2 cursor-pointer transition-colors"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      로그아웃
-                    </button>
+                  <div className="absolute right-0 mt-3 w-56 origin-top-right rounded-2xl bg-white shadow-[0_12px_32px_-8px_rgba(15,23,42,0.18)] border border-neutral-200/80 overflow-hidden z-50 animate-fadeIn">
+                    <div className="flex items-center gap-3 px-4 py-3.5 bg-neutral-50/80">
+                      <img
+                        src={currentUser.avatar}
+                        alt={currentUser.name}
+                        className="w-9 h-9 rounded-full object-cover ring-1 ring-neutral-200"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-neutral-900 truncate">{currentUser.name}</p>
+                        <p className="text-[11px] text-neutral-500 truncate">임탐 회원</p>
+
+                      </div>
+                    </div>
+                    <div className="h-px bg-neutral-100" />
+                    <div className="p-1.5">
+                      <button
+                        onClick={() => {
+                          setMenuOpen(false);
+                          onLogout();
+                        }}
+                        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-neutral-600 hover:bg-rose-50 hover:text-rose-600 flex items-center gap-2.5 cursor-pointer transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        로그아웃
+                      </button>
+                    </div>
                   </div>
                 )}
-
               </div>
+
             ) : (
               <button
                 onClick={onOpenAuth}
