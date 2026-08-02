@@ -230,8 +230,16 @@ export default function Navbar({
               currentTab === 'host' ? 'text-blue-600' : 'text-neutral-400'
             }`}
           >
-            <Briefcase className="w-4 h-4" />
+            <div className="relative">
+              <Briefcase className="w-4 h-4" />
+              {hostBadge > 0 && (
+                <span className="absolute -top-1 -right-2 min-w-[14px] h-3.5 px-1 inline-flex items-center justify-center rounded-full bg-rose-500 text-white text-[8px] font-black">
+                  {hostBadge > 9 ? '9+' : hostBadge}
+                </span>
+              )}
+            </div>
             <span>매물 리스팅</span>
+
           </button>
         </div>
       </div>
