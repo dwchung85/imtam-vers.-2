@@ -43,3 +43,11 @@ export interface UserProfile {
   avatar: string;
   balance: number;
 }
+
+// 특정 매물의 날짜·시간대별 이미 예약된 인원 수 (정원 마감 판단용)
+export interface SlotLoad {
+  visitDate: string;
+  visitTimeSlot: string;
+  bookedVisitors: number;
+}
+

@@ -1,53 +1,61 @@
-import React, { useState } from 'react';
-import { House, Booking } from '../types';
+import React, { useEffect, useMemo, useState } from 'react';
+import { House, Booking, SlotLoad } from '../types';
 import { X, Star, MapPin, Users, Calendar, ShieldCheck, Heart, Building, Clock, Coffee, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { fetchHouseSlotLoad } from '../dbService';
 
 interface HouseDetailProps {
   house: House;
   onClose: () => void;
-  onBook: (bookingData: Omit<Booking, 'id' | 'guestId' | 'guestName' | 'status' | 'createdAt'>) => void;
+  onBook: (bookingData: Omit<Booking, 'id' | 'guestId' | 'guestName' | 'status' | 'createdAt'>) => Promise<string | null>;
   currentUserId: string;
 }
 
-const TIME_SLOTS = [
-  '오전 10:00 ~ 12:00',
-  '오후 02:00 ~ 04:00',
-  '오후 04:00 ~ 06:00',
-  '저녁 07:00 ~ 09:00'
-];
-
 export default function HouseDetail({ house, onClose, onBook, currentUserId }: HouseDetailProps) {
-  const today = new Date();
-  const formatTodayString = (date: Date) => {
-    return date.toISOString().split('T')[0];
-  };
+  // 호스트가 등록한 방문 가능 일정만 사용 (가짜 일정 생성 없음)
+  const resolvedDates = house.availableDates ?? [];
+  const resolvedTimeSlots = house.availableTimeSlots ?? [];
+  const hasSchedule = resolvedDates.length > 0 && resolvedTimeSlots.length > 0;
 
-  // Generate fallback available dates starting tomorrow (next 6 days) if host did not register any
-  const getFallbackDates = () => {
-    const dates = [];
-    for (let i = 1; i <= 6; i++) {
-      const d = new Date();
-      d.setDate(d.getDate() + i);
-      dates.push(d.toISOString().split('T')[0]);
-    }
-    return dates;
-  };
-
-  const resolvedDates = house.availableDates && house.availableDates.length > 0 
-    ? house.availableDates 
-    : getFallbackDates();
-
-  const resolvedTimeSlots = house.availableTimeSlots && house.availableTimeSlots.length > 0
-    ? house.availableTimeSlots
-    : TIME_SLOTS;
-
-  const [visitDate, setVisitDate] = useState<string>(resolvedDates[0]);
-  const [visitTimeSlot, setVisitTimeSlot] = useState<string>(resolvedTimeSlots[0]);
+  const [visitDate, setVisitDate] = useState<string>(resolvedDates[0] ?? '');
+  const [visitTimeSlot, setVisitTimeSlot] = useState<string>(resolvedTimeSlots[0] ?? '');
   const [guestsCount, setGuestsCount] = useState<number>(1);
   const [hearted, setHearted] = useState<boolean>(false);
   const [successBooking, setSuccessBooking] = useState<boolean>(false);
   const [activeImageIdx, setActiveImageIdx] = useState<number>(0);
+  const [slotLoads, setSlotLoads] = useState<SlotLoad[]>([]);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
+
+  // 날짜·시간대별 이미 예약된 인원 로드 (중복/초과 예약 방지)
+  useEffect(() => {
+    let alive = true;
+    fetchHouseSlotLoad(house.id)
+      .then((loads) => {
+        if (alive) setSlotLoads(loads);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [house.id]);
+
+  const bookedFor = (date: string, slot: string) =>
+    slotLoads.find((s) => s.visitDate === date && s.visitTimeSlot === slot)?.bookedVisitors ?? 0;
+
+  const remainingFor = (date: string, slot: string) => Math.max(house.maxGuests - bookedFor(date, slot), 0);
+
+  const remainingSeats = useMemo(
+    () => remainingFor(visitDate, visitTimeSlot),
+    [visitDate, visitTimeSlot, slotLoads, house.maxGuests],
+  );
+
+  // 선택한 슬롯의 남은 자리보다 많은 인원이 선택되어 있으면 자동 보정
+  useEffect(() => {
+    if (remainingSeats > 0 && guestsCount > remainingSeats) setGuestsCount(remainingSeats);
+  }, [remainingSeats]);
+
+  const isSlotFull = hasSchedule && remainingSeats === 0;
 
   // Home tour math — 호스트가 등록한 입장 개방료 외 추가 비용은 부과하지 않음
   const rawPrice = house.pricePerVisit * guestsCount;
@@ -55,16 +63,25 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
   const isOwnListing = house.hostId === currentUserId;
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setBookingError(null);
 
-    
-    if (guestsCount > house.maxGuests) {
-      alert(`해당 매물의 회차별 최대 가이드 인원(${house.maxGuests}명)을 초과해 동행할 수 없습니다.`);
+    if (!hasSchedule) {
+      setBookingError('호스트가 아직 방문 가능 일정을 등록하지 않았습니다.');
+      return;
+    }
+    if (isSlotFull) {
+      setBookingError('선택한 시간대는 정원이 마감되었습니다. 다른 시간대를 선택해 주세요.');
+      return;
+    }
+    if (guestsCount > remainingSeats) {
+      setBookingError(`이 시간대에 남은 자리는 ${remainingSeats}명입니다.`);
       return;
     }
 
-    onBook({
+    setSubmitting(true);
+    const errorMessage = await onBook({
       houseId: house.id,
       houseTitle: house.title,
       houseImage: house.imageUrl,
@@ -74,6 +91,16 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
       totalVisitors: guestsCount,
       totalPrice,
     });
+    setSubmitting(false);
+
+    if (errorMessage) {
+      setBookingError(errorMessage);
+      // 다른 사용자의 예약으로 정원이 바뀐 경우를 대비해 최신 현황 재조회
+      fetchHouseSlotLoad(house.id)
+        .then(setSlotLoads)
+        .catch(() => {});
+      return;
+    }
 
     setSuccessBooking(true);
     setTimeout(() => {
@@ -81,6 +108,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
       onClose();
     }, 2000);
   };
+
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 md:p-6">
@@ -296,6 +324,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <span className="text-xs text-neutral-500 font-bold block mt-1"> / 임탐 투어 비용</span>
                   </div>
 
+                  {!hasSchedule && (
+                    <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-[11px] font-bold text-amber-700">
+                      호스트가 아직 방문 가능 일정을 등록하지 않아 예약할 수 없습니다.
+                    </div>
+                  )}
+
                   <form onSubmit={handleBookingSubmit} className="space-y-4">
                     {/* Visitor inputs mapping host-configured arrays: resolvedDates and resolvedTimeSlots */}
                     <div className="border border-neutral-200 rounded-2xl overflow-hidden bg-white divide-y divide-neutral-150">
@@ -329,14 +363,32 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           className="w-full text-xs font-bold focus:outline-hidden text-neutral-850 bg-transparent py-1 cursor-pointer border-none outline-hidden"
                           required
                         >
-                          {resolvedTimeSlots.map((slot) => (
-                            <option key={slot} value={slot}>
-                              {slot}
-                            </option>
-                          ))}
+                          {resolvedTimeSlots.map((slot) => {
+                            const left = remainingFor(visitDate, slot);
+                            return (
+                              <option key={slot} value={slot} disabled={left === 0}>
+                                {slot} {left === 0 ? '· 마감' : `· 남은 자리 ${left}명`}
+                              </option>
+                            );
+                          })}
                         </select>
                       </div>
                     </div>
+
+                    {hasSchedule && (
+                      <div
+                        className={`rounded-xl px-3 py-2 text-[11px] font-bold ${
+                          isSlotFull
+                            ? 'bg-rose-50 border border-rose-200 text-rose-600'
+                            : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                        }`}
+                      >
+                        {isSlotFull
+                          ? '선택한 시간대는 정원이 마감되었습니다.'
+                          : `선택한 시간대 남은 자리 ${remainingSeats}명 / 정원 ${house.maxGuests}명`}
+                      </div>
+                    )}
+
 
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-2xl p-3 bg-white">
@@ -354,7 +406,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           <span className="text-sm font-bold text-neutral-800 w-4 text-center">{guestsCount}</span>
                           <button
                             type="button"
-                            onClick={() => setGuestsCount(Math.min(house.maxGuests, guestsCount + 1))}
+                            onClick={() =>
+                              setGuestsCount(Math.min(Math.min(house.maxGuests, remainingSeats || 1), guestsCount + 1))
+                            }
                             className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded-full text-xs font-bold hover:bg-neutral-100 cursor-pointer"
                           >
                             +
@@ -362,7 +416,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         </div>
                       </div>
                       <p className="text-[10px] text-neutral-400 mt-1.5 leading-relaxed">
-                        중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>입니다.
+                        중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>이며, 선택한 시간대에는 <strong className="text-neutral-700">{remainingSeats}명</strong>까지 예약할 수 있습니다.
                       </p>
                     </div>
 
@@ -382,13 +436,21 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </div>
                     </div>
 
+                    {bookingError && (
+                      <div className="rounded-xl bg-rose-50 border border-rose-200 px-3 py-2 text-[11px] font-bold text-rose-600">
+                        {bookingError}
+                      </div>
+                    )}
+
                     {/* Actions */}
                     <button
                       type="submit"
-                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block"
+                      disabled={!hasSchedule || isSlotFull || submitting}
+                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
                     >
-                      현장 임탐 희망 예약하기
+                      {submitting ? '예약 신청 중...' : isSlotFull ? '해당 시간대 마감' : '현장 임탐 희망 예약하기'}
                     </button>
+
                   </form>
 
                   <div className="flex items-center gap-2 text-[10px] text-neutral-500 justify-center">

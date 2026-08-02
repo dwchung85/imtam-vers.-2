@@ -91,6 +91,22 @@ export default function App() {
     };
   }, []);
 
+  // 예약 상태가 바뀌면(승인/거절/완료) 양쪽 화면에 실시간 반영
+  useEffect(() => {
+    if (!currentUser) return;
+    const channel = supabase
+      .channel("imtam-bookings")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, () => {
+        fetchBookings()
+          .then(setBookings)
+          .catch(() => {});
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [currentUser?.id]);
+
 
   const handleLoginSuccess = async (user: UserProfile) => {
     setCurrentUser(user);
@@ -121,25 +137,29 @@ export default function App() {
     setMinArea(0);
   };
 
-  // 1. Request House Tour (Guest Action)
+  // 1. Request House Tour (Guest Action) — 실패 시 사유 문구를 반환
   const handleBookHouse = async (
     bookingData: Omit<Booking, "id" | "guestId" | "guestName" | "status" | "createdAt">,
-  ) => {
+  ): Promise<string | null> => {
     if (!currentUser) {
       setIsAuthModalOpen(true);
-      return;
+      return "로그인이 필요합니다.";
     }
     try {
-      const created = await addBookingDb({
+      const { booking, error } = await addBookingDb({
         ...bookingData,
         guestId: currentUser.id,
         guestName: currentUser.name,
       });
-      if (created) setBookings((prev) => [created, ...prev]);
+      if (error) return error;
+      if (booking) setBookings((prev) => [booking, ...prev]);
+      return null;
     } catch (error) {
       console.error("DB error booking house:", error);
+      return "예약 신청 중 오류가 발생했습니다.";
     }
   };
+
 
   // 2. Add a new House showcasing Listing (Host Action)
   const handleAddHouseListing = async (
@@ -227,6 +247,19 @@ export default function App() {
     return searchMatch && roomsMatch && bathroomsMatch && areaMatch;
   });
 
+  // --- 알림 배지: 내가 처리해야 할 항목 개수 ---
+  const myHouseIds = currentUser ? houses.filter((h) => h.hostId === currentUser.id).map((h) => h.id) : [];
+  const hostBadge = currentUser
+    ? bookings.filter((b) => myHouseIds.includes(b.houseId) && b.status === "pending").length
+    : 0;
+  const guestBadge = currentUser
+    ? bookings.filter(
+        (b) =>
+          b.guestId === currentUser.id &&
+          (b.status === "confirmed" || (b.status === "completed" && typeof b.rating !== "number")),
+      ).length
+    : 0;
+
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans">
       {/* Dynamic Header / Navigation bar */}
@@ -237,7 +270,10 @@ export default function App() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
         onResetToHome={handleResetToHome}
+        guestBadge={guestBadge}
+        hostBadge={hostBadge}
       />
+
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
