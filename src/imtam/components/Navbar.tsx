@@ -129,9 +129,8 @@ export default function Navbar({
                       />
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-neutral-900 truncate">{currentUser.name}</p>
-                        {currentUser.email && (
-                          <p className="text-[11px] text-neutral-500 truncate">{currentUser.email}</p>
-                        )}
+                        <p className="text-[11px] text-neutral-500 truncate">임탐 회원</p>
+
                       </div>
                     </div>
                     <div className="h-px bg-neutral-100" />
