@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { Booking, House, UserProfile } from './types';
+import { Booking, House, SlotLoad, UserProfile } from './types';
 
 // ============================
 // Row <-> Domain mappers
@@ -170,9 +170,25 @@ export async function fetchBookings(): Promise<Booking[]> {
   return (data as BookingRow[]).map(bookingFromRow);
 }
 
+// 특정 매물의 날짜·시간대별 예약 인원 집계 (남은 자리 계산용)
+export async function fetchHouseSlotLoad(houseId: string): Promise<SlotLoad[]> {
+  const { data, error } = await supabase.rpc('house_slot_load', { _house_id: houseId });
+  if (error) {
+    console.error('fetchHouseSlotLoad error', error);
+    return [];
+  }
+  return ((data ?? []) as { visit_date: string; visit_time_slot: string; booked_visitors: number }[]).map(
+    (r) => ({
+      visitDate: r.visit_date,
+      visitTimeSlot: r.visit_time_slot,
+      bookedVisitors: Number(r.booked_visitors ?? 0),
+    }),
+  );
+}
+
 export async function addBookingDb(
   input: Omit<Booking, 'id' | 'status' | 'createdAt' | 'rating'>,
-): Promise<Booking | null> {
+): Promise<{ booking: Booking | null; error: string | null }> {
   const { data, error } = await supabase
     .from('bookings')
     .insert({
@@ -192,10 +208,11 @@ export async function addBookingDb(
     .single();
   if (error) {
     console.error('addBookingDb error', error);
-    return null;
+    return { booking: null, error: error.message || '예약 신청에 실패했습니다.' };
   }
-  return bookingFromRow(data as BookingRow);
+  return { booking: bookingFromRow(data as BookingRow), error: null };
 }
+
 
 export async function updateBookingStatusDb(
   bookingId: string,
