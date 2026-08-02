@@ -9,6 +9,21 @@ interface NavbarProps {
   onOpenAuth: () => void;
   onLogout: () => void;
   onResetToHome?: () => void;
+  guestBadge?: number;
+  hostBadge?: number;
+}
+
+function Badge({ count, tone = 'blue' }: { count: number; tone?: 'blue' | 'rose' }) {
+  if (!count) return null;
+  return (
+    <span
+      className={`ml-0.5 min-w-[16px] h-4 px-1 inline-flex items-center justify-center rounded-full text-[9px] font-black text-white ${
+        tone === 'rose' ? 'bg-rose-500' : 'bg-blue-600'
+      }`}
+    >
+      {count > 9 ? '9+' : count}
+    </span>
+  );
 }
 
 export default function Navbar({
@@ -18,7 +33,10 @@ export default function Navbar({
   onOpenAuth,
   onLogout,
   onResetToHome,
+  guestBadge = 0,
+  hostBadge = 0,
 }: NavbarProps) {
+
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
