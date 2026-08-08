@@ -116,7 +116,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                       <span>₩{baseTicketTotal.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-xs text-neutral-500 font-semibold">
-                      <span>다과류 완비 및 중개 수수료</span>
+                      <span>중개 수수료</span>
                       <span>₩{extraFees.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm text-neutral-900 font-bold border-t border-dashed border-neutral-200 pt-2 font-mono">
