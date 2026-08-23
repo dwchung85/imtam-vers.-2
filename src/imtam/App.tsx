@@ -476,3 +476,21 @@ export default function App() {
     </div>
   );
 }
+
+function LoginRequired({ onOpenAuth }: { onOpenAuth: () => void }) {
+  return (
+    <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl p-6 max-w-md mx-auto space-y-4 animate-fadeIn">
+      <LogIn className="w-12 h-12 text-blue-600 mx-auto" />
+      <h3 className="text-lg font-bold text-neutral-800">로그인이 필요한 화면입니다</h3>
+      <p className="text-xs text-neutral-400 font-semibold">
+        예약 내역과 매물 리스팅 관리는 로그인 후 이용할 수 있습니다.
+      </p>
+      <button
+        onClick={onOpenAuth}
+        className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
+      >
+        로그인 / 회원가입
+      </button>
+    </div>
+  );
+}
