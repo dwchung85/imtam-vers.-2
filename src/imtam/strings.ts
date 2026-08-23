@@ -92,7 +92,7 @@ export const T = {
     areaSuffix: "평 (공급면적)",
     reviewsCountSuffix: "명의 리뷰 만족도",
     noReviewsYet: "아직 등록된 리뷰가 없습니다",
-    verifiedPartnerPrefix: "검증된 중개 파트너 ",
+    verifiedPartnerPrefix: "호스트: ",
     hostSubtitle: "매물 실소유주 연계 인증 공인 중개 매칭 전문가",
     introTitle: "[임탐 소개]",
     amenitiesTitle: "하이엔드 인테리어 포인트 & 건축 혜택 요소",
