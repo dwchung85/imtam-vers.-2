@@ -208,7 +208,7 @@ export async function addBookingDb(
     .single();
   if (error) {
     console.error('addBookingDb error', error);
-    return { booking: null, error: error.message || '예약 신청에 실패했습니다.' };
+    return { booking: null, error: error.message || T.app.bookingRequestFailed };
   }
   return { booking: bookingFromRow(data as BookingRow), error: null };
 }
