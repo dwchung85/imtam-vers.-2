@@ -72,7 +72,7 @@ export const T = {
     unitSuffix: "개",
     maxGuestsPrefix: "동반 최대 ",
     maxGuestsSuffix: "명",
-    tourBookingLabel: "임장 예약 투어",
+    tourBookingLabel: "투어 비용",
     areaUnit: "평",
   },
   houseDetail: {
