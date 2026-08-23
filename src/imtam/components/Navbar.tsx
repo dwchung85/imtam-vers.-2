@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../types';
 import { Home, Compass, Calendar, Briefcase, LogIn, LogOut } from 'lucide-react';
+import { T } from '../strings';
 
 interface NavbarProps {
   currentTab: 'browse' | 'guest' | 'host';
@@ -76,7 +77,7 @@ export default function Navbar({
               }`}
             >
               <Compass className="w-3.5 h-3.5" />
-              매물 및 임장 찾기
+              {T.navbar.findListingsAndTours}
             </button>
             <button
               onClick={() => {
@@ -93,7 +94,7 @@ export default function Navbar({
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
-              내 현장 임장 예약
+              {T.navbar.myTourBookings}
               <Badge count={guestBadge} />
 
             </button>
@@ -112,7 +113,7 @@ export default function Navbar({
               }`}
             >
               <Briefcase className="w-3.5 h-3.5" />
-              내 매물·투어 리스팅 관리
+              {T.navbar.myListingsManagement}
               <Badge count={hostBadge} tone="rose" />
 
             </button>
@@ -128,7 +129,7 @@ export default function Navbar({
                   className="rounded-full cursor-pointer transition-all"
                   aria-haspopup="menu"
                   aria-expanded={menuOpen}
-                  aria-label="사용자 메뉴"
+                  aria-label={T.navbar.userMenuAriaLabel}
                 >
                   <img
                     src={currentUser.avatar}
@@ -151,7 +152,7 @@ export default function Navbar({
                       />
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-neutral-900 truncate">{currentUser.name}</p>
-                        <p className="text-[11px] text-neutral-500 truncate">임탐 회원</p>
+                        <p className="text-[11px] text-neutral-500 truncate">{T.navbar.imtamMember}</p>
 
                       </div>
                     </div>
@@ -165,7 +166,7 @@ export default function Navbar({
                         className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-neutral-600 hover:bg-rose-50 hover:text-rose-600 flex items-center gap-2.5 cursor-pointer transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
-                        로그아웃
+                        {T.navbar.logout}
                       </button>
                     </div>
                   </div>
@@ -178,7 +179,7 @@ export default function Navbar({
                 className="bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold py-2 px-3.5 rounded-xl cursor-pointer shadow-xs flex items-center gap-1.5 transition-colors"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                <span>로그인/회원가입</span>
+                <span>{T.navbar.loginSignup}</span>
               </button>
             )}
           </div>
@@ -193,7 +194,7 @@ export default function Navbar({
             }`}
           >
             <Compass className="w-4 h-4" />
-            <span>매물 임장</span>
+            <span>{T.navbar.mobileListingsTours}</span>
           </button>
           <button
             onClick={() => {
@@ -215,7 +216,7 @@ export default function Navbar({
                 </span>
               )}
             </div>
-            <span>예약 내역</span>
+            <span>{T.navbar.mobileBookingHistory}</span>
 
           </button>
           <button
@@ -238,7 +239,7 @@ export default function Navbar({
                 </span>
               )}
             </div>
-            <span>매물 리스팅</span>
+            <span>{T.navbar.mobileListingsShort}</span>
 
           </button>
         </div>

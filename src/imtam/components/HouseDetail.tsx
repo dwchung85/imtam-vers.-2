@@ -3,6 +3,7 @@ import { House, Booking, SlotLoad } from '../types';
 import { X, Star, MapPin, Users, Calendar, ShieldCheck, Heart, Building, Clock, Coffee, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { fetchHouseSlotLoad } from '../dbService';
+import { T } from "../strings";
 
 interface HouseDetailProps {
   house: House;
@@ -68,15 +69,15 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
     setBookingError(null);
 
     if (!hasSchedule) {
-      setBookingError('호스트가 아직 방문 가능 일정을 등록하지 않았습니다.');
+      setBookingError(T.houseDetail.hostScheduleMissingError);
       return;
     }
     if (isSlotFull) {
-      setBookingError('선택한 시간대는 정원이 마감되었습니다. 다른 시간대를 선택해 주세요.');
+      setBookingError(T.houseDetail.slotFullError);
       return;
     }
     if (guestsCount > remainingSeats) {
-      setBookingError(`이 시간대에 남은 자리는 ${remainingSeats}명입니다.`);
+      setBookingError(`${T.houseDetail.remainingSeatsErrorPrefix}${remainingSeats}${T.houseDetail.remainingSeatsErrorSuffix}`);
       return;
     }
 
@@ -125,9 +126,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight mb-2">현장 임장 예약 접수 완료!</h3>
-            <p className="text-neutral-600 text-xs md:text-sm font-semibold mb-1">공인중개사 및 소유주에게 투어 안내 예약 신청이 실시간 전달되었습니다.</p>
-            <p className="text-[11px] text-neutral-400">내 현장 임장 예약 목록 탭에서 실시간 확정 상태를 조회하실 수 있습니다.</p>
+            <h3 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight mb-2">{T.houseDetail.successTitle}</h3>
+            <p className="text-neutral-600 text-xs md:text-sm font-semibold mb-1">{T.houseDetail.successMessage1}</p>
+            <p className="text-[11px] text-neutral-400">{T.houseDetail.successMessage2}</p>
           </motion.div>
         ) : (
           <motion.div
@@ -160,7 +161,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           ? house.imageUrls[activeImageIdx]
                           : house.imageUrl
                       }
-                      alt={`${house.title} - 전경 ${activeImageIdx + 1}`}
+                      alt={`${house.title}${T.houseDetail.coverImageAltInfix}${activeImageIdx + 1}`}
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover transition-transform duration-500 ease-out"
                     />
@@ -176,7 +177,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                             )
                           }
                           className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-neutral-900 text-white p-2.5 rounded-full shadow-md hover:scale-105 active:scale-95 transition-all text-sm cursor-pointer z-10 flex items-center justify-center"
-                          title="이전 사진"
+                          title={T.houseDetail.prevPhoto}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
@@ -188,7 +189,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                             )
                           }
                           className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-neutral-900 text-white p-2.5 rounded-full shadow-md hover:scale-105 active:scale-95 transition-all text-sm cursor-pointer z-10 flex items-center justify-center"
-                          title="다음 사진"
+                          title={T.houseDetail.nextPhoto}
                         >
                           <ChevronRight className="w-5 h-5" />
                         </button>
@@ -244,13 +245,13 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   {/* Specs row */}
                   <div className="flex flex-wrap items-center gap-2 mt-2.5">
                     <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
-                      방 {house.rooms ?? 3}개
+                      {T.houseDetail.roomsPrefix}{house.rooms ?? 3}{T.houseDetail.unitSuffix}
                     </span>
                     <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
-                      욕실 {house.bathrooms ?? 2}개
+                      {T.houseDetail.bathroomsPrefix}{house.bathrooms ?? 2}{T.houseDetail.unitSuffix}
                     </span>
                     <span className="bg-blue-50 text-blue-700 text-xs font-extrabold px-3 py-1 rounded-lg">
-                      {house.area ?? 24}평 (공급면적)
+                      {house.area ?? 24}{T.houseDetail.areaSuffix}
                     </span>
                   </div>
 
@@ -259,12 +260,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       <span className="flex items-center gap-1 font-semibold text-neutral-800">
                         <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                         <span>{house.rating.toFixed(1)}</span>
-                        <span className="font-normal text-neutral-500">({house.reviewsCount}명의 전속 바이어 리뷰 만족도)</span>
+                        <span className="font-normal text-neutral-500">({house.reviewsCount}{T.houseDetail.reviewsCountSuffix})</span>
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 font-semibold text-neutral-500">
                         <Star className="w-4 h-4 text-neutral-300" />
-                        <span className="font-normal">아직 등록된 리뷰가 없습니다</span>
+                        <span className="font-normal">{T.houseDetail.noReviewsYet}</span>
                       </span>
                     )}
                     <span className="text-neutral-300">•</span>
@@ -284,13 +285,13 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       className="w-12 h-12 rounded-full object-cover border border-neutral-200"
                     />
                     <div>
-                      <h4 className="font-bold text-neutral-900">검증된 중개 파트너 {house.hostName}</h4>
-                      <p className="text-xs text-neutral-400">매물 실소유주 연계 인증 공인 중개 매칭 전문가</p>
+                      <h4 className="font-bold text-neutral-900">{T.houseDetail.verifiedPartnerPrefix}{house.hostName}</h4>
+                      <p className="text-xs text-neutral-400">{T.houseDetail.hostSubtitle}</p>
                     </div>
                   </div>
                   <div>
                     <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Building className="w-4 h-4 text-blue-600" /> [임탐 소개]
+                      <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
                     </h5>
                     <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
                       {house.description}
@@ -302,7 +303,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                 {house.amenities && house.amenities.length > 0 && (
                   <div className="border-t border-neutral-150 pt-5">
                     <h3 className="font-bold text-neutral-900 text-base mb-3 flex items-center gap-1">
-                      <Sparkles className="w-4 h-4 text-amber-500" /> 하이엔드 인테리어 포인트 & 건축 혜택 요소
+                      <Sparkles className="w-4 h-4 text-amber-500" /> {T.houseDetail.amenitiesTitle}
                     </h3>
                     <div className="grid grid-cols-2 gap-3">
                       {house.amenities.map((amenity, idx) => (
@@ -321,12 +322,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                 <div className="sticky top-0 bg-blue-50/10 rounded-3xl border border-blue-100 p-5 space-y-4">
                   <div>
                     <span className="text-2xl font-black text-blue-600">₩{house.pricePerVisit.toLocaleString()}</span>
-                    <span className="text-xs text-neutral-500 font-bold block mt-1"> / 임탐 투어 비용</span>
+                    <span className="text-xs text-neutral-500 font-bold block mt-1">{T.houseDetail.perVisitLabel}</span>
                   </div>
 
                   {!hasSchedule && (
                     <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-[11px] font-bold text-amber-700">
-                      호스트가 아직 방문 가능 일정을 등록하지 않아 예약할 수 없습니다.
+                      {T.houseDetail.noScheduleWarning}
                     </div>
                   )}
 
@@ -336,7 +337,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       <div className="p-3">
                         <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5 text-blue-500" />
-                          <span>소유주 등록 방문일 선택 ({resolvedDates.length}개 일자 조율가능)</span>
+                          <span>{T.houseDetail.visitDateLabelPrefix}{resolvedDates.length}{T.houseDetail.visitDateLabelSuffix}</span>
                         </label>
                         <select
                           value={visitDate}
@@ -355,7 +356,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       <div className="p-3">
                         <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-blue-500" />
-                          <span>소유주 등록 투어 타임을 선택하세요</span>
+                          <span>{T.houseDetail.timeSlotLabel}</span>
                         </label>
                         <select
                           value={visitTimeSlot}
@@ -367,7 +368,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                             const left = remainingFor(visitDate, slot);
                             return (
                               <option key={slot} value={slot} disabled={left === 0}>
-                                {slot} {left === 0 ? '· 마감' : `· 남은 자리 ${left}명`}
+                                {slot} {left === 0 ? T.houseDetail.slotClosedText : `${T.houseDetail.slotRemainingPrefix}${left}${T.houseDetail.slotRemainingSuffix}`}
                               </option>
                             );
                           })}
@@ -384,17 +385,17 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         }`}
                       >
                         {isSlotFull
-                          ? '선택한 시간대는 정원이 마감되었습니다.'
-                          : `선택한 시간대 남은 자리 ${remainingSeats}명 / 정원 ${house.maxGuests}명`}
+                          ? T.houseDetail.slotFullMessage
+                          : `${T.houseDetail.slotRemainingSummaryPart1}${remainingSeats}${T.houseDetail.slotRemainingSummaryPart2}${house.maxGuests}${T.houseDetail.slotRemainingSummaryPart3}`}
                       </div>
                     )}
 
 
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-2xl p-3 bg-white">
-                      <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">동반 임장 실사 인원</label>
+                      <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">{T.houseDetail.guestsCountLabel}</label>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-neutral-500 font-semibold">총 동반 참석자</span>
+                        <span className="text-xs text-neutral-500 font-semibold">{T.houseDetail.totalGuestsLabel}</span>
                         <div className="flex items-center gap-3">
                           <button
                             type="button"
@@ -416,22 +417,22 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         </div>
                       </div>
                       <p className="text-[10px] text-neutral-400 mt-1.5 leading-relaxed">
-                        중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 <strong className="text-neutral-700">{house.maxGuests}명</strong>이며, 선택한 시간대에는 <strong className="text-neutral-700">{remainingSeats}명</strong>까지 예약할 수 있습니다.
+                        {T.houseDetail.guestsInfoPrefix}<strong className="text-neutral-700">{house.maxGuests}{T.houseDetail.guestsUnit}</strong>{T.houseDetail.guestsInfoMiddle}<strong className="text-neutral-700">{remainingSeats}{T.houseDetail.guestsUnit}</strong>{T.houseDetail.guestsInfoSuffix}
                       </p>
                     </div>
 
                     {/* Cost Split block */}
                     <div className="space-y-2 pt-3.5 border-t border-neutral-200 text-xs text-neutral-600">
                       <div className="flex justify-between">
-                        <span className="underline">임탐 입장 개방료 (₩{house.pricePerVisit.toLocaleString()} × {guestsCount}인)</span>
+                        <span className="underline">{T.houseDetail.openingFeeLabelPrefix}{house.pricePerVisit.toLocaleString()}{T.houseDetail.openingFeeLabelMiddle}{guestsCount}{T.houseDetail.openingFeeLabelSuffix}</span>
                         <span>₩{rawPrice.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between text-[11px] text-neutral-400">
-                        <span>추가 수수료</span>
-                        <span>없음</span>
+                        <span>{T.houseDetail.additionalFeeLabel}</span>
+                        <span>{T.houseDetail.noneLabel}</span>
                       </div>
                       <div className="flex justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-2.5 text-sm">
-                        <span>임탐 투어 비용</span>
+                        <span>{T.houseDetail.tourCostLabel}</span>
                         <span className="text-blue-600 font-black text-base">₩{totalPrice.toLocaleString()}</span>
                       </div>
                     </div>
@@ -448,14 +449,14 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       disabled={!hasSchedule || isSlotFull || submitting}
                       className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
                     >
-                      {submitting ? '예약 신청 중...' : isSlotFull ? '해당 시간대 마감' : '현장 임탐 희망 예약하기'}
+                      {submitting ? T.houseDetail.submittingLabel : isSlotFull ? T.houseDetail.slotFullButtonLabel : T.houseDetail.submitButtonLabel}
                     </button>
 
                   </form>
 
                   <div className="flex items-center gap-2 text-[10px] text-neutral-500 justify-center">
                     <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>Zillow-IMTAM 신뢰: 등기 의무 허위 등록 및 불일치시 100% 반환</span>
+                    <span>{T.houseDetail.trustLabel}</span>
                   </div>
                 </div>
               </div>

@@ -18,6 +18,7 @@ import {
 } from "./dbService";
 
 import { Search, Info, Compass, LogIn } from "lucide-react";
+import { T } from "./strings";
 
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);
@@ -137,7 +138,7 @@ export default function App() {
   ): Promise<string | null> => {
     if (!currentUser) {
       setIsAuthModalOpen(true);
-      return "로그인이 필요합니다.";
+      return T.app.loginRequiredError;
     }
     try {
       const { booking, error } = await addBookingDb({
@@ -150,7 +151,7 @@ export default function App() {
       return null;
     } catch (error) {
       console.error("DB error booking house:", error);
-      return "예약 신청 중 오류가 발생했습니다.";
+      return T.app.bookingErrorGeneric;
     }
   };
 
@@ -282,7 +283,7 @@ export default function App() {
                         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
                         <input
                           type="text"
-                          placeholder="경기도 성남시 분당구 판교원로 82번길"
+                          placeholder={T.app.searchPlaceholder}
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-xl border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
@@ -303,17 +304,17 @@ export default function App() {
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
                           }`}
                         >
-                          <option value="0">방 개수</option>
-                          <option value="1">방 1개 이상</option>
-                          <option value="2">방 2개 이상</option>
-                          <option value="3">방 3개 이상</option>
-                          <option value="4">방 4개 이상</option>
+                          <option value="0">{T.app.roomsLabel}</option>
+                          <option value="1">{T.app.rooms1Plus}</option>
+                          <option value="2">{T.app.rooms2Plus}</option>
+                          <option value="3">{T.app.rooms3Plus}</option>
+                          <option value="4">{T.app.rooms4Plus}</option>
                         </select>
                         {minRooms > 0 ? (
                           <button
                             type="button"
                             onClick={() => setMinRooms(0)}
-                            aria-label="방 개수 필터 초기화"
+                            aria-label={T.app.roomsFilterResetAriaLabel}
                             className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
                           >
                             <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
@@ -336,16 +337,16 @@ export default function App() {
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
                           }`}
                         >
-                          <option value="0">화장실 개수</option>
-                          <option value="1">화장실 1개 이상</option>
-                          <option value="2">화장실 2개 이상</option>
-                          <option value="3">화장실 3개 이상</option>
+                          <option value="0">{T.app.bathroomsLabel}</option>
+                          <option value="1">{T.app.bathrooms1Plus}</option>
+                          <option value="2">{T.app.bathrooms2Plus}</option>
+                          <option value="3">{T.app.bathrooms3Plus}</option>
                         </select>
                         {minBathrooms > 0 ? (
                           <button
                             type="button"
                             onClick={() => setMinBathrooms(0)}
-                            aria-label="화장실 개수 필터 초기화"
+                            aria-label={T.app.bathroomsFilterResetAriaLabel}
                             className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
                           >
                             <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
@@ -368,17 +369,17 @@ export default function App() {
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
                           }`}
                         >
-                          <option value="0">넓이 (평)</option>
-                          <option value="10">10평 이상</option>
-                          <option value="20">20평 이상</option>
-                          <option value="30">30평 이상</option>
-                          <option value="40">40평 이상</option>
+                          <option value="0">{T.app.areaLabel}</option>
+                          <option value="10">{T.app.area10Plus}</option>
+                          <option value="20">{T.app.area20Plus}</option>
+                          <option value="30">{T.app.area30Plus}</option>
+                          <option value="40">{T.app.area40Plus}</option>
                         </select>
                         {minArea > 0 ? (
                           <button
                             type="button"
                             onClick={() => setMinArea(0)}
-                            aria-label="넓이 필터 초기화"
+                            aria-label={T.app.areaFilterResetAriaLabel}
                             className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
                           >
                             <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
@@ -398,7 +399,7 @@ export default function App() {
                   {filteredHouses.length === 0 ? (
                     <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
                       <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
-                      <h3 className="font-bold text-neutral-800 text-lg">조건에 부합하는 임탐 매물이 없습니다</h3>
+                      <h3 className="font-bold text-neutral-800 text-lg">{T.app.noMatchingHouses}</h3>
                     </div>
                   ) : (
                     <div>
@@ -464,7 +465,7 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-neutral-200 mt-16 py-6 text-center text-xs text-neutral-400">
         <div className="max-w-7xl mx-auto px-4 space-y-1">
-          <p>© 2026 IMTAM. All rights reserved.</p>
+          <p>{T.app.footerCopyright}</p>
         </div>
       </footer>
     </div>
@@ -475,15 +476,15 @@ function LoginRequired({ onOpenAuth }: { onOpenAuth: () => void }) {
   return (
     <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl p-6 max-w-md mx-auto space-y-4 animate-fadeIn">
       <LogIn className="w-12 h-12 text-blue-600 mx-auto" />
-      <h3 className="text-lg font-bold text-neutral-800">로그인이 필요한 화면입니다</h3>
+      <h3 className="text-lg font-bold text-neutral-800">{T.app.loginRequiredTitle}</h3>
       <p className="text-xs text-neutral-400 font-semibold">
-        예약 내역과 매물 리스팅 관리는 로그인 후 이용할 수 있습니다.
+        {T.app.loginRequiredDesc}
       </p>
       <button
         onClick={onOpenAuth}
         className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
       >
-        로그인 / 회원가입
+        {T.app.loginSignup}
       </button>
     </div>
   );
