@@ -22,7 +22,7 @@ export const T = {
     area40Plus: "40평 이상",
     areaFilterResetAriaLabel: "넓이 필터 초기화",
     noMatchingHouses: "조건에 부합하는 임탐 매물이 없습니다",
-    footerCopyright: "© 2026 IMTAM. All rights reserved. TEST-REFLECT",
+    footerCopyright: "© 2026 IMTAM. All rights reserved.",
     loginRequiredTitle: "로그인이 필요한 화면입니다",
     loginRequiredDesc: "예약 내역과 매물 리스팅 관리는 로그인 후 이용할 수 있습니다.",
     loginSignup: "로그인 / 회원가입",
