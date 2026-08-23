@@ -1,14 +1,30 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { House, Booking, SlotLoad } from '../types';
-import { X, Star, MapPin, Users, Calendar, ShieldCheck, Heart, Building, Clock, Coffee, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { fetchHouseSlotLoad } from '../dbService';
+import React, { useEffect, useMemo, useState } from "react";
+import { House, Booking, SlotLoad } from "../types";
+import {
+  X,
+  Star,
+  MapPin,
+  Users,
+  Calendar,
+  ShieldCheck,
+  Heart,
+  Building,
+  Clock,
+  Coffee,
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { fetchHouseSlotLoad } from "../dbService";
 import { T } from "../strings";
 
 interface HouseDetailProps {
   house: House;
   onClose: () => void;
-  onBook: (bookingData: Omit<Booking, 'id' | 'guestId' | 'guestName' | 'status' | 'createdAt'>) => Promise<string | null>;
+  onBook: (
+    bookingData: Omit<Booking, "id" | "guestId" | "guestName" | "status" | "createdAt">,
+  ) => Promise<string | null>;
   currentUserId: string;
 }
 
@@ -18,8 +34,8 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
   const resolvedTimeSlots = house.availableTimeSlots ?? [];
   const hasSchedule = resolvedDates.length > 0 && resolvedTimeSlots.length > 0;
 
-  const [visitDate, setVisitDate] = useState<string>(resolvedDates[0] ?? '');
-  const [visitTimeSlot, setVisitTimeSlot] = useState<string>(resolvedTimeSlots[0] ?? '');
+  const [visitDate, setVisitDate] = useState<string>(resolvedDates[0] ?? "");
+  const [visitTimeSlot, setVisitTimeSlot] = useState<string>(resolvedTimeSlots[0] ?? "");
   const [guestsCount, setGuestsCount] = useState<number>(1);
   const [hearted, setHearted] = useState<boolean>(false);
   const [successBooking, setSuccessBooking] = useState<boolean>(false);
@@ -77,7 +93,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
       return;
     }
     if (guestsCount > remainingSeats) {
-      setBookingError(`${T.houseDetail.remainingSeatsErrorPrefix}${remainingSeats}${T.houseDetail.remainingSeatsErrorSuffix}`);
+      setBookingError(
+        `${T.houseDetail.remainingSeatsErrorPrefix}${remainingSeats}${T.houseDetail.remainingSeatsErrorSuffix}`,
+      );
       return;
     }
 
@@ -110,7 +128,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
     }, 2000);
   };
 
-
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 md:p-6">
       <AnimatePresence>
@@ -126,7 +143,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight mb-2">{T.houseDetail.successTitle}</h3>
+            <h3 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight mb-2">
+              {T.houseDetail.successTitle}
+            </h3>
             <p className="text-neutral-600 text-xs md:text-sm font-semibold mb-1">{T.houseDetail.successMessage1}</p>
             <p className="text-[11px] text-neutral-400">{T.houseDetail.successMessage2}</p>
           </motion.div>
@@ -157,9 +176,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     {/* Active image render */}
                     <img
                       src={
-                        house.imageUrls && house.imageUrls.length > 0
-                          ? house.imageUrls[activeImageIdx]
-                          : house.imageUrl
+                        house.imageUrls && house.imageUrls.length > 0 ? house.imageUrls[activeImageIdx] : house.imageUrl
                       }
                       alt={`${house.title}${T.houseDetail.coverImageAltInfix}${activeImageIdx + 1}`}
                       referrerPolicy="no-referrer"
@@ -172,9 +189,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         <button
                           type="button"
                           onClick={() =>
-                            setActiveImageIdx((prev) =>
-                              prev === 0 ? house.imageUrls!.length - 1 : prev - 1
-                            )
+                            setActiveImageIdx((prev) => (prev === 0 ? house.imageUrls!.length - 1 : prev - 1))
                           }
                           className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-neutral-900 text-white p-2.5 rounded-full shadow-md hover:scale-105 active:scale-95 transition-all text-sm cursor-pointer z-10 flex items-center justify-center"
                           title={T.houseDetail.prevPhoto}
@@ -184,9 +199,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         <button
                           type="button"
                           onClick={() =>
-                            setActiveImageIdx((prev) =>
-                              prev === house.imageUrls!.length - 1 ? 0 : prev + 1
-                            )
+                            setActiveImageIdx((prev) => (prev === house.imageUrls!.length - 1 ? 0 : prev + 1))
                           }
                           className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-neutral-900 text-white p-2.5 rounded-full shadow-md hover:scale-105 active:scale-95 transition-all text-sm cursor-pointer z-10 flex items-center justify-center"
                           title={T.houseDetail.nextPhoto}
@@ -206,7 +219,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       onClick={() => setHearted(!hearted)}
                       className="absolute top-4 right-4 bg-white p-2.5 rounded-full shadow-md text-neutral-700 hover:scale-105 active:scale-95 transition-transform cursor-pointer z-10"
                     >
-                      <Heart className={`w-5 h-5 ${hearted ? 'fill-rose-500 text-rose-500' : 'text-neutral-400'}`} />
+                      <Heart className={`w-5 h-5 ${hearted ? "fill-rose-500 text-rose-500" : "text-neutral-400"}`} />
                     </button>
                   </div>
 
@@ -220,16 +233,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           onClick={() => setActiveImageIdx(idx)}
                           className={`relative aspect-video w-16 md:w-20 rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
                             activeImageIdx === idx
-                              ? 'border-blue-600 ring-2 ring-blue-100 opacity-100'
-                              : 'border-neutral-200 opacity-60 hover:opacity-100'
+                              ? "border-blue-600 ring-2 ring-blue-100 opacity-100"
+                              : "border-neutral-200 opacity-60 hover:opacity-100"
                           }`}
                         >
-                          <img
-                            src={thumb}
-                            alt=""
-                            className="w-full h-full object-cover"
-                            referrerPolicy="no-referrer"
-                          />
+                          <img src={thumb} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                         </button>
                       ))}
                     </div>
@@ -241,26 +249,34 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   <h1 className="text-xl md:text-2xl font-black text-neutral-900 leading-snug tracking-tight">
                     {house.title}
                   </h1>
-                  
+
                   {/* Specs row */}
                   <div className="flex flex-wrap items-center gap-2 mt-2.5">
                     <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
-                      {T.houseDetail.roomsPrefix}{house.rooms ?? 3}{T.houseDetail.unitSuffix}
+                      {T.houseDetail.roomsPrefix}
+                      {house.rooms ?? 3}
+                      {T.houseDetail.unitSuffix}
                     </span>
                     <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
-                      {T.houseDetail.bathroomsPrefix}{house.bathrooms ?? 2}{T.houseDetail.unitSuffix}
+                      {T.houseDetail.bathroomsPrefix}
+                      {house.bathrooms ?? 2}
+                      {T.houseDetail.unitSuffix}
                     </span>
                     <span className="bg-blue-50 text-blue-700 text-xs font-extrabold px-3 py-1 rounded-lg">
-                      {house.area ?? 24}{T.houseDetail.areaSuffix}
+                      {house.area ?? 24}
+                      {T.houseDetail.areaSuffix}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 text-sm text-neutral-600">
-                    {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === 'number' ? (
+                    {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === "number" ? (
                       <span className="flex items-center gap-1 font-semibold text-neutral-800">
                         <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                         <span>{house.rating.toFixed(1)}</span>
-                        <span className="font-normal text-neutral-500">({house.reviewsCount}{T.houseDetail.reviewsCountSuffix})</span>
+                        <span className="font-normal text-neutral-500">
+                          ({house.reviewsCount}
+                          {T.houseDetail.reviewsCountSuffix})
+                        </span>
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 font-semibold text-neutral-500">
@@ -285,17 +301,17 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       className="w-12 h-12 rounded-full object-cover border border-neutral-200"
                     />
                     <div>
-                      <h4 className="font-bold text-neutral-900">{T.houseDetail.verifiedPartnerPrefix}{house.hostName}</h4>
-                      <p className="text-xs text-neutral-400">{T.houseDetail.hostSubtitle}</p>
+                      <h4 className="font-bold text-neutral-900">
+                        {T.houseDetail.verifiedPartnerPrefix}
+                        {house.hostName}
+                      </h4>
                     </div>
                   </div>
                   <div>
                     <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
                       <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
                     </h5>
-                    <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
-                      {house.description}
-                    </p>
+                    <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
                   </div>
                 </div>
 
@@ -307,7 +323,10 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     </h3>
                     <div className="grid grid-cols-2 gap-3">
                       {house.amenities.map((amenity, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm text-neutral-700 bg-neutral-50 rounded-xl p-2.5 px-3 border border-neutral-100">
+                        <div
+                          key={idx}
+                          className="flex items-center gap-2 text-sm text-neutral-700 bg-neutral-50 rounded-xl p-2.5 px-3 border border-neutral-100"
+                        >
                           <Coffee className="w-4 h-4 text-blue-500 shrink-0" />
                           <span className="font-medium">{amenity}</span>
                         </div>
@@ -337,7 +356,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       <div className="p-3">
                         <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5 text-blue-500" />
-                          <span>{T.houseDetail.visitDateLabelPrefix}{resolvedDates.length}{T.houseDetail.visitDateLabelSuffix}</span>
+                          <span>
+                            {T.houseDetail.visitDateLabelPrefix}
+                            {resolvedDates.length}
+                            {T.houseDetail.visitDateLabelSuffix}
+                          </span>
                         </label>
                         <select
                           value={visitDate}
@@ -352,7 +375,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           ))}
                         </select>
                       </div>
-                      
+
                       <div className="p-3">
                         <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-blue-500" />
@@ -368,7 +391,10 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                             const left = remainingFor(visitDate, slot);
                             return (
                               <option key={slot} value={slot} disabled={left === 0}>
-                                {slot} {left === 0 ? T.houseDetail.slotClosedText : `${T.houseDetail.slotRemainingPrefix}${left}${T.houseDetail.slotRemainingSuffix}`}
+                                {slot}{" "}
+                                {left === 0
+                                  ? T.houseDetail.slotClosedText
+                                  : `${T.houseDetail.slotRemainingPrefix}${left}${T.houseDetail.slotRemainingSuffix}`}
                               </option>
                             );
                           })}
@@ -380,8 +406,8 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       <div
                         className={`rounded-xl px-3 py-2 text-[11px] font-bold ${
                           isSlotFull
-                            ? 'bg-rose-50 border border-rose-200 text-rose-600'
-                            : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                            ? "bg-rose-50 border border-rose-200 text-rose-600"
+                            : "bg-emerald-50 border border-emerald-200 text-emerald-700"
                         }`}
                       >
                         {isSlotFull
@@ -390,10 +416,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </div>
                     )}
 
-
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-2xl p-3 bg-white">
-                      <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">{T.houseDetail.guestsCountLabel}</label>
+                      <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
+                        {T.houseDetail.guestsCountLabel}
+                      </label>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-neutral-500 font-semibold">{T.houseDetail.totalGuestsLabel}</span>
                         <div className="flex items-center gap-3">
@@ -417,14 +444,30 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         </div>
                       </div>
                       <p className="text-[10px] text-neutral-400 mt-1.5 leading-relaxed">
-                        {T.houseDetail.guestsInfoPrefix}<strong className="text-neutral-700">{house.maxGuests}{T.houseDetail.guestsUnit}</strong>{T.houseDetail.guestsInfoMiddle}<strong className="text-neutral-700">{remainingSeats}{T.houseDetail.guestsUnit}</strong>{T.houseDetail.guestsInfoSuffix}
+                        {T.houseDetail.guestsInfoPrefix}
+                        <strong className="text-neutral-700">
+                          {house.maxGuests}
+                          {T.houseDetail.guestsUnit}
+                        </strong>
+                        {T.houseDetail.guestsInfoMiddle}
+                        <strong className="text-neutral-700">
+                          {remainingSeats}
+                          {T.houseDetail.guestsUnit}
+                        </strong>
+                        {T.houseDetail.guestsInfoSuffix}
                       </p>
                     </div>
 
                     {/* Cost Split block */}
                     <div className="space-y-2 pt-3.5 border-t border-neutral-200 text-xs text-neutral-600">
                       <div className="flex justify-between">
-                        <span className="underline">{T.houseDetail.openingFeeLabelPrefix}{house.pricePerVisit.toLocaleString()}{T.houseDetail.openingFeeLabelMiddle}{guestsCount}{T.houseDetail.openingFeeLabelSuffix}</span>
+                        <span className="underline">
+                          {T.houseDetail.openingFeeLabelPrefix}
+                          {house.pricePerVisit.toLocaleString()}
+                          {T.houseDetail.openingFeeLabelMiddle}
+                          {guestsCount}
+                          {T.houseDetail.openingFeeLabelSuffix}
+                        </span>
                         <span>₩{rawPrice.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between text-[11px] text-neutral-400">
@@ -449,9 +492,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       disabled={!hasSchedule || isSlotFull || submitting}
                       className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
                     >
-                      {submitting ? T.houseDetail.submittingLabel : isSlotFull ? T.houseDetail.slotFullButtonLabel : T.houseDetail.submitButtonLabel}
+                      {submitting
+                        ? T.houseDetail.submittingLabel
+                        : isSlotFull
+                          ? T.houseDetail.slotFullButtonLabel
+                          : T.houseDetail.submitButtonLabel}
                     </button>
-
                   </form>
 
                   <div className="flex items-center gap-2 text-[10px] text-neutral-500 justify-center">
