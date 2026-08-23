@@ -440,28 +440,32 @@ export default function App() {
               )}
 
               {/* Guest Booking Dashboard Page */}
-              {activeTab === "guest" && currentUser && (
-                <GuestDashboard
-                  bookings={bookings}
-                  currentUserId={currentUser.id}
-                  onCancelBooking={handleCancelBooking}
-                  onSubmitReview={handleSubmitReview}
-                />
-              )}
+              {activeTab === "guest" &&
+                (currentUser ? (
+                  <GuestDashboard
+                    bookings={bookings}
+                    currentUserId={currentUser.id}
+                    onCancelBooking={handleCancelBooking}
+                    onSubmitReview={handleSubmitReview}
+                  />
+                ) : (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ))}
 
               {/* Host Dashboard Page */}
-              {activeTab === "host" && currentUser && (
-                <HostDashboard
-                  houses={houses}
-                  bookings={bookings}
-                  currentUserId={currentUser.id}
-                  onAddHouse={handleAddHouseListing}
-                  onUpdateBookingStatus={handleUpdateBookingStatus}
-                  onSelectHouse={(h) => setSelectedHouse(h)}
-                />
-              )}
-            </>
-          )}
+              {activeTab === "host" &&
+                (currentUser ? (
+                  <HostDashboard
+                    houses={houses}
+                    bookings={bookings}
+                    currentUserId={currentUser.id}
+                    onAddHouse={handleAddHouseListing}
+                    onUpdateBookingStatus={handleUpdateBookingStatus}
+                    onSelectHouse={(h) => setSelectedHouse(h)}
+                  />
+                ) : (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ))}
         </>
       </main>
 
