@@ -61,7 +61,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           </div>
 
           {/* Title */}
-          <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors text-sm md:text-base leading-snug line-clamp-2 mb-2">
+          <h3 className="font-semibold text-neutral-900 text-sm md:text-base leading-snug line-clamp-2 mb-2">
             {house.title}
           </h3>
           
