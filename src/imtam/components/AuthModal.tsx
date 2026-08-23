@@ -3,6 +3,7 @@ import { X, Mail, Lock, User, CheckCircle2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { UserProfile } from "../types";
 import { fetchProfile } from "../dbService";
+import { T } from "../strings";
 
 interface AuthModalProps {
   onClose: () => void;
@@ -47,17 +48,17 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
     setLoading(true);
 
     if (!email.trim() || !password.trim()) {
-      setErrorMessage("이메일과 비밀번호를 모두 입력해주세요.");
+      setErrorMessage(T.auth.fillEmailPassword);
       setLoading(false);
       return;
     }
     if (isSignUp && !name.trim()) {
-      setErrorMessage("이름을 입력해주세요.");
+      setErrorMessage(T.auth.enterName);
       setLoading(false);
       return;
     }
     if (isSignUp && password !== confirmPassword) {
-      setErrorMessage("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
+      setErrorMessage(T.auth.passwordMismatch);
       setLoading(false);
       return;
     }
@@ -79,7 +80,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           setLoading(false);
           return;
         }
-        setSuccessMessage("회원 가입이 완료되었습니다.");
+        setSuccessMessage(T.auth.signupComplete);
         if (data.session?.user) {
           await loadAndFinish(data.session.user.id);
         } else if (data.user) {
@@ -93,17 +94,17 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           password,
         });
         if (error) {
-          setErrorMessage("이메일 또는 비밀번호가 올바르지 않습니다.");
+          setErrorMessage(T.auth.invalidLogin);
           setLoading(false);
           return;
         }
-        setSuccessMessage("로그인 성공");
+        setSuccessMessage(T.auth.loginSuccess);
         if (data.user) await loadAndFinish(data.user.id);
         setLoading(false);
       }
     } catch (err) {
       console.error(err);
-      setErrorMessage("처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+      setErrorMessage(T.auth.processingError);
       setLoading(false);
     }
   };
@@ -121,7 +122,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
 
         <div className="text-center mb-6">
           <h2 className="text-xl md:text-2xl font-black text-neutral-905 tracking-tight">
-            {isSignUp ? "IMTAM 가입" : "IMTAM 로그인"}
+            {isSignUp ? T.auth.titleSignUp : T.auth.titleLogin}
           </h2>
         </div>
 
@@ -141,13 +142,13 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           {isSignUp && (
             <div>
               <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                사용자명 *
+                {T.auth.usernameLabel}
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                 <input
                   type="text"
-                  placeholder="예: 김성민"
+                  placeholder={T.auth.namePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={loading}
@@ -160,7 +161,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
 
           <div>
             <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-              이메일 *
+              {T.auth.emailLabel}
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -178,7 +179,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
 
           <div>
             <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-              {isSignUp ? "비밀번호 설정 *" : "비밀번호 *"}
+              {isSignUp ? T.auth.passwordSetupLabel : T.auth.passwordLabel}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -197,7 +198,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           {isSignUp && (
             <div>
               <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                비밀번호 확인 *
+                {T.auth.confirmPasswordLabel}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -220,12 +221,12 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
             className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 disabled:bg-blue-350 text-white font-bold text-xs md:text-sm py-3.5 px-4 rounded-xl shadow-md transition-all mt-2 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {isSignUp ? "약관 동의하고 가입하기" : "IMTAM에 접속"}
+            {isSignUp ? T.auth.submitSignUp : T.auth.submitLogin}
           </button>
         </form>
 
         <div className="text-center mt-5 pt-4 border-t border-neutral-100 text-xs">
-          <span className="text-neutral-400">{isSignUp ? "이미 계정이 있으신가요?" : "첫 방문이신가요?"}</span>{" "}
+          <span className="text-neutral-400">{isSignUp ? T.auth.hasAccount : T.auth.firstVisit}</span>{" "}
           <button
             onClick={() => {
               if (!loading) {
@@ -238,7 +239,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
             className="text-blue-600 hover:text-blue-800 underline font-bold ml-1 cursor-pointer"
             disabled={loading}
           >
-            {isSignUp ? "여기서 로그인" : "이메일 가입하기"}
+            {isSignUp ? T.auth.goToLogin : T.auth.goToSignup}
           </button>
         </div>
       </div>

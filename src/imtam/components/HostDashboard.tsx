@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { T } from "../strings";
 import { House, Booking } from "../types";
 import {
   PlusCircle,
@@ -67,10 +68,10 @@ export default function HostDashboard({
   const [availableDates, setAvailableDates] = useState<string[]>(getNextDays(3));
   const [dateInput, setDateInput] = useState<string>("");
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([
-    "오전 10:00 ~ 12:00",
-    "오후 02:00 ~ 04:00",
-    "오후 04:00 ~ 06:00",
-    "저녁 07:00 ~ 09:00",
+    T.host.timeSlotMorning,
+    T.host.timeSlotAfternoon1,
+    T.host.timeSlotAfternoon2,
+    T.host.timeSlotEvening,
   ]);
   const [customTimeInput, setCustomTimeInput] = useState<string>("");
 
@@ -115,10 +116,10 @@ export default function HostDashboard({
             resolve(e.target?.result as string);
           }
         };
-        img.onerror = () => reject(new Error("이미지 분석 실패"));
+        img.onerror = () => reject(new Error(T.host.imageAnalysisFailed));
         img.src = e.target?.result as string;
       };
-      reader.onerror = () => reject(new Error("파일 읽기 실패"));
+      reader.onerror = () => reject(new Error(T.host.fileReadFailed));
       reader.readAsDataURL(file);
     });
   };
@@ -128,12 +129,12 @@ export default function HostDashboard({
     const imageFiles = fileList.filter((file) => file.type.startsWith("image/"));
 
     if (imageFiles.length === 0) {
-      alert("이미지 파일만 업로드할 수 있습니다.");
+      alert(T.host.onlyImageFilesAlert);
       return;
     }
 
     if (uploadedImages.length + imageFiles.length > 8) {
-      alert("사진은 최대 8장까지만 업로드할 수 있습니다.");
+      alert(T.host.maxPhotosAlert);
       return;
     }
 
@@ -179,11 +180,11 @@ export default function HostDashboard({
 
   const handleAddDate = () => {
     if (!dateInput) {
-      alert("추가할 날짜를 선택해주세요.");
+      alert(T.host.selectDateAlert);
       return;
     }
     if (availableDates.includes(dateInput)) {
-      alert("이미 설정된 방문 가능 날짜입니다.");
+      alert(T.host.dateAlreadySetAlert);
       return;
     }
     setAvailableDates((prev) => [...prev, dateInput].sort());
@@ -205,11 +206,11 @@ export default function HostDashboard({
   const handleAddCustomTimeSlot = () => {
     const trimmed = customTimeInput.trim();
     if (!trimmed) {
-      alert("시간 및 설명 문구를 입력해 주세요.");
+      alert(T.host.enterTimeSlotAlert);
       return;
     }
     if (availableTimeSlots.includes(trimmed)) {
-      alert("이미 등록된 시간대입니다.");
+      alert(T.host.timeSlotAlreadyRegisteredAlert);
       return;
     }
     setAvailableTimeSlots((prev) => [...prev, trimmed]);
@@ -223,22 +224,22 @@ export default function HostDashboard({
   const handleAddHouseSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim() || !location.trim()) {
-      alert("모든 필수 항목을 입력해주세요.");
+      alert(T.host.requiredFieldsAlert);
       return;
     }
 
     if (uploadedImages.length === 0) {
-      alert("최소 1장 이상의 대표 임장 주거 컷을 직접 업로드해 주세요.");
+      alert(T.host.minOnePhotoAlert);
       return;
     }
 
     if (availableDates.length === 0) {
-      alert("방문 가능한 날짜를 최소 1일 이상 지정해 주세요.");
+      alert(T.host.minOneDateAlert);
       return;
     }
 
     if (availableTimeSlots.length === 0) {
-      alert("방문 가능한 시간대 또는 타입 슬롯을 최소 1개 이상 활성화해 주세요.");
+      alert(T.host.minOneTimeSlotAlert);
       return;
     }
 
@@ -270,7 +271,7 @@ export default function HostDashboard({
     setArea(24);
     setUploadedImages([]);
     setAvailableDates(getNextDays(3));
-    setAvailableTimeSlots(["오전 10:00 ~ 12:00", "오후 02:00 ~ 04:00", "오후 04:00 ~ 06:00", "저녁 07:00 ~ 09:00"]);
+    setAvailableTimeSlots([T.host.timeSlotMorning, T.host.timeSlotAfternoon1, T.host.timeSlotAfternoon2, T.host.timeSlotEvening]);
     setDateInput("");
     setCustomTimeInput("");
 
@@ -289,7 +290,7 @@ export default function HostDashboard({
           </span>
           <div>
             <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
-              누적 중개 매칭 및 가이드 수수료 정산 현황
+              {T.host.totalEarningsLabel}
             </span>
             <div className="mt-1 flex flex-wrap items-baseline gap-2">
               <span className="text-2xl md:text-3xl font-black text-neutral-900">
@@ -297,21 +298,21 @@ export default function HostDashboard({
               </span>
               <span className="text-xs text-neutral-400 font-bold text-emerald-600 inline-flex items-center gap-0.5">
                 <ArrowUpRight className="w-3.5 h-3.5 inline" />
-                <span>체결·확정 완료 {receivedBookings.filter((b) => b.status === "confirmed").length}건</span>
+                <span>{T.host.confirmedCountPrefix}{receivedBookings.filter((b) => b.status === "confirmed").length}{T.host.confirmedCountSuffix}</span>
               </span>
             </div>
           </div>
         </div>
 
         <div className="border-t md:border-t-0 md:border-l border-neutral-100 pt-3 md:pt-0 md:pl-6 flex flex-col justify-center text-xs text-neutral-500 font-semibold shrink-0">
-          <span className="text-neutral-400 text-[10px] uppercase font-bold mb-0.5">승인 심사 대기 자금</span>
+          <span className="text-neutral-400 text-[10px] uppercase font-bold mb-0.5">{T.host.pendingFundsLabel}</span>
           <span className="font-extrabold text-sm text-blue-600">
             ₩
             {receivedBookings
               .filter((b) => b.status === "pending")
               .reduce((s, b) => s + b.totalPrice, 0)
               .toLocaleString()}{" "}
-            ({pendingCount}건 대기)
+            {T.host.pendingCountPrefix}{pendingCount}{T.host.pendingCountSuffix}
           </span>
         </div>
       </div>
@@ -321,7 +322,7 @@ export default function HostDashboard({
         {/* Form to List new house (3/5 width) */}
         <div className="xl:col-span-3 bg-white rounded-3xl border border-neutral-200 p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
-            <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">임탐 등록</h3>
+            <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">{T.host.registerListingTitle}</h3>
           </div>
 
           {isSuccess && (
@@ -329,7 +330,7 @@ export default function HostDashboard({
               <svg className="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
               </svg>
-              <span>신규 주택 매물이 임장 투어 및 지도 채널 리스트에 정상 등재되었습니다!</span>
+              <span>{T.host.listingSuccessMessage}</span>
             </div>
           )}
 
@@ -337,10 +338,10 @@ export default function HostDashboard({
             {/* Title / Description */}
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5">매물 한 줄 소개 (제목) *</label>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5">{T.host.titleLabel}</label>
                 <input
                   type="text"
-                  placeholder="예: 분당 정자동 임탐"
+                  placeholder={T.host.titlePlaceholder}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -350,10 +351,10 @@ export default function HostDashboard({
 
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
-                  실내 실사 및 인테리어 건축 핵심 제원 가이드제공 *
+                  {T.host.descriptionLabel}
                 </label>
                 <textarea
-                  placeholder="공간의 가치, 우수한 정주권 등 탐방 및 투어에 나서는 방문자가 확인해야 할 요점을 남겨주세요."
+                  placeholder={T.host.descriptionPlaceholder}
                   rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -366,10 +367,10 @@ export default function HostDashboard({
             {/* Pricing & Location & Guests count */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5">1인당 가격 (원) *</label>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5">{T.host.priceLabel}</label>
                 <input
                   type="number"
-                  placeholder="50,000"
+                  placeholder={T.host.pricePlaceholder}
                   value={pricePerVisit}
                   onChange={(e) => setPricePerVisit(Math.max(1000, Number(e.target.value)))}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -380,10 +381,10 @@ export default function HostDashboard({
 
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
-                  회차당 최대 가이드 가능 인원 (명) *
+                  {T.host.maxGuestsLabel}
                 </label>
                 <div className="flex items-center border border-neutral-200 rounded-xl bg-neutral-50/50 p-2 text-xs justify-between">
-                  <span className="text-neutral-500 pl-2 text-xs">동행 실사</span>
+                  <span className="text-neutral-500 pl-2 text-xs">{T.host.accompaniedTourLabel}</span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
@@ -406,11 +407,11 @@ export default function HostDashboard({
 
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
-                  실제 매물 구역 상세 (시/군/구 동단위) *
+                  {T.host.locationLabel}
                 </label>
                 <input
                   type="text"
-                  placeholder="예: 경기도 성남시 분당구 정자동"
+                  placeholder={T.host.locationPlaceholder}
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -422,10 +423,10 @@ export default function HostDashboard({
             {/* 매물 내부 구조 상세 스펙 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-neutral-100 pt-4">
               <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5">방 개수 *</label>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5">{T.host.roomsLabel}</label>
                 <input
                   type="number"
-                  placeholder="3"
+                  placeholder={T.host.roomsPlaceholder}
                   value={rooms}
                   onChange={(e) => setRooms(Math.max(1, Number(e.target.value)))}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -435,10 +436,10 @@ export default function HostDashboard({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5">화장실 개수 *</label>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5">{T.host.bathroomsLabel}</label>
                 <input
                   type="number"
-                  placeholder="2"
+                  placeholder={T.host.bathroomsPlaceholder}
                   value={bathrooms}
                   onChange={(e) => setBathrooms(Math.max(1, Number(e.target.value)))}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -448,10 +449,10 @@ export default function HostDashboard({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5">공급 면적 (평수) *</label>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5">{T.host.areaLabel}</label>
                 <input
                   type="number"
-                  placeholder="24"
+                  placeholder={T.host.areaPlaceholder}
                   value={area}
                   onChange={(e) => setArea(Math.max(1, Number(e.target.value)))}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
@@ -464,9 +465,9 @@ export default function HostDashboard({
             {/* Image Upload Dropzone (Max 8 photos, Supports Drag & Drop) */}
             <div className="space-y-3">
               <div className="flex justify-between items-center text-xs font-bold text-neutral-700">
-                <span>실제 전경 및 실내 사진 등록 (최대 8장) *</span>
+                <span>{T.host.photosLabel}</span>
                 <span className={`text-[11px] ${uploadedImages.length === 8 ? "text-amber-600" : "text-neutral-400"}`}>
-                  {uploadedImages.length} / 8 장 업로드 완료
+                  {uploadedImages.length}{T.host.photosUploadedSuffix}
                 </span>
               </div>
 
@@ -495,10 +496,10 @@ export default function HostDashboard({
                 <Upload className={`w-8 h-8 ${isDragging ? "text-blue-600 animate-bounce" : "text-neutral-400"}`} />
                 <div>
                   <p className="text-xs font-bold text-neutral-800">
-                    실제 공간 사진들을 드래그 앤 드롭 하거나 클릭하여 탐색기에서 선택
+                    {T.host.dropzoneTitle}
                   </p>
                   <p className="text-[10px] text-neutral-400 mt-1 leading-normal">
-                    신뢰도를 높이기 위해 실물 등기 및 인테리어 실사 원본 등록을 권장합니다. (개별 최대 5MB)
+                    {T.host.dropzoneSubtitle}
                   </p>
                 </div>
               </label>
@@ -513,7 +514,7 @@ export default function HostDashboard({
                     >
                       <img
                         src={imageUri}
-                        alt={`등록사진-${index + 1}`}
+                        alt={`${T.host.registeredPhotoAltPrefix}${index + 1}`}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                       />
@@ -523,7 +524,7 @@ export default function HostDashboard({
                         type="button"
                         onClick={() => handleRemoveImage(index)}
                         className="absolute top-1 right-1 bg-black/75 hover:bg-red-600 text-white p-1 rounded-full shadow-md transition-colors cursor-pointer"
-                        title="사진 삭제"
+                        title={T.host.deletePhotoTitle}
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -531,7 +532,7 @@ export default function HostDashboard({
                       {/* Main representative image badge on first index */}
                       {index === 0 && (
                         <div className="absolute bottom-1 left-1 right-1 bg-blue-600 text-white py-0.5 text-[8px] font-black text-center rounded-md pointer-events-none select-none tracking-tight">
-                          대표 사진
+                          {T.host.mainPhotoBadge}
                         </div>
                       )}
                     </div>
@@ -546,10 +547,10 @@ export default function HostDashboard({
               <div className="space-y-3">
                 <label className="block text-xs font-black text-neutral-800 flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-blue-600" />
-                  <span>방문객 맞이 가능 날짜 설정 *</span>
+                  <span>{T.host.visitDatesLabel}</span>
                 </label>
                 <p className="text-[11px] text-neutral-450 leading-normal">
-                  직접 내방할 수 있는 날짜들을 하나씩 추가해주세요.
+                  {T.host.visitDatesHelp}
                 </p>
 
                 <div className="flex gap-2">
@@ -565,14 +566,14 @@ export default function HostDashboard({
                     onClick={handleAddDate}
                     className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-xl transition-all cursor-pointer whitespace-nowrap"
                   >
-                    날짜 추가
+                    {T.host.addDateButton}
                   </button>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 overflow-y-auto max-h-[85px] p-2 bg-neutral-50 rounded-xl border border-neutral-150">
                   {availableDates.length === 0 ? (
                     <span className="text-[10px] text-neutral-400 font-semibold p-1">
-                      지정한 일정이 없습니다. 날짜를 선정해 주세요.
+                      {T.host.noDatesSet}
                     </span>
                   ) : (
                     availableDates.map((date) => (
@@ -598,15 +599,15 @@ export default function HostDashboard({
               <div className="space-y-3">
                 <label className="block text-xs font-black text-neutral-800 flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-blue-600" />
-                  <span>방문 예약 타임 슬롯 설정 *</span>
+                  <span>{T.host.timeSlotsLabel}</span>
                 </label>
                 <p className="text-[11px] text-neutral-450 leading-normal">
-                  바이어가 선택할 수 있는 정기 안내 코스를 체크하거나 커스텀 시간대를 만들어 입정시킵니다.
+                  {T.host.timeSlotsHelp}
                 </p>
 
                 {/* Preset Time Slots Toggler */}
                 <div className="grid grid-cols-2 gap-1.5">
-                  {["오전 10:00 ~ 12:00", "오후 02:00 ~ 04:00", "오후 04:00 ~ 06:00", "저녁 07:00 ~ 09:00"].map(
+                  {[T.host.timeSlotMorning, T.host.timeSlotAfternoon1, T.host.timeSlotAfternoon2, T.host.timeSlotEvening].map(
                     (slot) => {
                       const isChecked = availableTimeSlots.includes(slot);
                       return (
@@ -631,7 +632,7 @@ export default function HostDashboard({
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="예: 주말 특별투어 13:00 ~ 15:00"
+                    placeholder={T.host.customTimeSlotPlaceholder}
                     value={customTimeInput}
                     onChange={(e) => setCustomTimeInput(e.target.value)}
                     className="flex-1 text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50/50 text-neutral-800"
@@ -641,14 +642,14 @@ export default function HostDashboard({
                     onClick={handleAddCustomTimeSlot}
                     className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-xl transition-all cursor-pointer whitespace-nowrap"
                   >
-                    슬롯 추가
+                    {T.host.addTimeSlotButton}
                   </button>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 overflow-y-auto max-h-[85px] p-2 bg-neutral-50 rounded-xl border border-neutral-150">
                   {availableTimeSlots.length === 0 ? (
                     <span className="text-[10px] text-neutral-400 font-semibold p-1">
-                      활성화된 예약 시간대가 없습니다.
+                      {T.host.noTimeSlotsActive}
                     </span>
                   ) : (
                     availableTimeSlots.map((slot) => (
@@ -676,7 +677,7 @@ export default function HostDashboard({
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-xl cursor-pointer shadow-md transition-all mt-4"
             >
-              공식 투어 임탐 리스트에 업로드
+              {T.host.submitListingButton}
             </button>
           </form>
         </div>
@@ -687,12 +688,12 @@ export default function HostDashboard({
           <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4">
             <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
               <ListFilter className="w-4 h-4 text-blue-600" />
-              <span>현재 등록한 내 임탐 목록 ({hostHouses.length}지점)</span>
+              <span>{T.host.myListingsPrefix}{hostHouses.length}{T.host.myListingsSuffix}</span>
             </h4>
 
             {hostHouses.length === 0 ? (
               <p className="text-neutral-400 text-xs text-center py-6 font-semibold">
-                아직 리스팅 완료된 임탐 목록이 없습니다.
+                {T.host.noListingsYet}
               </p>
             ) : (
               <div className="divide-y divide-neutral-105 max-h-[190px] overflow-y-auto pr-1">
@@ -710,10 +711,10 @@ export default function HostDashboard({
                           {hCode.title}
                         </h5>
                         <p className="text-[10px] text-neutral-500 font-semibold">
-                          방 {hCode.rooms ?? 3}개 · 욕실 {hCode.bathrooms ?? 2}개 · {hCode.area ?? 24}평
+                          {T.host.specRoomsPrefix}{hCode.rooms ?? 3}{T.host.specRoomsMid}{hCode.bathrooms ?? 2}{T.host.specBathroomsMid}{hCode.area ?? 24}{T.host.specAreaSuffix}
                         </p>
                         <p className="text-[10px] text-blue-600 font-bold">
-                          ₩{hCode.pricePerVisit.toLocaleString()} / 임장 가이드
+                          ₩{hCode.pricePerVisit.toLocaleString()}{T.host.perGuideSuffix}
                         </p>
                       </div>
                     </div>
@@ -722,7 +723,7 @@ export default function HostDashboard({
                       className="shrink-0 text-[10px] font-bold px-2 py-1 border border-neutral-200 hover:border-blue-400 hover:text-blue-600 rounded-lg text-neutral-600 bg-white flex items-center gap-1 cursor-pointer"
                     >
                       <Eye className="w-3 h-3 text-blue-500" />
-                      매물 실사
+                      {T.host.inspectButton}
                     </button>
                   </div>
                 ))}
@@ -735,11 +736,11 @@ export default function HostDashboard({
             <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ClipboardCheck className="w-4 h-4 text-blue-600" />
-                <span>임탐 신청자 목록</span>
+                <span>{T.host.applicantsListTitle}</span>
               </div>
               {pendingCount > 0 && (
                 <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  조율중 {pendingCount}
+                  {T.host.negotiatingPrefix}{pendingCount}
                 </span>
               )}
             </h4>
@@ -747,9 +748,9 @@ export default function HostDashboard({
             {receivedBookings.length === 0 ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
                 <Calendar className="w-10 h-10 text-neutral-300 mb-2" />
-                <p className="text-neutral-500 text-xs font-bold">아직 접수된 현치 임장 조율 요청이 없습니다.</p>
+                <p className="text-neutral-500 text-xs font-bold">{T.host.noBookingsYet}</p>
                 <p className="text-[10px] text-neutral-400 mt-1 max-w-[200px] leading-relaxed font-semibold">
-                  계정 모드를 전환해 타 주택에 가상으로 임장 투어를 청약해 테스트해보실 수 있습니다!
+                  {T.host.switchAccountHint}
                 </p>
               </div>
             ) : (
@@ -766,7 +767,7 @@ export default function HostDashboard({
                         </div>
                         <div>
                           <span className="text-xs font-bold text-neutral-800">{bk.guestName}</span>
-                          <span className="text-[10px] text-neutral-400 ml-1">바이어 지망</span>
+                          <span className="text-[10px] text-neutral-400 ml-1">{T.host.buyerAspirant}</span>
                         </div>
                       </div>
 
@@ -783,26 +784,26 @@ export default function HostDashboard({
                         }`}
                       >
                         {bk.status === "confirmed"
-                          ? "임장확정"
+                          ? T.host.statusConfirmed
                           : bk.status === "cancelled"
-                            ? "배정취소"
+                            ? T.host.statusCancelled
                             : bk.status === "completed"
-                              ? "가이드완료"
-                              : "조율대기"}
+                              ? T.host.statusCompleted
+                              : T.host.statusPending}
                       </span>
                     </div>
 
                     {/* Booking stays summary */}
                     <div className="text-xs text-neutral-600 border-t border-neutral-150 pt-2 space-y-1 font-semibold">
-                      <p className="font-bold text-neutral-800 truncate mb-1">임장 주택: {bk.houseTitle}</p>
+                      <p className="font-bold text-neutral-800 truncate mb-1">{T.host.tourHousePrefix}{bk.houseTitle}</p>
                       <p className="text-[11px]">
-                        <span className="text-neutral-400 shrink-0">매칭일정:</span> {bk.visitDate} ({bk.visitTimeSlot})
+                        <span className="text-neutral-400 shrink-0">{T.host.matchScheduleLabel}</span> {bk.visitDate} ({bk.visitTimeSlot})
                       </p>
                       <p className="text-[11px]">
-                        <span className="text-neutral-400 shrink-0">동행단 수:</span> {bk.totalVisitors}명
+                        <span className="text-neutral-400 shrink-0">{T.host.accompanyCountLabel}</span> {bk.totalVisitors}{T.host.peopleSuffix}
                       </p>
                       <p className="text-[11px] font-bold text-blue-700">
-                        <span className="text-neutral-400 font-semibold text-neutral-600">안내 정산액:</span> ₩
+                        <span className="text-neutral-400 font-semibold text-neutral-600">{T.host.settlementAmountLabel}</span> ₩
                         {bk.totalPrice.toLocaleString()}
                       </p>
                     </div>
@@ -814,13 +815,13 @@ export default function HostDashboard({
                           onClick={() => onUpdateBookingStatus(bk.id, "cancelled")}
                           className="py-1 px-2 border border-neutral-300 rounded-lg hover:border-neutral-400 font-bold text-neutral-500 hover:text-neutral-850 bg-white cursor-pointer transition-all"
                         >
-                          조율 불가 거절
+                          {T.host.rejectButton}
                         </button>
                         <button
                           onClick={() => onUpdateBookingStatus(bk.id, "confirmed")}
                           className="py-1 px-2 bg-blue-600 hover:bg-blue-700 font-bold text-white rounded-lg cursor-pointer transition-all"
                         >
-                          임장 예약 수락
+                          {T.host.acceptButton}
                         </button>
                       </div>
                     )}
@@ -832,7 +833,7 @@ export default function HostDashboard({
                           onClick={() => {
                             if (
                               confirm(
-                                "이 임장 가이드를 완료 처리합니까? 완료 후 게스트가 별점 평가를 등록할 수 있습니다.",
+                                T.host.completeGuideConfirm,
                               )
                             ) {
                               onUpdateBookingStatus(bk.id, "completed");
@@ -840,7 +841,7 @@ export default function HostDashboard({
                           }}
                           className="w-full py-1.5 px-2 bg-indigo-600 hover:bg-indigo-700 font-bold text-white rounded-lg cursor-pointer transition-all text-xs"
                         >
-                          임장 가이드 완료 처리
+                          {T.host.completeGuideButton}
                         </button>
                       </div>
                     )}

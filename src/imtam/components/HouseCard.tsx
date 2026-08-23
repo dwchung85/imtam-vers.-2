@@ -1,5 +1,6 @@
 import { House } from '../types';
 import { Star, MapPin, Users, CalendarCheck } from 'lucide-react';
+import { T } from "../strings";
 
 interface HouseCardProps {
   key?: string;
@@ -30,11 +31,11 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
         />
         {isOwnListing ? (
           <span className="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
-            내 등록 매물 (Owner)
+            {T.houseCard.ownListingBadge}
           </span>
         ) : (
           <span className="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
-            임탐 진행중
+            {T.houseCard.inProgressBadge}
           </span>
         )}
         {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === 'number' ? (
@@ -45,7 +46,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           </div>
         ) : (
           <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-[10px] font-bold px-2 py-1 rounded-lg text-neutral-500 shadow-xs">
-            평점 없음
+            {T.houseCard.noRatingLabel}
           </div>
         )}
       </div>
@@ -72,13 +73,13 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           {/* Specs badges: Rooms, Bathrooms, Area */}
           <div className="flex items-center gap-1.5 flex-wrap mb-3">
             <span className="bg-neutral-100 text-neutral-700 text-[11px] font-bold px-2.5 py-0.5 rounded-md">
-              방 {house.rooms ?? 3}개
+              {T.houseCard.roomsPrefix}{house.rooms ?? 3}{T.houseCard.unitSuffix}
             </span>
             <span className="bg-neutral-100 text-neutral-700 text-[11px] font-bold px-2.5 py-0.5 rounded-md">
-              욕실 {house.bathrooms ?? 2}개
+              {T.houseCard.bathroomsPrefix}{house.bathrooms ?? 2}{T.houseCard.unitSuffix}
             </span>
             <span className="bg-blue-50 text-blue-700 text-[11px] font-extrabold px-2.5 py-0.5 rounded-md">
-              {house.area ?? 24}평
+              {house.area ?? 24}{T.houseCard.areaUnit}
             </span>
           </div>
         </div>
@@ -88,14 +89,14 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           <div className="border-t border-neutral-100 my-2 pt-2.5 flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs text-neutral-600 font-semibold">
               <CalendarCheck className="w-3.5 h-3.5 text-blue-500" />
-              <span>동반 임장 최대 {house.maxGuests}명</span>
+              <span>{T.houseCard.maxGuestsPrefix}{house.maxGuests}{T.houseCard.maxGuestsSuffix}</span>
             </div>
             
             <div className="text-right">
               <span className="text-base md:text-lg font-black text-blue-600">
                 ₩{formatPrice(house.pricePerVisit)}
               </span>
-              <span className="text-[10px] text-neutral-400 ml-0.5 block font-bold">임장 예약 투어</span>
+              <span className="text-[10px] text-neutral-400 ml-0.5 block font-bold">{T.houseCard.tourBookingLabel}</span>
             </div>
           </div>
         </div>
