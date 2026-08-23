@@ -19,7 +19,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
     <div
       id={`house-card-${house.id}`}
       onClick={onClick}
-      className="group cursor-pointer bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 flex flex-col h-full"
+      className="cursor-pointer bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-xs flex flex-col h-full"
     >
       {/* House Image Container */}
       <div className="relative aspect-[4/3] w-full bg-neutral-100 overflow-hidden">
@@ -27,7 +27,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           src={house.imageUrl}
           alt={house.title}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover"
         />
         {isOwnListing ? (
           <span className="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
@@ -61,7 +61,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           </div>
 
           {/* Title */}
-          <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors text-sm md:text-base leading-snug line-clamp-2 mb-2">
+          <h3 className="font-semibold text-neutral-900 text-sm md:text-base leading-snug line-clamp-2 mb-2">
             {house.title}
           </h3>
           
