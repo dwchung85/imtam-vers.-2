@@ -120,8 +120,6 @@ export default function App() {
     setCurrentUser(null);
     setBookings([]);
     setActiveTab("browse");
-    
-    setIsAuthModalOpen(true);
   };
 
   const handleResetToHome = () => {
