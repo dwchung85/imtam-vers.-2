@@ -77,12 +77,8 @@ export default function App() {
             fetchBookings()
               .then(setBookings)
               .catch(() => {});
-          } else {
-            setIsAuthModalOpen(true);
           }
         });
-      } else {
-        setIsAuthModalOpen(true);
       }
     });
 
@@ -124,8 +120,6 @@ export default function App() {
     setCurrentUser(null);
     setBookings([]);
     setActiveTab("browse");
-    
-    setIsAuthModalOpen(true);
   };
 
   const handleResetToHome = () => {
@@ -278,22 +272,6 @@ export default function App() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <>
-          {!currentUser ? (
-            <div className="text-center py-20 bg-white border border-neutral-205 rounded-3xl p-6 max-w-md mx-auto space-y-4 animate-fadeIn">
-              <LogIn className="w-12 h-12 text-blue-600 mx-auto" />
-              <h3 className="text-lg font-bold text-neutral-850">IMTAM 이용을 위해 로그인이 필요합니다</h3>
-              <p className="text-xs text-neutral-400 font-semibold">
-                회원 가입 또는 로그인 후 매물 및 임장 정보를 확인할 수 있습니다.
-              </p>
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
-              >
-                로그인 / 회원가입
-              </button>
-            </div>
-          ) : (
-            <>
               {activeTab === "browse" && (
                 <div className="space-y-6 md:space-y-8 animate-fadeIn">
                   {/* Visual Header / Search / Filter row */}
@@ -440,28 +418,32 @@ export default function App() {
               )}
 
               {/* Guest Booking Dashboard Page */}
-              {activeTab === "guest" && currentUser && (
-                <GuestDashboard
-                  bookings={bookings}
-                  currentUserId={currentUser.id}
-                  onCancelBooking={handleCancelBooking}
-                  onSubmitReview={handleSubmitReview}
-                />
-              )}
+              {activeTab === "guest" &&
+                (currentUser ? (
+                  <GuestDashboard
+                    bookings={bookings}
+                    currentUserId={currentUser.id}
+                    onCancelBooking={handleCancelBooking}
+                    onSubmitReview={handleSubmitReview}
+                  />
+                ) : (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ))}
 
               {/* Host Dashboard Page */}
-              {activeTab === "host" && currentUser && (
-                <HostDashboard
-                  houses={houses}
-                  bookings={bookings}
-                  currentUserId={currentUser.id}
-                  onAddHouse={handleAddHouseListing}
-                  onUpdateBookingStatus={handleUpdateBookingStatus}
-                  onSelectHouse={(h) => setSelectedHouse(h)}
-                />
-              )}
-            </>
-          )}
+              {activeTab === "host" &&
+                (currentUser ? (
+                  <HostDashboard
+                    houses={houses}
+                    bookings={bookings}
+                    currentUserId={currentUser.id}
+                    onAddHouse={handleAddHouseListing}
+                    onUpdateBookingStatus={handleUpdateBookingStatus}
+                    onSelectHouse={(h) => setSelectedHouse(h)}
+                  />
+                ) : (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ))}
         </>
       </main>
 
@@ -485,6 +467,24 @@ export default function App() {
           <p>© 2026 IMTAM. All rights reserved.</p>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function LoginRequired({ onOpenAuth }: { onOpenAuth: () => void }) {
+  return (
+    <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl p-6 max-w-md mx-auto space-y-4 animate-fadeIn">
+      <LogIn className="w-12 h-12 text-blue-600 mx-auto" />
+      <h3 className="text-lg font-bold text-neutral-800">로그인이 필요한 화면입니다</h3>
+      <p className="text-xs text-neutral-400 font-semibold">
+        예약 내역과 매물 리스팅 관리는 로그인 후 이용할 수 있습니다.
+      </p>
+      <button
+        onClick={onOpenAuth}
+        className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
+      >
+        로그인 / 회원가입
+      </button>
     </div>
   );
 }
