@@ -78,7 +78,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
             <span className="bg-neutral-100 text-neutral-700 text-[11px] font-bold px-2.5 py-0.5 rounded-md">
               {T.houseCard.bathroomsPrefix}{house.bathrooms ?? 2}{T.houseCard.unitSuffix}
             </span>
-            <span className="bg-blue-50 text-blue-700 text-[11px] font-extrabold px-2.5 py-0.5 rounded-md">
+            <span className="bg-neutral-100 text-neutral-700 text-[11px] font-bold px-2.5 py-0.5 rounded-md">
               {house.area ?? 24}{T.houseCard.areaUnit}
             </span>
           </div>
