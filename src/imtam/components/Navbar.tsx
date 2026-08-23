@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../types';
-import { Home, Compass, Calendar, Briefcase, LogIn, LogOut } from 'lucide-react';
+import { Compass, Calendar, Briefcase, LogIn, LogOut } from 'lucide-react';
 import { T } from '../strings';
 
 interface NavbarProps {
