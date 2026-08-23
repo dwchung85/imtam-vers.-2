@@ -77,12 +77,8 @@ export default function App() {
             fetchBookings()
               .then(setBookings)
               .catch(() => {});
-          } else {
-            setIsAuthModalOpen(true);
           }
         });
-      } else {
-        setIsAuthModalOpen(true);
       }
     });
 
