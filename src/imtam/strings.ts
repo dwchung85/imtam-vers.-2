@@ -3,6 +3,7 @@ export const T = {
   app: {
     loginRequiredError: "로그인이 필요합니다.",
     bookingErrorGeneric: "예약 신청 중 오류가 발생했습니다.",
+    bookingRequestFailed: "예약 신청에 실패했습니다.",
     searchPlaceholder: "경기도 성남시 분당구 판교원로 82번길",
     roomsLabel: "방 개수",
     rooms1Plus: "방 1개 이상",
