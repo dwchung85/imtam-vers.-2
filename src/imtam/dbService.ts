@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Booking, House, SlotLoad, UserProfile } from './types';
+import { T } from './strings';
 
 // ============================
 // Row <-> Domain mappers
