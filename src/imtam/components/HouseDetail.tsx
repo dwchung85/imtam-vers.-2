@@ -262,7 +262,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       {house.bathrooms ?? 2}
                       {T.houseDetail.unitSuffix}
                     </span>
-                    <span className="bg-blue-50 text-blue-700 text-xs font-extrabold px-3 py-1 rounded-lg">
+                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
                       {house.area ?? 24}
                       {T.houseDetail.areaSuffix}
                     </span>
