@@ -29,9 +29,9 @@ export const T = {
     loginSignup: "로그인 / 회원가입",
   },
   navbar: {
-    findListingsAndTours: "매물 및 임장 찾기",
-    myTourBookings: "내 현장 임장 예약",
-    myListingsManagement: "내 매물·투어 리스팅 관리",
+    findListingsAndTours: "둘러보기",
+    myTourBookings: "예약내역",
+    myListingsManagement: "내집등록",
     userMenuAriaLabel: "사용자 메뉴",
     imtamMember: "임탐 회원",
     logout: "로그아웃",
