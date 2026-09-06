@@ -96,7 +96,7 @@ export const T = {
     hostSubtitle: "매물 실소유주 연계 인증 공인 중개 매칭 전문가",
     introTitle: "[임탐 소개]",
     amenitiesTitle: "하이엔드 인테리어 포인트 & 건축 혜택 요소",
-    perVisitLabel: " / 임탐 투어 비용",
+    perVisitLabel: " / 투어 비용",
     noScheduleWarning: "호스트가 아직 방문 가능 일정을 등록하지 않아 예약할 수 없습니다.",
     visitDateLabelPrefix: "소유주 등록 방문일 선택 (",
     visitDateLabelSuffix: "개 일자 조율가능)",
