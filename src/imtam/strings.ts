@@ -111,7 +111,7 @@ export const T = {
     guestsCountLabel: "동반 임장 실사 인원",
     totalGuestsLabel: "총 동반 참석자",
     guestsUnit: "명",
-    guestsInfoPrefix: "중개자나 소유주가 설정한 회차별 쾌적한 동반 인수는 최대 ",
+    guestsInfoPrefix: "최대 동반 인수는 ",
     guestsInfoMiddle: "이며, 선택한 시간대에는 ",
     guestsInfoSuffix: "까지 예약할 수 있습니다.",
     openingFeeLabelPrefix: "임탐 입장 개방료 (₩",
