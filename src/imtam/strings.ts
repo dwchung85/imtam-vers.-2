@@ -119,11 +119,11 @@ export const T = {
     openingFeeLabelSuffix: "인)",
     additionalFeeLabel: "추가 수수료",
     noneLabel: "없음",
-    tourCostLabel: "임탐 투어 비용",
+    tourCostLabel: "투어 비용",
     submittingLabel: "예약 신청 중...",
     slotFullButtonLabel: "해당 시간대 마감",
     submitButtonLabel: "현장 임탐 희망 예약하기",
-    trustLabel: "Zillow-IMTAM 신뢰: 등기 의무 허위 등록 및 불일치시 100% 반환",
+    trustLabel: "등기 의무 허위 등록 및 불일치시 100% 반환",
   },
   guest: {
     noBookingsTitle: "신청 완료된 현장 임장 및 홈투어 예약이 없습니다.",
