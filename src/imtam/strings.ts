@@ -100,7 +100,7 @@ export const T = {
     noScheduleWarning: "호스트가 아직 방문 가능 일정을 등록하지 않아 예약할 수 없습니다.",
     visitDateLabelPrefix: "방문일 선택 (",
     visitDateLabelSuffix: "개 일자 조율가능)",
-    timeSlotLabel: "소유주 등록 투어 타임을 선택하세요",
+    timeSlotLabel: "투어 타임을 선택하세요",
     slotClosedText: "· 마감",
     slotRemainingPrefix: "· 남은 자리 ",
     slotRemainingSuffix: "명",
