@@ -95,6 +95,8 @@ export type Database = {
           max_guests: number
           price_per_visit: number
           rating: number | null
+          residency_doc_registration: string
+          residency_doc_utility: string
           reviews_count: number
           rooms: number | null
           title: string
@@ -118,6 +120,8 @@ export type Database = {
           max_guests?: number
           price_per_visit?: number
           rating?: number | null
+          residency_doc_registration?: string
+          residency_doc_utility?: string
           reviews_count?: number
           rooms?: number | null
           title: string
@@ -141,6 +145,8 @@ export type Database = {
           max_guests?: number
           price_per_visit?: number
           rating?: number | null
+          residency_doc_registration?: string
+          residency_doc_utility?: string
           reviews_count?: number
           rooms?: number | null
           title?: string
