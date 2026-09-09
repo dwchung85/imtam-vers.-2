@@ -1,5 +1,5 @@
 import { House } from '../types';
-import { Star, MapPin, Users, CalendarCheck } from 'lucide-react';
+import { Star, MapPin, Users, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { T } from "../strings";
 
 interface HouseCardProps {
@@ -99,6 +99,13 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
               <span className="text-[10px] text-neutral-400 ml-0.5 block font-bold">{T.houseCard.tourBookingLabel}</span>
             </div>
           </div>
+
+          {house.residencyVerified && (
+            <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 mt-1.5">
+              <ShieldCheck className="w-3 h-3 shrink-0" />
+              <span>{T.houseCard.residencyVerifiedLabel}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
