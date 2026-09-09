@@ -300,6 +300,8 @@ export default function HostDashboard({
     setBathrooms(2);
     setArea(24);
     setUploadedImages([]);
+    setResidencyRegistrationDoc("");
+    setResidencyUtilityDoc("");
     setAvailableDates(getNextDays(3));
     setAvailableTimeSlots([T.host.timeSlotMorning, T.host.timeSlotAfternoon1, T.host.timeSlotAfternoon2, T.host.timeSlotEvening]);
     setDateInput("");
