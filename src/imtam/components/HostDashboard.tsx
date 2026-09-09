@@ -285,6 +285,8 @@ export default function HostDashboard({
       rooms,
       bathrooms,
       area,
+      residencyDocRegistration: residencyRegistrationDoc,
+      residencyDocUtility: residencyUtilityDoc,
     });
 
     setIsSuccess(true);
