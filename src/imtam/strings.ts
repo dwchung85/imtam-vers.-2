@@ -169,7 +169,7 @@ export const T = {
     minOnePhotoAlert: "최소 1장 이상의 대표 임장 주거 컷을 직접 업로드해 주세요.",
     minOneDateAlert: "방문 가능한 날짜를 최소 1일 이상 지정해 주세요.",
     minOneTimeSlotAlert: "방문 가능한 시간대 또는 타입 슬롯을 최소 1개 이상 활성화해 주세요.",
-    totalEarningsLabel: "누적 중개 매칭 및 가이드 수수료 정산 현황",
+    totalEarningsLabel: "누적 매칭 및 수수료 정산 현황",
     confirmedCountPrefix: "체결·확정 완료 ",
     confirmedCountSuffix: "건",
     pendingFundsLabel: "승인 심사 대기 자금",
