@@ -179,7 +179,7 @@ export const T = {
     listingSuccessMessage: "신규 주택 매물이 임장 투어 및 지도 채널 리스트에 정상 등재되었습니다!",
     titleLabel: "한 줄 소개 (제목) *",
     titlePlaceholder: "예: 분당 정자동 임탐",
-    descriptionLabel: "실내 실사 및 인테리어 건축 핵심 제원 가이드제공 *",
+    descriptionLabel: "상세 설명 *",
     descriptionPlaceholder:
       "공간의 가치, 우수한 정주권 등 탐방 및 투어에 나서는 방문자가 확인해야 할 요점을 남겨주세요.",
     priceLabel: "1인당 가격 (원) *",
