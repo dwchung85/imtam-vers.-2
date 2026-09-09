@@ -256,6 +256,11 @@ export default function HostDashboard({
       return;
     }
 
+    if (!residencyRegistrationDoc || !residencyUtilityDoc) {
+      alert(T.host.residencyRequiredAlert);
+      return;
+    }
+
     if (availableDates.length === 0) {
       alert(T.host.minOneDateAlert);
       return;
