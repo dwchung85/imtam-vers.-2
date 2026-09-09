@@ -177,7 +177,7 @@ export const T = {
     pendingCountSuffix: "건 대기)",
     registerListingTitle: "내 집 등록",
     listingSuccessMessage: "신규 주택 매물이 임장 투어 및 지도 채널 리스트에 정상 등재되었습니다!",
-    titleLabel: "매물 한 줄 소개 (제목) *",
+    titleLabel: "한 줄 소개 (제목) *",
     titlePlaceholder: "예: 분당 정자동 임탐",
     descriptionLabel: "실내 실사 및 인테리어 건축 핵심 제원 가이드제공 *",
     descriptionPlaceholder:
