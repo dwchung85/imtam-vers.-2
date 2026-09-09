@@ -204,7 +204,7 @@ export const T = {
     visitDatesHelp: "내방할 수 있는 날짜들을 하나씩 추가해주세요.",
     addDateButton: "날짜 추가",
     noDatesSet: "지정한 일정이 없습니다. 날짜를 선정해 주세요.",
-    timeSlotsLabel: "방문 예약 타임 슬롯 설정 *",
+    timeSlotsLabel: "예약 타임 슬롯 설정 *",
     timeSlotsHelp: "바이어가 선택할 수 있는 정기 안내 코스를 체크하거나 커스텀 시간대를 만들어 입정시킵니다.",
     customTimeSlotPlaceholder: "예: 주말 특별투어 13:00 ~ 15:00",
     addTimeSlotButton: "슬롯 추가",
