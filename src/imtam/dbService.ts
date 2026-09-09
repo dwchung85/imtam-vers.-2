@@ -25,6 +25,8 @@ type HouseRow = {
   rooms: number | null;
   bathrooms: number | null;
   area: number | null;
+  residency_doc_registration?: string | null;
+  residency_doc_utility?: string | null;
 };
 
 type BookingRow = {
@@ -65,6 +67,9 @@ function houseFromRow(r: HouseRow): House {
     rooms: r.rooms ?? undefined,
     bathrooms: r.bathrooms ?? undefined,
     area: r.area ?? undefined,
+    residencyDocRegistration: r.residency_doc_registration ?? '',
+    residencyDocUtility: r.residency_doc_utility ?? '',
+    residencyVerified: Boolean(r.residency_doc_registration && r.residency_doc_utility),
   };
 }
 
@@ -146,6 +151,8 @@ export async function addHouseListingDb(
       rooms: input.rooms ?? null,
       bathrooms: input.bathrooms ?? null,
       area: input.area ?? null,
+      residency_doc_registration: input.residencyDocRegistration ?? '',
+      residency_doc_utility: input.residencyDocUtility ?? '',
     })
     .select('*')
     .single();

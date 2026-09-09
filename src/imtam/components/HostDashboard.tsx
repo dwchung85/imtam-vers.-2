@@ -17,6 +17,7 @@ import {
   Upload,
   X,
   Camera,
+  ShieldCheck,
 } from "lucide-react";
 
 interface HostDashboardProps {
@@ -51,6 +52,8 @@ export default function HostDashboard({
   const [bathrooms, setBathrooms] = useState<number>(2);
   const [area, setArea] = useState<number>(24);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [residencyRegistrationDoc, setResidencyRegistrationDoc] = useState("");
+  const [residencyUtilityDoc, setResidencyUtilityDoc] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -178,6 +181,26 @@ export default function HostDashboard({
     setUploadedImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
   };
 
+  // 거주 증빙 문서 이미지 업로드 (압축 후 base64 저장)
+  const handleResidencyFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: (value: string) => void,
+  ) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert(T.host.onlyImageFilesAlert);
+      return;
+    }
+    try {
+      const compressed = await compressAndAndImage(file);
+      setter(compressed);
+    } catch (err) {
+      console.error("Residency doc compression failed:", err);
+    }
+  };
+
   const handleAddDate = () => {
     if (!dateInput) {
       alert(T.host.selectDateAlert);
@@ -233,6 +256,11 @@ export default function HostDashboard({
       return;
     }
 
+    if (!residencyRegistrationDoc || !residencyUtilityDoc) {
+      alert(T.host.residencyRequiredAlert);
+      return;
+    }
+
     if (availableDates.length === 0) {
       alert(T.host.minOneDateAlert);
       return;
@@ -257,6 +285,8 @@ export default function HostDashboard({
       rooms,
       bathrooms,
       area,
+      residencyDocRegistration: residencyRegistrationDoc,
+      residencyDocUtility: residencyUtilityDoc,
     });
 
     setIsSuccess(true);
@@ -270,6 +300,8 @@ export default function HostDashboard({
     setBathrooms(2);
     setArea(24);
     setUploadedImages([]);
+    setResidencyRegistrationDoc("");
+    setResidencyUtilityDoc("");
     setAvailableDates(getNextDays(3));
     setAvailableTimeSlots([T.host.timeSlotMorning, T.host.timeSlotAfternoon1, T.host.timeSlotAfternoon2, T.host.timeSlotEvening]);
     setDateInput("");
@@ -539,6 +571,57 @@ export default function HostDashboard({
                   ))}
                 </div>
               )}
+            </div>
+
+            {/* 거주 증빙 문서 추가 (주민등록등본/초본 + 요금 납부 영수증) */}
+            <div className="space-y-3 border-t border-neutral-100 pt-5">
+              <div className="flex items-center gap-1.5 text-xs font-black text-neutral-800">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>{T.host.residencyTitle}</span>
+              </div>
+              <p className="text-[11px] text-neutral-450 leading-normal">{T.host.residencyHelp}</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {([
+                  { id: "residency-doc-1", label: T.host.residencyDoc1Label, value: residencyRegistrationDoc, set: setResidencyRegistrationDoc },
+                  { id: "residency-doc-2", label: T.host.residencyDoc2Label, value: residencyUtilityDoc, set: setResidencyUtilityDoc },
+                ] as const).map((doc) => (
+                  <div key={doc.id} className="space-y-1.5">
+                    <label className="block text-[11px] font-bold text-neutral-700">{doc.label}</label>
+                    {doc.value ? (
+                      <div className="relative rounded-2xl overflow-hidden border border-emerald-200 bg-neutral-100 aspect-4/3">
+                        <img src={doc.value} alt={doc.label} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => doc.set("")}
+                          className="absolute top-1.5 right-1.5 bg-black/75 hover:bg-red-600 text-white p-1 rounded-full transition-colors cursor-pointer"
+                          title={T.host.residencyDeleteTitle}
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                        <div className="absolute bottom-1.5 left-1.5 right-1.5 bg-emerald-600 text-white py-0.5 text-[9px] font-black text-center rounded-md">
+                          {T.host.residencyUploadedBadge}
+                        </div>
+                      </div>
+                    ) : (
+                      <label
+                        htmlFor={doc.id}
+                        className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-neutral-250 bg-neutral-50/50 hover:bg-neutral-50 hover:border-emerald-400 rounded-2xl p-5 text-center cursor-pointer transition-all aspect-4/3"
+                      >
+                        <input
+                          type="file"
+                          id={doc.id}
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleResidencyFileChange(e, doc.set)}
+                        />
+                        <Upload className="w-6 h-6 text-neutral-400" />
+                        <span className="text-[10px] font-bold text-neutral-500">{T.host.residencyUploadHint}</span>
+                      </label>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Appointment Scheduling Settings (Visit Dates & Timeslots) */}

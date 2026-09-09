@@ -18,6 +18,9 @@ export interface House {
   rooms?: number; // 방 갯수
   bathrooms?: number; // 화장실 갯수
   area?: number; // 넓이 (평)
+  residencyDocRegistration?: string; // 주민등록등본/초본 이미지
+  residencyDocUtility?: string; // 최근 3개월 이내 요금 납부 영수증 이미지
+  residencyVerified?: boolean; // 두 문서 모두 등록 시 true
 }
 
 export interface Booking {
