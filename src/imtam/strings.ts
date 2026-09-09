@@ -180,8 +180,7 @@ export const T = {
     titleLabel: "한 줄 소개 (제목) *",
     titlePlaceholder: "예: 분당 정자동 임탐",
     descriptionLabel: "상세 설명 *",
-    descriptionPlaceholder:
-      "공간의 가치, 우수한 정주권 등 탐방 및 투어에 나서는 방문자가 확인해야 할 요점을 남겨주세요.",
+    descriptionPlaceholder: "공간의 가치, 우수한 정주권 등 투어에 나서는 방문자가 확인해야 할 요점을 남겨주세요.",
     priceLabel: "1인당 가격 (원) *",
     pricePlaceholder: "50,000",
     maxGuestsLabel: "회차당 최대 가이드 가능 인원 (명) *",
