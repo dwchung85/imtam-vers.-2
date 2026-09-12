@@ -332,7 +332,7 @@ export default function HostDashboard({
 
         <div className="border-t md:border-t-0 md:border-l border-[#008000] pt-3 md:pt-0 md:pl-6 flex flex-col justify-center text-xs text-neutral-500 font-semibold shrink-0">
           <span className="text-neutral-400 text-[10px] uppercase font-bold mb-0.5">{T.host.pendingFundsLabel}</span>
-          <span className="font-extrabold text-sm text-blue-600">
+          <span className="font-extrabold text-sm text-neutral-900">
             ₩
             {receivedBookings
               .filter((b) => b.status === "pending")
