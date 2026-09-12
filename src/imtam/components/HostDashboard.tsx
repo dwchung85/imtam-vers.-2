@@ -314,7 +314,7 @@ export default function HostDashboard({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Host Earnings & Wallet Stats */}
-      <div className="bg-white rounded-3xl border border-blue-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 shadow-xs">
+      <div className="bg-white rounded-3xl border border-[#008000] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 shadow-xs">
         <div>
           <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
             {T.host.totalEarningsLabel}
