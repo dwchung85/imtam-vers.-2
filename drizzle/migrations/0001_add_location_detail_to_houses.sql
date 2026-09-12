@@ -1,0 +1,1 @@
+ALTER TABLE public.houses ADD COLUMN location_detail text NOT NULL DEFAULT ''::text;

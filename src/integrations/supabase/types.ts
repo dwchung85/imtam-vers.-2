@@ -92,6 +92,7 @@ export type Database = {
           image_url: string
           image_urls: Json
           location: string
+          location_detail: string
           max_guests: number
           price_per_visit: number
           rating: number | null
@@ -117,6 +118,7 @@ export type Database = {
           image_url?: string
           image_urls?: Json
           location?: string
+          location_detail?: string
           max_guests?: number
           price_per_visit?: number
           rating?: number | null
@@ -142,6 +144,7 @@ export type Database = {
           image_url?: string
           image_urls?: Json
           location?: string
+          location_detail?: string
           max_guests?: number
           price_per_visit?: number
           rating?: number | null

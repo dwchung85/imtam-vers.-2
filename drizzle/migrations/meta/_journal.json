@@ -8,6 +8,13 @@
       "when": 1788956305599,
       "tag": "0000_add_residency_proof",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789196308328,
+      "tag": "0001_add_location_detail_to_houses",
+      "breakpoints": true
     }
   ]
 }
