@@ -3,7 +3,6 @@ import { T } from "../strings";
 import { House, Booking } from "../types";
 import {
   PlusCircle,
-  DollarSign,
   ListFilter,
   ClipboardCheck,
   ArrowUpRight,
