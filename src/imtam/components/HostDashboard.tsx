@@ -56,6 +56,25 @@ export default function HostDashboard({
   const [isDragging, setIsDragging] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // 카카오(다음) 우편번호 서비스로 도로명 주소 검색
+  const openAddressSearch = async () => {
+    const w = window as unknown as { daum?: { Postcode: new (opts: { oncomplete: (data: { roadAddress: string; jibunAddress: string }) => void }) => { open: () => void } } };
+    if (!w.daum) {
+      await new Promise<void>((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error("postcode script load failed"));
+        document.head.appendChild(script);
+      });
+    }
+    new w.daum!.Postcode({
+      oncomplete: (data) => {
+        setLocation(data.roadAddress || data.jibunAddress);
+      },
+    }).open();
+  };
+
   // Visit Dates & Slots configuration states
   const getNextDays = (count = 3) => {
     const dates = [];
@@ -436,14 +455,23 @@ export default function HostDashboard({
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
                   {T.host.locationLabel}
                 </label>
-                <input
-                  type="text"
-                  placeholder={T.host.locationPlaceholder}
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
-                  required
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder={T.host.locationPlaceholder}
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={openAddressSearch}
+                    className="shrink-0 px-3 text-xs font-bold rounded-xl border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white transition-all"
+                  >
+                    {T.host.addressSearchButton}
+                  </button>
+                </div>
               </div>
             </div>
 
