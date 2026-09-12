@@ -57,22 +57,51 @@ export default function HostDashboard({
   const [isSuccess, setIsSuccess] = useState(false);
 
   // 카카오(다음) 우편번호 서비스로 도로명 주소 검색
+  // 팝업 차단을 피하기 위해 페이지 안 레이어(embed) 방식으로 표시한다.
+  const [isAddressSearchOpen, setIsAddressSearchOpen] = useState(false);
+  const addressSearchRef = useRef<HTMLDivElement | null>(null);
+
+  const loadPostcodeScript = () =>
+    new Promise<void>((resolve, reject) => {
+      const w = window as unknown as { daum?: unknown };
+      if (w.daum) return resolve();
+      const script = document.createElement("script");
+      script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("postcode script load failed"));
+      document.head.appendChild(script);
+    });
+
   const openAddressSearch = async () => {
-    const w = window as unknown as { daum?: { Postcode: new (opts: { oncomplete: (data: { roadAddress: string; jibunAddress: string }) => void }) => { open: () => void } } };
-    if (!w.daum) {
-      await new Promise<void>((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error("postcode script load failed"));
-        document.head.appendChild(script);
-      });
+    try {
+      await loadPostcodeScript();
+    } catch {
+      return;
     }
-    new w.daum!.Postcode({
-      oncomplete: (data) => {
-        setLocation(data.roadAddress || data.jibunAddress);
-      },
-    }).open();
+    setIsAddressSearchOpen(true);
+    // 레이어가 렌더된 뒤 embed
+    requestAnimationFrame(() => {
+      const container = addressSearchRef.current;
+      if (!container) return;
+      const w = window as unknown as {
+        daum: {
+          Postcode: new (opts: {
+            oncomplete: (data: { roadAddress: string; jibunAddress: string }) => void;
+            width: string;
+            height: string;
+          }) => { embed: (el: HTMLElement) => void };
+        };
+      };
+      container.innerHTML = "";
+      new w.daum.Postcode({
+        oncomplete: (data) => {
+          setLocation(data.roadAddress || data.jibunAddress);
+          setIsAddressSearchOpen(false);
+        },
+        width: "100%",
+        height: "100%",
+      }).embed(container);
+    });
   };
 
   // Visit Dates & Slots configuration states
