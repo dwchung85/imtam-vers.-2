@@ -132,7 +132,7 @@ export default function Navbar({
                   <img
                     src={currentUser.avatar}
                     alt={currentUser.name}
-                    className={`w-9 h-9 rounded-full object-cover transition-all border-2 border-[#008000] ${
+                    className={`w-9 h-9 rounded-full object-cover transition-all border-[1.5px] border-[#008000] ${
                       menuOpen
                         ? 'ring-2 ring-blue-500 ring-offset-2'
                         : 'ring-1 ring-neutral-200 hover:ring-neutral-300'
