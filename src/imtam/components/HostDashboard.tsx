@@ -436,14 +436,23 @@ export default function HostDashboard({
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
                   {T.host.locationLabel}
                 </label>
-                <input
-                  type="text"
-                  placeholder={T.host.locationPlaceholder}
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
-                  required
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder={T.host.locationPlaceholder}
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={openAddressSearch}
+                    className="shrink-0 px-3 text-xs font-bold rounded-xl border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white transition-all"
+                  >
+                    {T.host.addressSearchButton}
+                  </button>
+                </div>
               </div>
             </div>
 
