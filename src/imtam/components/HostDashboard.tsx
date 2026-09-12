@@ -56,6 +56,25 @@ export default function HostDashboard({
   const [isDragging, setIsDragging] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // 카카오(다음) 우편번호 서비스로 도로명 주소 검색
+  const openAddressSearch = async () => {
+    const w = window as unknown as { daum?: { Postcode: new (opts: { oncomplete: (data: { roadAddress: string; jibunAddress: string }) => void }) => { open: () => void } } };
+    if (!w.daum) {
+      await new Promise<void>((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error("postcode script load failed"));
+        document.head.appendChild(script);
+      });
+    }
+    new w.daum!.Postcode({
+      oncomplete: (data) => {
+        setLocation(data.roadAddress || data.jibunAddress);
+      },
+    }).open();
+  };
+
   // Visit Dates & Slots configuration states
   const getNextDays = (count = 3) => {
     const dates = [];
