@@ -480,7 +480,7 @@ export default function HostDashboard({
                 </div>
               </div>
 
-              <div>
+              <div className="relative z-20">
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
                   {T.host.locationLabel}
                 </label>
@@ -501,6 +501,20 @@ export default function HostDashboard({
                     {T.host.addressSearchButton}
                   </button>
                 </div>
+
+                {isAddressSearchOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl bg-white shadow-2xl border border-neutral-200 overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setIsAddressSearchOpen(false)}
+                      className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white/90 hover:bg-neutral-100 text-neutral-600 cursor-pointer"
+                      aria-label="주소 검색 닫기"
+                    >
+                      <X size={18} />
+                    </button>
+                    <div ref={addressSearchRef} className="w-full h-[320px] md:h-[400px]" />
+                  </div>
+                )}
               </div>
             </div>
 
