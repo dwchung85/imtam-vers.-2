@@ -489,8 +489,8 @@ export default function HostDashboard({
                     type="text"
                     placeholder={T.host.locationPlaceholder}
                     value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                    readOnly
+                    className="flex-1 text-xs font-bold border border-neutral-200 focus:outline-hidden p-3 rounded-xl bg-neutral-100 text-neutral-800 cursor-default"
                     required
                   />
                   <button
