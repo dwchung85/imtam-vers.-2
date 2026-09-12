@@ -346,7 +346,7 @@ export default function HostDashboard({
       {/* Main Grid: Management Form (Left) & Visitor Reservation list (Right) */}
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
         {/* Form to List new house (3/5 width) */}
-        <div className="xl:col-span-3 bg-white rounded-3xl border border-neutral-200 p-6 md:p-8 space-y-6">
+        <div className="xl:col-span-3 bg-white rounded-3xl border border-[#008000] p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
             <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">{T.host.registerListingTitle}</h3>
           </div>
