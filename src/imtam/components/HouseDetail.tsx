@@ -287,7 +287,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <span className="text-neutral-300">•</span>
                     <span className="flex items-center gap-1 font-medium text-neutral-800">
                       <MapPin className="w-4 h-4 text-blue-500" />
-                      <span>{house.location}</span>
+                      <span>{house.location}{house.locationDetail ? ` ${house.locationDetail}` : ''}</span>
                     </span>
                   </div>
                 </div>
