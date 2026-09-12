@@ -6,6 +6,7 @@ export interface House {
   imageUrl: string;
   imageUrls?: string[]; // 최대 8장 업로드 가능한 실제 임장 사진 목록
   location: string;
+  locationDetail?: string; // 상세 주소 (동/호수 등)
   hostId: string;
   hostName: string;
   hostAvatar: string;
