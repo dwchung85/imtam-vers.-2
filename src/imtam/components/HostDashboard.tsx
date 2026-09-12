@@ -3,7 +3,6 @@ import { T } from "../strings";
 import { House, Booking } from "../types";
 import {
   PlusCircle,
-  DollarSign,
   ListFilter,
   ClipboardCheck,
   ArrowUpRight,
@@ -316,23 +315,18 @@ export default function HostDashboard({
     <div className="space-y-8 animate-fadeIn">
       {/* Host Earnings & Wallet Stats */}
       <div className="bg-white rounded-3xl border border-blue-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 shadow-xs">
-        <div className="flex items-start gap-3">
-          <span className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
-            <DollarSign className="w-5 h-5 animate-pulse" />
+        <div>
+          <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
+            {T.host.totalEarningsLabel}
           </span>
-          <div>
-            <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
-              {T.host.totalEarningsLabel}
+          <div className="mt-1 flex flex-wrap items-baseline gap-2">
+            <span className="text-2xl md:text-3xl font-black text-neutral-900">
+              ₩{totalHostEarnings.toLocaleString()}
             </span>
-            <div className="mt-1 flex flex-wrap items-baseline gap-2">
-              <span className="text-2xl md:text-3xl font-black text-neutral-900">
-                ₩{totalHostEarnings.toLocaleString()}
-              </span>
-              <span className="text-xs text-neutral-400 font-bold text-emerald-600 inline-flex items-center gap-0.5">
-                <ArrowUpRight className="w-3.5 h-3.5 inline" />
-                <span>{T.host.confirmedCountPrefix}{receivedBookings.filter((b) => b.status === "confirmed").length}{T.host.confirmedCountSuffix}</span>
-              </span>
-            </div>
+            <span className="text-xs text-neutral-400 font-bold text-emerald-600 inline-flex items-center gap-0.5">
+              <ArrowUpRight className="w-3.5 h-3.5 inline" />
+              <span>{T.host.confirmedCountPrefix}{receivedBookings.filter((b) => b.status === "confirmed").length}{T.host.confirmedCountSuffix}</span>
+            </span>
           </div>
         </div>
 
