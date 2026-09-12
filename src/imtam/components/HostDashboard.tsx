@@ -1001,22 +1001,6 @@ export default function HostDashboard({
           </div>
         </div>
       </div>
-
-      {isAddressSearchOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
-          <div className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setIsAddressSearchOpen(false)}
-              className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white/90 hover:bg-neutral-100 text-neutral-600 cursor-pointer"
-              aria-label="주소 검색 닫기"
-            >
-              <X size={18} />
-            </button>
-            <div ref={addressSearchRef} className="w-full h-[480px]" />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
