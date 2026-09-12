@@ -446,11 +446,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       <p className="text-[10px] text-neutral-400 mt-1.5 leading-relaxed">
                         {T.houseDetail.guestsInfoPrefix}
                         <strong className="text-neutral-700">
-                          {house.maxGuests}
-                          {T.houseDetail.guestsUnit}
-                        </strong>
-                        {T.houseDetail.guestsInfoMiddle}
-                        <strong className="text-neutral-700">
                           {remainingSeats}
                           {T.houseDetail.guestsUnit}
                         </strong>
