@@ -188,6 +188,8 @@ export const T = {
     accompaniedTourLabel: "동행 실사",
     locationLabel: "주소 (시/군/구 동단위) *",
     locationPlaceholder: "주소 검색 버튼을 클릭해 입력해주세요",
+    locationDetailLabel: "상세 주소",
+    locationDetailPlaceholder: "동/호수 등 상세 주소를 입력해주세요",
     addressSearchButton: "주소 검색",
     roomsLabel: "방 개수 *",
     roomsPlaceholder: "3",

@@ -46,6 +46,7 @@ export default function HostDashboard({
   const [description, setDescription] = useState("");
   const [pricePerVisit, setPricePerVisit] = useState<number>(30000);
   const [location, setLocation] = useState("");
+  const [locationDetail, setLocationDetail] = useState("");
   const [maxGuests, setMaxGuests] = useState<number>(2);
   const [rooms, setRooms] = useState<number>(3);
   const [bathrooms, setBathrooms] = useState<number>(2);
@@ -323,6 +324,7 @@ export default function HostDashboard({
       description,
       pricePerVisit,
       location,
+      locationDetail: locationDetail.trim(),
       maxGuests,
       imageUrl: uploadedImages[0], // 첫 번째 이미지를 대표(썸네일) 컷으로 등록
       imageUrls: uploadedImages, // 전체 등록한 이미지 목록 (최대 8장) 보존
@@ -342,6 +344,7 @@ export default function HostDashboard({
     setDescription("");
     setPricePerVisit(30000);
     setLocation("");
+    setLocationDetail("");
     setMaxGuests(2);
     setRooms(3);
     setBathrooms(2);
@@ -501,6 +504,16 @@ export default function HostDashboard({
                     {T.host.addressSearchButton}
                   </button>
                 </div>
+
+                <input
+                  type="text"
+                  placeholder={T.host.locationDetailPlaceholder}
+                  value={locationDetail}
+                  onChange={(e) => setLocationDetail(e.target.value)}
+                  className="mt-2 w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  aria-label={T.host.locationDetailLabel}
+                />
+
 
                 {isAddressSearchOpen && (
                   <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl bg-white shadow-2xl border border-neutral-200 overflow-hidden">
