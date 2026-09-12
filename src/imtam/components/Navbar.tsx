@@ -61,7 +61,7 @@ export default function Navbar({
             className="cursor-pointer"
             onClick={() => (onResetToHome ? onResetToHome() : setTab('browse'))}
           >
-            <span className="font-black text-neutral-900 tracking-tight text-xl">IMTAM</span>
+            <span className="font-black text-[#008000] tracking-tight text-xl">IMTAM</span>
           </div>
 
           {/* Navigation Links (Tabs) */}
