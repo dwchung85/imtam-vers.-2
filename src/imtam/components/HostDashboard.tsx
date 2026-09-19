@@ -48,6 +48,8 @@ export default function HostDashboard({
   const [pricePerVisit, setPricePerVisit] = useState<number>(30000);
   const [location, setLocation] = useState("");
   const [locationDetail, setLocationDetail] = useState("");
+  const [lat, setLat] = useState<number | null>(null);
+  const [lng, setLng] = useState<number | null>(null);
   const [maxGuests, setMaxGuests] = useState<number>(2);
   const [rooms, setRooms] = useState<number>(3);
   const [bathrooms, setBathrooms] = useState<number>(2);
