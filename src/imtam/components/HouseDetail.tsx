@@ -285,9 +285,14 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </span>
                     )}
                     <span className="text-neutral-300">•</span>
-                    <span className="flex items-center gap-1 font-medium text-neutral-800">
-                      <MapPin className="w-4 h-4 text-blue-500" />
-                      <span>{house.location}{house.locationDetail ? ` ${house.locationDetail}` : ''}</span>
+                    <span className="flex flex-col gap-0.5 font-medium text-neutral-800">
+                      <span className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4 text-blue-500 shrink-0" />
+                        <span>{house.location}</span>
+                      </span>
+                      {house.locationDetail && (
+                        <span className="text-neutral-600 pl-5">{house.locationDetail}</span>
+                      )}
                     </span>
                   </div>
                 </div>
