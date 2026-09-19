@@ -7,8 +7,6 @@ export interface House {
   imageUrls?: string[]; // 최대 8장 업로드 가능한 실제 임장 사진 목록
   location: string;
   locationDetail?: string; // 상세 주소 (동/호수 등)
-  lat?: number; // 구글맵 표시용 위도
-  lng?: number; // 구글맵 표시용 경도
   hostId: string;
   hostName: string;
   hostAvatar: string;

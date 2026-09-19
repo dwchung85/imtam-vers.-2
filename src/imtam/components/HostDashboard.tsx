@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { T } from "../strings";
 import { House, Booking } from "../types";
-import { geocodeAddress } from "../services/geocode.functions";
 import {
   PlusCircle,
   ListFilter,
@@ -48,8 +47,6 @@ export default function HostDashboard({
   const [pricePerVisit, setPricePerVisit] = useState<number>(30000);
   const [location, setLocation] = useState("");
   const [locationDetail, setLocationDetail] = useState("");
-  const [lat, setLat] = useState<number | null>(null);
-  const [lng, setLng] = useState<number | null>(null);
   const [maxGuests, setMaxGuests] = useState<number>(2);
   const [rooms, setRooms] = useState<number>(3);
   const [bathrooms, setBathrooms] = useState<number>(2);
@@ -98,21 +95,9 @@ export default function HostDashboard({
       };
       container.innerHTML = "";
       new w.daum.Postcode({
-        oncomplete: async (data) => {
-          const selectedAddress = data.roadAddress || data.jibunAddress;
-          setLocation(selectedAddress);
+        oncomplete: (data) => {
+          setLocation(data.roadAddress || data.jibunAddress);
           setIsAddressSearchOpen(false);
-          try {
-            const coords = await geocodeAddress({ data: { address: selectedAddress } });
-            if (coords.lat != null && coords.lng != null) {
-              setLat(coords.lat);
-              setLng(coords.lng);
-            }
-          } catch {
-            // 좌표 변환 실패 시에도 주소 등록은 계속 진행
-            setLat(null);
-            setLng(null);
-          }
         },
         width: "100%",
         height: "100%",
@@ -340,8 +325,6 @@ export default function HostDashboard({
       pricePerVisit,
       location,
       locationDetail: locationDetail.trim(),
-      lat: lat ?? undefined,
-      lng: lng ?? undefined,
       maxGuests,
       imageUrl: uploadedImages[0], // 첫 번째 이미지를 대표(썸네일) 컷으로 등록
       imageUrls: uploadedImages, // 전체 등록한 이미지 목록 (최대 8장) 보존
@@ -362,8 +345,6 @@ export default function HostDashboard({
     setPricePerVisit(30000);
     setLocation("");
     setLocationDetail("");
-    setLat(null);
-    setLng(null);
     setMaxGuests(2);
     setRooms(3);
     setBathrooms(2);

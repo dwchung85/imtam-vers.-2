@@ -14,8 +14,6 @@ type HouseRow = {
   image_urls: string[] | null;
   location: string;
   location_detail?: string | null;
-  lat: number | null;
-  lng: number | null;
   host_id: string;
   host_name: string;
   host_avatar: string;
@@ -59,8 +57,6 @@ function houseFromRow(r: HouseRow): House {
     imageUrls: r.image_urls ?? [],
     location: r.location,
     locationDetail: r.location_detail ?? '',
-    lat: r.lat ?? undefined,
-    lng: r.lng ?? undefined,
     hostId: r.host_id,
     hostName: r.host_name,
     hostAvatar: r.host_avatar,
@@ -148,8 +144,6 @@ export async function addHouseListingDb(
       image_urls: input.imageUrls ?? [],
       location: input.location,
       location_detail: input.locationDetail ?? '',
-      lat: input.lat ?? null,
-      lng: input.lng ?? null,
       host_id: input.hostId,
       host_name: input.hostName,
       host_avatar: input.hostAvatar,
