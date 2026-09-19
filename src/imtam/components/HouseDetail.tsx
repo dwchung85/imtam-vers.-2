@@ -304,7 +304,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 text-sm text-neutral-600">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 pb-4 border-b border-neutral-150 text-sm text-neutral-600">
                     <span className="flex flex-col gap-0.5 font-medium text-neutral-800">
                       <span className="flex items-center gap-1">
                         <MapPin className="w-4 h-4 text-blue-500 shrink-0" />
