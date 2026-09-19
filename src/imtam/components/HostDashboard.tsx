@@ -362,6 +362,8 @@ export default function HostDashboard({
     setPricePerVisit(30000);
     setLocation("");
     setLocationDetail("");
+    setLat(null);
+    setLng(null);
     setMaxGuests(2);
     setRooms(3);
     setBathrooms(2);
