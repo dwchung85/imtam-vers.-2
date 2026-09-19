@@ -245,7 +245,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                 {/* Listing identity info */}
                 <div>
-                  <div className="flex items-center gap-4 mb-4 border-b border-neutral-150 pb-4">
+                  <div className="flex items-center gap-4 my-4 border-t border-b border-neutral-150 py-4">
                     <img
                       src={house.hostAvatar}
                       alt={house.hostName}
