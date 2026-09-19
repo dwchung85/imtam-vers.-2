@@ -8,7 +8,6 @@ import {
   Calendar,
   ShieldCheck,
   Heart,
-  Building,
   Clock,
   Coffee,
   Sparkles,
@@ -265,9 +264,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                   {/* Intro */}
                   <div className="pt-3">
-                    <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
-                    </h5>
                     <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
                   </div>
 
