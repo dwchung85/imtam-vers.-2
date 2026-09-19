@@ -263,8 +263,16 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     {house.title}
                   </h1>
 
+                  {/* Intro */}
+                  <div className="pt-3">
+                    <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                      <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
+                    </h5>
+                    <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
+                  </div>
+
                   {/* Specs row */}
-                  <div className="flex flex-wrap items-center gap-2 mt-2.5">
+                  <div className="flex flex-wrap items-center gap-2 mt-4">
                     <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
                       {T.houseDetail.roomsPrefix}
                       {house.rooms ?? 3}
@@ -307,16 +315,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         <span className="text-neutral-600 pl-5">{house.locationDetail}</span>
                       )}
                     </span>
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="border-t border-neutral-150 pt-5">
-                  <div>
-                    <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
-                    </h5>
-                    <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
                   </div>
                 </div>
 
