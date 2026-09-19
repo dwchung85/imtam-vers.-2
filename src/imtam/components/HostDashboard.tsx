@@ -98,9 +98,21 @@ export default function HostDashboard({
       };
       container.innerHTML = "";
       new w.daum.Postcode({
-        oncomplete: (data) => {
-          setLocation(data.roadAddress || data.jibunAddress);
+        oncomplete: async (data) => {
+          const selectedAddress = data.roadAddress || data.jibunAddress;
+          setLocation(selectedAddress);
           setIsAddressSearchOpen(false);
+          try {
+            const coords = await geocodeAddress({ data: { address: selectedAddress } });
+            if (coords.lat != null && coords.lng != null) {
+              setLat(coords.lat);
+              setLng(coords.lng);
+            }
+          } catch {
+            // 좌표 변환 실패 시에도 주소 등록은 계속 진행
+            setLat(null);
+            setLng(null);
+          }
         },
         width: "100%",
         height: "100%",
