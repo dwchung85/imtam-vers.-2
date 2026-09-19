@@ -340,6 +340,8 @@ export default function HostDashboard({
       pricePerVisit,
       location,
       locationDetail: locationDetail.trim(),
+      lat: lat ?? undefined,
+      lng: lng ?? undefined,
       maxGuests,
       imageUrl: uploadedImages[0], // 첫 번째 이미지를 대표(썸네일) 컷으로 등록
       imageUrls: uploadedImages, // 전체 등록한 이미지 목록 (최대 8장) 보존
