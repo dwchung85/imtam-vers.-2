@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { T } from "../strings";
 import { House, Booking } from "../types";
+import { geocodeAddress } from "../services/geocode.functions";
 import {
   PlusCircle,
   ListFilter,
