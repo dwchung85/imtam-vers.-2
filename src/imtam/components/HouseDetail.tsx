@@ -246,6 +246,19 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                 {/* Listing identity info */}
                 <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <img
+                      src={house.hostAvatar}
+                      alt={house.hostName}
+                      className="w-12 h-12 rounded-full object-cover border border-neutral-200"
+                    />
+                    <div>
+                      <h4 className="font-bold text-neutral-900">
+                        {T.houseDetail.verifiedPartnerPrefix}
+                        {house.hostName}
+                      </h4>
+                    </div>
+                  </div>
                   <h1 className="text-xl md:text-2xl font-black text-neutral-900 leading-snug tracking-tight">
                     {house.title}
                   </h1>
