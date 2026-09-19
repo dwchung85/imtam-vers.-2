@@ -315,6 +315,27 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       )}
                     </span>
                   </div>
+
+                  {/* Location map */}
+                  {(house.lat != null && house.lng != null) || house.location ? (
+                    <div className="mt-4">
+                      <h3 className="font-bold text-neutral-900 text-base mb-2 flex items-center gap-1">
+                        <MapPin className="w-4 h-4 text-blue-500" /> {T.houseDetail.locationMapTitle}
+                      </h3>
+                      <iframe
+                        title="location map"
+                        className="w-full h-56 rounded-2xl border border-neutral-200"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"]}&q=${encodeURIComponent(
+                          house.lat != null && house.lng != null
+                            ? `${house.lat},${house.lng}`
+                            : `${house.location} ${house.locationDetail || ""}`
+                        )}`}
+                      />
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* Amenities section */}
