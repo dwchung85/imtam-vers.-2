@@ -258,6 +258,26 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </h4>
                     </div>
                   </div>
+
+                  {/* Review info */}
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3 text-sm text-neutral-600">
+                    {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === "number" ? (
+                      <span className="flex items-center gap-1 font-semibold text-neutral-800">
+                        <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <span>{house.rating.toFixed(1)}</span>
+                        <span className="font-normal text-neutral-500">
+                          ({house.reviewsCount}
+                          {T.houseDetail.reviewsCountSuffix})
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 font-semibold text-neutral-500">
+                        <Star className="w-4 h-4 text-neutral-300" />
+                        <span className="font-normal">{T.houseDetail.noReviewsYet}</span>
+                      </span>
+                    )}
+                  </div>
+
                   <h1 className="text-xl md:text-2xl font-black text-neutral-900 leading-snug tracking-tight">
                     {house.title}
                   </h1>
@@ -286,22 +306,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   </div>
 
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 text-sm text-neutral-600">
-                    {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === "number" ? (
-                      <span className="flex items-center gap-1 font-semibold text-neutral-800">
-                        <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                        <span>{house.rating.toFixed(1)}</span>
-                        <span className="font-normal text-neutral-500">
-                          ({house.reviewsCount}
-                          {T.houseDetail.reviewsCountSuffix})
-                        </span>
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1 font-semibold text-neutral-500">
-                        <Star className="w-4 h-4 text-neutral-300" />
-                        <span className="font-normal">{T.houseDetail.noReviewsYet}</span>
-                      </span>
-                    )}
-                    <span className="text-neutral-300">•</span>
                     <span className="flex flex-col gap-0.5 font-medium text-neutral-800">
                       <span className="flex items-center gap-1">
                         <MapPin className="w-4 h-4 text-blue-500 shrink-0" />
