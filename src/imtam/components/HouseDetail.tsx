@@ -8,7 +8,6 @@ import {
   Calendar,
   ShieldCheck,
   Heart,
-  Building,
   Clock,
   Coffee,
   Sparkles,
