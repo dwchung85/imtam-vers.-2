@@ -297,27 +297,27 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   </div>
                 </div>
 
-                {/* Host profile */}
-                <div className="flex items-center gap-4">
-                  <img
-                    src={house.hostAvatar}
-                    alt={house.hostName}
-                    className="w-12 h-12 rounded-full object-cover border border-neutral-200"
-                  />
-                  <div>
-                    <h4 className="font-bold text-neutral-900">
-                      {T.houseDetail.verifiedPartnerPrefix}
-                      {house.hostName}
-                    </h4>
+                {/* Divider */}
+                <div className="border-t border-neutral-150 pt-5">
+                  <div className="flex items-center gap-4 mb-4">
+                    <img
+                      src={house.hostAvatar}
+                      alt={house.hostName}
+                      className="w-12 h-12 rounded-full object-cover border border-neutral-200"
+                    />
+                    <div>
+                      <h4 className="font-bold text-neutral-900">
+                        {T.houseDetail.verifiedPartnerPrefix}
+                        {house.hostName}
+                      </h4>
+                    </div>
                   </div>
-                </div>
-
-                {/* One-line intro */}
-                <div>
-                  <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                    <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
-                  </h5>
-                  <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
+                  <div>
+                    <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                      <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
+                    </h5>
+                    <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
+                  </div>
                 </div>
 
                 {/* Amenities section */}
