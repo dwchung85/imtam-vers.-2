@@ -339,11 +339,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
               {/* Right Column: Reservation form widget (2/5 width) */}
               <div className="md:col-span-2">
                 <div className="sticky top-0 bg-blue-50/10 rounded-3xl border border-blue-100 p-5 space-y-4">
-                  <div>
-                    <span className="text-2xl font-black text-blue-600">₩{house.pricePerVisit.toLocaleString()}</span>
-                    <span className="text-xs text-neutral-500 font-bold block mt-1">{T.houseDetail.perVisitLabel}</span>
-                  </div>
-
                   {!hasSchedule && (
                     <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-[11px] font-bold text-amber-700">
                       {T.houseDetail.noScheduleWarning}
