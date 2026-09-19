@@ -298,7 +298,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                 </div>
 
                 {/* Host profile */}
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4">
                   <img
                     src={house.hostAvatar}
                     alt={house.hostName}
@@ -312,14 +312,12 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   </div>
                 </div>
 
-                {/* Divider */}
-                <div className="border-t border-neutral-150 pt-5">
-                  <div>
-                    <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
-                    </h5>
-                    <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
-                  </div>
+                {/* One-line intro */}
+                <div>
+                  <h5 className="font-bold text-neutral-800 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                    <Building className="w-4 h-4 text-blue-600" /> {T.houseDetail.introTitle}
+                  </h5>
+                  <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">{house.description}</p>
                 </div>
 
                 {/* Amenities section */}
