@@ -37,10 +37,11 @@ function loadMapsApi(): Promise<void> {
 interface Props {
   lat: number;
   lng: number;
-  onChange: (lat: number, lng: number) => void;
+  onChange?: (lat: number, lng: number) => void;
+  readOnly?: boolean;
 }
 
-const LocationPickerMap: React.FC<Props> = ({ lat, lng, onChange }) => {
+const LocationPickerMap: React.FC<Props> = ({ lat, lng, onChange, readOnly = false }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRef = useRef<any>(null);
   const [loadError, setLoadError] = useState(false);
@@ -59,22 +60,25 @@ const LocationPickerMap: React.FC<Props> = ({ lat, lng, onChange }) => {
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
+          gestureHandling: readOnly ? "cooperative" : undefined,
         });
         const marker = new g.Marker({
           position: center,
           map,
-          draggable: true,
+          draggable: !readOnly,
         });
         markerRef.current = marker;
-        marker.addListener("dragend", () => {
-          const p = marker.getPosition();
-          if (p) onChange(p.lat(), p.lng());
-        });
-        map.addListener("click", (e: any) => {
-          if (!e.latLng) return;
-          marker.setPosition(e.latLng);
-          onChange(e.latLng.lat(), e.latLng.lng());
-        });
+        if (!readOnly && onChange) {
+          marker.addListener("dragend", () => {
+            const p = marker.getPosition();
+            if (p) onChange(p.lat(), p.lng());
+          });
+          map.addListener("click", (e: any) => {
+            if (!e.latLng) return;
+            marker.setPosition(e.latLng);
+            onChange(e.latLng.lat(), e.latLng.lng());
+          });
+        }
       })
       .catch(() => setLoadError(true));
     return () => {
