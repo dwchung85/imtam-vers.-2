@@ -541,7 +541,7 @@ export default function HostDashboard({
                 />
 
                 {(isGeocoding || coords) && (
-                  <div className="mt-2 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                  <div className="mt-2 w-full rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
                     {coords ? (
                       <>
                         <p className="px-3 pt-2 text-[11px] font-bold text-neutral-500">
@@ -554,7 +554,7 @@ export default function HostDashboard({
                         />
                       </>
                     ) : (
-                      <div className="h-[220px] md:h-[260px] flex items-center justify-center text-xs font-bold text-neutral-500">
+                      <div className="w-full h-[220px] md:h-[260px] flex items-center justify-center text-xs font-bold text-neutral-500">
                         지도를 불러오는 중...
                       </div>
                     )}
