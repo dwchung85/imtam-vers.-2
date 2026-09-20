@@ -313,6 +313,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       {house.locationDetail && (
                         <span className="text-neutral-600 pl-5">{house.locationDetail}</span>
                       )}
+                      {house.lat != null && house.lng != null && (
+                        <div className="mt-3 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                          <LocationPickerMap lat={house.lat} lng={house.lng} readOnly />
+                        </div>
+                      )}
                     </span>
                   </div>
                 </div>
