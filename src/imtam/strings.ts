@@ -191,6 +191,7 @@ export const T = {
     locationDetailLabel: "상세 주소",
     locationDetailPlaceholder: "동/호수 등 상세 주소를 입력해주세요",
     addressSearchButton: "주소 검색",
+    mapGuide: "지도를 클릭하거나 마커를 드래그해 정확한 위치를 지정하세요",
     roomsLabel: "방 개수 *",
     roomsPlaceholder: "3",
     bathroomsLabel: "화장실 개수 *",

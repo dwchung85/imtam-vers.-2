@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { geocodeAddress } from "@/lib/geocode.functions";
+import LocationPickerMap from "./LocationPickerMap";
 import { T } from "../strings";
 import { House, Booking } from "../types";
 import {
@@ -542,13 +543,16 @@ export default function HostDashboard({
                 {(isGeocoding || coords) && (
                   <div className="mt-2 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
                     {coords ? (
-                      <iframe
-                        title="등록 주소 지도"
-                        className="w-full h-[220px] md:h-[260px] block border-0"
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"]}&center=${coords.lat},${coords.lng}&zoom=17`}
-                      />
+                      <>
+                        <p className="px-3 pt-2 text-[11px] font-bold text-neutral-500">
+                          {T.host.mapGuide}
+                        </p>
+                        <LocationPickerMap
+                          lat={coords.lat}
+                          lng={coords.lng}
+                          onChange={(lat, lng) => setCoords({ lat, lng })}
+                        />
+                      </>
                     ) : (
                       <div className="h-[220px] md:h-[260px] flex items-center justify-center text-xs font-bold text-neutral-500">
                         지도를 불러오는 중...
