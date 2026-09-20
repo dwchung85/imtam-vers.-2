@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { geocodeAddress } from "@/lib/geocode.functions";
+import LocationPickerMap from "./LocationPickerMap";
 import { T } from "../strings";
 import { House, Booking } from "../types";
 import {
