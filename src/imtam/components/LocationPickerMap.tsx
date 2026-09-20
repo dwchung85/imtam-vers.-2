@@ -101,13 +101,13 @@ const LocationPickerMap: React.FC<Props> = ({ lat, lng, onChange, readOnly = fal
 
   if (loadError) {
     return (
-      <div className="h-[220px] md:h-[260px] flex items-center justify-center text-xs font-bold text-neutral-500">
+      <div className="w-full h-[280px] md:h-[360px] flex items-center justify-center text-xs font-bold text-neutral-500">
         지도를 불러오지 못했습니다.
       </div>
     );
   }
 
-  return <div ref={mapRef} className="w-full h-[220px] md:h-[260px]" />;
+  return <div ref={mapRef} className="w-full h-[280px] md:h-[360px]" />;
 };
 
 export default LocationPickerMap;
