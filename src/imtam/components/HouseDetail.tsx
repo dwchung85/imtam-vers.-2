@@ -306,7 +306,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   </div>
 
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 pb-4 border-b border-neutral-150 text-sm text-neutral-600">
-                    <span className="flex flex-col gap-0.5 font-medium text-neutral-800">
+                    <div className="flex flex-col gap-0.5 font-medium text-neutral-800 w-full">
                       <span className="flex items-center gap-1">
                         <MapPin className="w-4 h-4 text-blue-500 shrink-0" />
                         <span>{house.location}</span>
@@ -315,11 +315,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         <span className="text-neutral-600 pl-5">{house.locationDetail}</span>
                       )}
                       {house.lat != null && house.lng != null && (
-                        <div className="mt-3 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                        <div className="mt-3 w-full rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
                           <LocationPickerMap lat={house.lat} lng={house.lng} readOnly />
                         </div>
                       )}
-                    </span>
+                    </div>
                   </div>
                 </div>
 
