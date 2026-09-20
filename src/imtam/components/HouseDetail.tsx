@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { House, Booking, SlotLoad } from "../types";
+import LocationPickerMap from "./LocationPickerMap";
 import {
   X,
   Star,
