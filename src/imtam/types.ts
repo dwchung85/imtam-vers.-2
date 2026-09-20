@@ -22,6 +22,8 @@ export interface House {
   residencyDocRegistration?: string; // 주민등록등본/초본 이미지
   residencyDocUtility?: string; // 최근 3개월 이내 요금 납부 영수증 이미지
   residencyVerified?: boolean; // 두 문서 모두 등록 시 true
+  lat?: number; // 주소 검색으로 확인된 위도
+  lng?: number; // 주소 검색으로 확인된 경도
 }
 
 export interface Booking {
