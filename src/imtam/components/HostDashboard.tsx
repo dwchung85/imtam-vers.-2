@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { geocodeAddress } from "@/lib/geocode.functions";
 import { T } from "../strings";
 import { House, Booking } from "../types";
 import {
@@ -62,6 +64,24 @@ export default function HostDashboard({
   const [isAddressSearchOpen, setIsAddressSearchOpen] = useState(false);
   const addressSearchRef = useRef<HTMLDivElement | null>(null);
 
+  // 검색한 주소의 좌표 (구글맵 표시 + DB 저장용)
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const geocode = useServerFn(geocodeAddress);
+
+  const resolveCoords = async (address: string) => {
+    setCoords(null);
+    setIsGeocoding(true);
+    try {
+      const res = await geocode({ data: { address } });
+      if (res.lat != null && res.lng != null) setCoords({ lat: res.lat, lng: res.lng });
+    } catch (error) {
+      console.error("geocode error", error);
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+
   const loadPostcodeScript = () =>
     new Promise<void>((resolve, reject) => {
       const w = window as unknown as { daum?: unknown };
@@ -96,8 +116,10 @@ export default function HostDashboard({
       container.innerHTML = "";
       new w.daum.Postcode({
         oncomplete: (data) => {
-          setLocation(data.roadAddress || data.jibunAddress);
+          const picked = data.roadAddress || data.jibunAddress;
+          setLocation(picked);
           setIsAddressSearchOpen(false);
+          void resolveCoords(picked);
         },
         width: "100%",
         height: "100%",
