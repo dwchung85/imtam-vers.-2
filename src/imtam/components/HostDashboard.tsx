@@ -358,6 +358,8 @@ export default function HostDashboard({
       area,
       residencyDocRegistration: residencyRegistrationDoc,
       residencyDocUtility: residencyUtilityDoc,
+      lat: coords?.lat,
+      lng: coords?.lng,
     });
 
     setIsSuccess(true);
@@ -367,6 +369,7 @@ export default function HostDashboard({
     setPricePerVisit(30000);
     setLocation("");
     setLocationDetail("");
+    setCoords(null);
     setMaxGuests(2);
     setRooms(3);
     setBathrooms(2);
@@ -536,6 +539,23 @@ export default function HostDashboard({
                   aria-label={T.host.locationDetailLabel}
                 />
 
+                {(isGeocoding || coords) && (
+                  <div className="mt-2 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                    {coords ? (
+                      <iframe
+                        title="등록 주소 지도"
+                        className="w-full h-[220px] md:h-[260px] block border-0"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://www.google.com/maps/embed/v1/view?key=${import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"]}&center=${coords.lat},${coords.lng}&zoom=17`}
+                      />
+                    ) : (
+                      <div className="h-[220px] md:h-[260px] flex items-center justify-center text-xs font-bold text-neutral-500">
+                        지도를 불러오는 중...
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {isAddressSearchOpen && (
                   <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl bg-white shadow-2xl border border-neutral-200 overflow-hidden">
