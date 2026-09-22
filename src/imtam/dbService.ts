@@ -30,6 +30,8 @@ type HouseRow = {
   residency_doc_utility?: string | null;
   lat?: number | null;
   lng?: number | null;
+  approval_status?: string | null;
+  reject_reason?: string | null;
 };
 
 type BookingRow = {
@@ -76,6 +78,8 @@ function houseFromRow(r: HouseRow): House {
     residencyVerified: Boolean(r.residency_doc_registration && r.residency_doc_utility),
     lat: r.lat ?? undefined,
     lng: r.lng ?? undefined,
+    approvalStatus: (r.approval_status ?? 'pending') as 'pending' | 'approved' | 'rejected',
+    rejectReason: r.reject_reason ?? '',
   };
 }
 
