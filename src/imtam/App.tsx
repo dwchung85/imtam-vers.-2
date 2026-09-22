@@ -249,6 +249,9 @@ export default function App() {
 
   // --- Filtering listings ---
   const filteredHouses = houses.filter((house) => {
+    // 관리자 승인이 완료된 매물만 둘러보기에 노출
+    if ((house.approvalStatus ?? "pending") !== "approved") return false;
+
     // Search query match
     const lowercaseQuery = searchQuery.trim().toLowerCase();
     const searchMatch =
