@@ -79,6 +79,7 @@ export type Database = {
       houses: {
         Row: {
           amenities: Json
+          approval_status: string
           area: number | null
           available_dates: Json
           available_time_slots: Json
@@ -98,8 +99,11 @@ export type Database = {
           max_guests: number
           price_per_visit: number
           rating: number | null
+          reject_reason: string
           residency_doc_registration: string
           residency_doc_utility: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           reviews_count: number
           rooms: number | null
           title: string
@@ -107,6 +111,7 @@ export type Database = {
         }
         Insert: {
           amenities?: Json
+          approval_status?: string
           area?: number | null
           available_dates?: Json
           available_time_slots?: Json
@@ -126,8 +131,11 @@ export type Database = {
           max_guests?: number
           price_per_visit?: number
           rating?: number | null
+          reject_reason?: string
           residency_doc_registration?: string
           residency_doc_utility?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           reviews_count?: number
           rooms?: number | null
           title: string
@@ -135,6 +143,7 @@ export type Database = {
         }
         Update: {
           amenities?: Json
+          approval_status?: string
           area?: number | null
           available_dates?: Json
           available_time_slots?: Json
@@ -154,8 +163,11 @@ export type Database = {
           max_guests?: number
           price_per_visit?: number
           rating?: number | null
+          reject_reason?: string
           residency_doc_registration?: string
           residency_doc_utility?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           reviews_count?: number
           rooms?: number | null
           title?: string
@@ -190,11 +202,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       house_slot_load: {
         Args: { _house_id: string }
         Returns: {
@@ -205,7 +245,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -332,6 +372,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
