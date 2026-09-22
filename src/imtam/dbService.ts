@@ -270,3 +270,44 @@ export async function submitBookingReviewDb(
   if (hErr || !houseRow) return null;
   return houseFromRow(houseRow as HouseRow);
 }
+
+// ============================
+// 관리자 (승인 심사)
+// ============================
+export async function checkIsAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', 'admin')
+    .maybeSingle();
+  if (error) {
+    console.error('checkIsAdmin error', error);
+    return false;
+  }
+  return Boolean(data);
+}
+
+export async function updateHouseApprovalDb(
+  houseId: string,
+  status: 'approved' | 'rejected' | 'pending',
+  reviewerId: string,
+  rejectReason = '',
+): Promise<House | null> {
+  const { data, error } = await supabase
+    .from('houses')
+    .update({
+      approval_status: status,
+      reject_reason: status === 'rejected' ? rejectReason : '',
+      reviewed_at: new Date().toISOString(),
+      reviewed_by: reviewerId,
+    })
+    .eq('id', houseId)
+    .select('*')
+    .single();
+  if (error) {
+    console.error('updateHouseApprovalDb error', error);
+    return null;
+  }
+  return houseFromRow(data as HouseRow);
+}
