@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import HouseCard from "./components/HouseCard";
 import HouseDetail from "./components/HouseDetail";
 import HostDashboard from "./components/HostDashboard";
+import AdminDashboard from "./components/AdminDashboard";
 import GuestDashboard from "./components/GuestDashboard";
 import AuthModal from "./components/AuthModal";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +16,8 @@ import {
   addBookingDb,
   updateBookingStatusDb,
   submitBookingReviewDb,
+  checkIsAdmin,
+  updateHouseApprovalDb,
 } from "./dbService";
 
 import { Search, Info, Compass, LogIn } from "lucide-react";
@@ -26,7 +29,8 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   
-  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host">("browse");
+  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host" | "admin">("browse");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
@@ -56,6 +60,9 @@ export default function App() {
               fetchBookings()
                 .then(setBookings)
                 .catch(() => {});
+              checkIsAdmin(userId)
+                .then(setIsAdmin)
+                .catch(() => {});
               fetchHouses()
                 .then(setHouses)
                 .catch(() => {});
@@ -65,6 +72,7 @@ export default function App() {
       } else {
         setCurrentUser(null);
         setBookings([]);
+        setIsAdmin(false);
       }
     });
 
@@ -75,6 +83,12 @@ export default function App() {
         fetchProfile(userId).then((p) => {
           if (p) {
             setCurrentUser(p);
+            checkIsAdmin(userId)
+              .then(setIsAdmin)
+              .catch(() => {});
+            fetchHouses()
+              .then(setHouses)
+              .catch(() => {});
             fetchBookings()
               .then(setBookings)
               .catch(() => {});
@@ -120,7 +134,24 @@ export default function App() {
     await supabase.auth.signOut();
     setCurrentUser(null);
     setBookings([]);
+    setIsAdmin(false);
     setActiveTab("browse");
+    fetchHouses()
+      .then(setHouses)
+      .catch(() => {});
+  };
+
+  // 관리자 승인 심사 처리
+  const handleReviewHouse = async (
+    houseId: string,
+    status: "approved" | "rejected" | "pending",
+    rejectReason = "",
+  ) => {
+    if (!currentUser) return;
+    const updated = await updateHouseApprovalDb(houseId, status, currentUser.id, rejectReason);
+    if (updated) {
+      setHouses((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
+    }
   };
 
   const handleResetToHome = () => {
@@ -218,6 +249,9 @@ export default function App() {
 
   // --- Filtering listings ---
   const filteredHouses = houses.filter((house) => {
+    // 관리자 승인이 완료된 매물만 둘러보기에 노출
+    if ((house.approvalStatus ?? "pending") !== "approved") return false;
+
     // Search query match
     const lowercaseQuery = searchQuery.trim().toLowerCase();
     const searchMatch =
@@ -254,6 +288,7 @@ export default function App() {
           (b.status === "confirmed" || (b.status === "completed" && typeof b.rating !== "number")),
       ).length
     : 0;
+  const adminBadge = isAdmin ? houses.filter((h) => (h.approvalStatus ?? "pending") === "pending").length : 0;
 
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans">
@@ -267,6 +302,8 @@ export default function App() {
         onResetToHome={handleResetToHome}
         guestBadge={guestBadge}
         hostBadge={hostBadge}
+        isAdmin={isAdmin}
+        adminBadge={adminBadge}
       />
 
 
@@ -444,6 +481,19 @@ export default function App() {
                   />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ))}
+
+              {/* Admin Review Page */}
+              {activeTab === "admin" &&
+                (!currentUser ? (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ) : isAdmin ? (
+                  <AdminDashboard houses={houses} onReviewHouse={handleReviewHouse} />
+                ) : (
+                  <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl p-6 max-w-md mx-auto space-y-3">
+                    <h3 className="text-lg font-bold text-neutral-800">{T.admin.noAccessTitle}</h3>
+                    <p className="text-xs text-neutral-400 font-semibold">{T.admin.noAccessDesc}</p>
+                  </div>
                 ))}
         </>
       </main>

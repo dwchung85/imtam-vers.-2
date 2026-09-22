@@ -30,6 +30,8 @@ type HouseRow = {
   residency_doc_utility?: string | null;
   lat?: number | null;
   lng?: number | null;
+  approval_status?: string | null;
+  reject_reason?: string | null;
 };
 
 type BookingRow = {
@@ -76,6 +78,8 @@ function houseFromRow(r: HouseRow): House {
     residencyVerified: Boolean(r.residency_doc_registration && r.residency_doc_utility),
     lat: r.lat ?? undefined,
     lng: r.lng ?? undefined,
+    approvalStatus: (r.approval_status ?? 'pending') as 'pending' | 'approved' | 'rejected',
+    rejectReason: r.reject_reason ?? '',
   };
 }
 
@@ -265,4 +269,45 @@ export async function submitBookingReviewDb(
     .single();
   if (hErr || !houseRow) return null;
   return houseFromRow(houseRow as HouseRow);
+}
+
+// ============================
+// 관리자 (승인 심사)
+// ============================
+export async function checkIsAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', 'admin')
+    .maybeSingle();
+  if (error) {
+    console.error('checkIsAdmin error', error);
+    return false;
+  }
+  return Boolean(data);
+}
+
+export async function updateHouseApprovalDb(
+  houseId: string,
+  status: 'approved' | 'rejected' | 'pending',
+  reviewerId: string,
+  rejectReason = '',
+): Promise<House | null> {
+  const { data, error } = await supabase
+    .from('houses')
+    .update({
+      approval_status: status,
+      reject_reason: status === 'rejected' ? rejectReason : '',
+      reviewed_at: new Date().toISOString(),
+      reviewed_by: reviewerId,
+    })
+    .eq('id', houseId)
+    .select('*')
+    .single();
+  if (error) {
+    console.error('updateHouseApprovalDb error', error);
+    return null;
+  }
+  return houseFromRow(data as HouseRow);
 }

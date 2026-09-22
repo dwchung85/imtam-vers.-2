@@ -24,6 +24,8 @@ export interface House {
   residencyVerified?: boolean; // 두 문서 모두 등록 시 true
   lat?: number; // 주소 검색으로 확인된 위도
   lng?: number; // 주소 검색으로 확인된 경도
+  approvalStatus?: 'pending' | 'approved' | 'rejected'; // 관리자 승인 상태
+  rejectReason?: string; // 관리자 반려 사유
 }
 
 export interface Booking {
