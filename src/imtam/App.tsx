@@ -482,6 +482,19 @@ export default function App() {
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
                 ))}
+
+              {/* Admin Review Page */}
+              {activeTab === "admin" &&
+                (!currentUser ? (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ) : isAdmin ? (
+                  <AdminDashboard houses={houses} onReviewHouse={handleReviewHouse} />
+                ) : (
+                  <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl p-6 max-w-md mx-auto space-y-3">
+                    <h3 className="text-lg font-bold text-neutral-800">{T.admin.noAccessTitle}</h3>
+                    <p className="text-xs text-neutral-400 font-semibold">{T.admin.noAccessDesc}</p>
+                  </div>
+                ))}
         </>
       </main>
 
