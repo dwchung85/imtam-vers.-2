@@ -1,17 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../types';
-import { Compass, Calendar, Briefcase, LogIn, LogOut } from 'lucide-react';
+import { Compass, Calendar, Briefcase, LogIn, LogOut, ShieldCheck } from 'lucide-react';
 import { T } from '../strings';
 
+type TabKey = 'browse' | 'guest' | 'host' | 'admin';
+
 interface NavbarProps {
-  currentTab: 'browse' | 'guest' | 'host';
-  setTab: (tab: 'browse' | 'guest' | 'host') => void;
+  currentTab: TabKey;
+  setTab: (tab: TabKey) => void;
   currentUser: UserProfile | null;
   onOpenAuth: () => void;
   onLogout: () => void;
   onResetToHome?: () => void;
   guestBadge?: number;
   hostBadge?: number;
+  isAdmin?: boolean;
+  adminBadge?: number;
 }
 
 function Badge({ count, tone = 'blue' }: { count: number; tone?: 'blue' | 'rose' }) {
@@ -36,6 +40,8 @@ export default function Navbar({
   onResetToHome,
   guestBadge = 0,
   hostBadge = 0,
+  isAdmin = false,
+  adminBadge = 0,
 }: NavbarProps) {
 
   const [menuOpen, setMenuOpen] = useState(false);
