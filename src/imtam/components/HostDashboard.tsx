@@ -924,6 +924,19 @@ export default function HostDashboard({
                         <p className="text-[10px] text-blue-600 font-bold">
                           ₩{hCode.pricePerVisit.toLocaleString()}{T.host.perGuideSuffix}
                         </p>
+                        {(hCode.approvalStatus ?? 'pending') !== 'approved' && (
+                          <p
+                            className={`text-[10px] font-bold mt-0.5 ${
+                              (hCode.approvalStatus ?? 'pending') === 'rejected'
+                                ? 'text-rose-600'
+                                : 'text-amber-600'
+                            }`}
+                          >
+                            {(hCode.approvalStatus ?? 'pending') === 'rejected'
+                              ? `${T.host.approvalRejected}${hCode.rejectReason ? ` · ${hCode.rejectReason}` : ''}`
+                              : T.host.approvalPending}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <button
