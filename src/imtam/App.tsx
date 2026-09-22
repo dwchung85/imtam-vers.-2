@@ -60,6 +60,9 @@ export default function App() {
               fetchBookings()
                 .then(setBookings)
                 .catch(() => {});
+              checkIsAdmin(userId)
+                .then(setIsAdmin)
+                .catch(() => {});
               fetchHouses()
                 .then(setHouses)
                 .catch(() => {});
@@ -69,6 +72,7 @@ export default function App() {
       } else {
         setCurrentUser(null);
         setBookings([]);
+        setIsAdmin(false);
       }
     });
 
@@ -79,6 +83,12 @@ export default function App() {
         fetchProfile(userId).then((p) => {
           if (p) {
             setCurrentUser(p);
+            checkIsAdmin(userId)
+              .then(setIsAdmin)
+              .catch(() => {});
+            fetchHouses()
+              .then(setHouses)
+              .catch(() => {});
             fetchBookings()
               .then(setBookings)
               .catch(() => {});
