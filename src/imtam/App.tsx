@@ -134,7 +134,24 @@ export default function App() {
     await supabase.auth.signOut();
     setCurrentUser(null);
     setBookings([]);
+    setIsAdmin(false);
     setActiveTab("browse");
+    fetchHouses()
+      .then(setHouses)
+      .catch(() => {});
+  };
+
+  // 관리자 승인 심사 처리
+  const handleReviewHouse = async (
+    houseId: string,
+    status: "approved" | "rejected" | "pending",
+    rejectReason = "",
+  ) => {
+    if (!currentUser) return;
+    const updated = await updateHouseApprovalDb(houseId, status, currentUser.id, rejectReason);
+    if (updated) {
+      setHouses((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
+    }
   };
 
   const handleResetToHome = () => {
