@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import HouseCard from "./components/HouseCard";
 import HouseDetail from "./components/HouseDetail";
 import HostDashboard from "./components/HostDashboard";
+import AdminDashboard from "./components/AdminDashboard";
 import GuestDashboard from "./components/GuestDashboard";
 import AuthModal from "./components/AuthModal";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +16,8 @@ import {
   addBookingDb,
   updateBookingStatusDb,
   submitBookingReviewDb,
+  checkIsAdmin,
+  updateHouseApprovalDb,
 } from "./dbService";
 
 import { Search, Info, Compass, LogIn } from "lucide-react";
@@ -26,7 +29,8 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   
-  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host">("browse");
+  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host" | "admin">("browse");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
