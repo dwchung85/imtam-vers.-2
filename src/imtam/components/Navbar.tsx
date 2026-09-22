@@ -121,6 +121,20 @@ export default function Navbar({
               <Badge count={hostBadge} tone="rose" />
 
             </button>
+            {isAdmin && (
+              <button
+                onClick={() => setTab('admin')}
+                className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                  currentTab === 'admin'
+                    ? 'bg-white text-blue-600 shadow-xs'
+                    : 'text-neutral-500 hover:text-neutral-950'
+                }`}
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                {T.admin.tabLabel}
+                <Badge count={adminBadge} tone="rose" />
+              </button>
+            )}
           </nav>
 
           {/* User profile */}
