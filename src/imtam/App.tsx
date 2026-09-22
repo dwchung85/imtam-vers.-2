@@ -288,6 +288,7 @@ export default function App() {
           (b.status === "confirmed" || (b.status === "completed" && typeof b.rating !== "number")),
       ).length
     : 0;
+  const adminBadge = isAdmin ? houses.filter((h) => (h.approvalStatus ?? "pending") === "pending").length : 0;
 
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans">
