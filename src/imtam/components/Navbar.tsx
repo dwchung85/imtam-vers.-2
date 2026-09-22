@@ -260,6 +260,24 @@ export default function Navbar({
             <span>{T.navbar.mobileListingsShort}</span>
 
           </button>
+          {isAdmin && (
+            <button
+              onClick={() => setTab('admin')}
+              className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
+                currentTab === 'admin' ? 'text-blue-600' : 'text-neutral-400'
+              }`}
+            >
+              <div className="relative">
+                <ShieldCheck className="w-4 h-4" />
+                {adminBadge > 0 && (
+                  <span className="absolute -top-1 -right-2 min-w-[14px] h-3.5 px-1 inline-flex items-center justify-center rounded-full bg-rose-500 text-white text-[8px] font-black">
+                    {adminBadge > 9 ? '9+' : adminBadge}
+                  </span>
+                )}
+              </div>
+              <span>{T.admin.tabLabel}</span>
+            </button>
+          )}
         </div>
       </div>
     </header>
