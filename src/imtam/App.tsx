@@ -302,6 +302,8 @@ export default function App() {
         onResetToHome={handleResetToHome}
         guestBadge={guestBadge}
         hostBadge={hostBadge}
+        isAdmin={isAdmin}
+        adminBadge={adminBadge}
       />
 
 
