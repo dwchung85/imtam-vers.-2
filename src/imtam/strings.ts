@@ -227,7 +227,7 @@ export const T = {
     addTimeSlotButton: "슬롯 추가",
     noTimeSlotsActive: "활성화된 예약 시간대가 없습니다.",
     submitListingButton: "임탐 리스트에 업로드",
-    myListingsPrefix: "등록한 내 집 목록 (",
+    myListingsPrefix: "등록한 내 임탐 목록 (",
     myListingsSuffix: "곳)",
     noListingsYet: "아직 리스팅 완료된 임탐 목록이 없습니다.",
     specRoomsPrefix: "방 ",
