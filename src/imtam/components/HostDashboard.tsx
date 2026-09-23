@@ -155,7 +155,6 @@ export default function HostDashboard({
 
   const confirmedCount = receivedBookings.filter((b) => b.status === "confirmed").length;
   const completedCount = receivedBookings.filter((b) => b.status === "completed").length;
-  const pendingCount = receivedBookings.filter((b) => b.status === "pending").length;
 
   // --- Handlers for up to 8 uploaded compressed images ---
   const compressAndAndImage = (file: File): Promise<string> => {
