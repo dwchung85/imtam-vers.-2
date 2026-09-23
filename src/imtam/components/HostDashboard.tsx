@@ -150,7 +150,7 @@ export default function HostDashboard({
 
   // Stats calculation
   const totalHostEarnings = receivedBookings
-    .filter((b) => b.status === "confirmed")
+    .filter((b) => b.status === "confirmed" || b.status === "completed")
     .reduce((sum, b) => sum + b.totalPrice, 0);
 
   const confirmedCount = receivedBookings.filter((b) => b.status === "confirmed").length;
