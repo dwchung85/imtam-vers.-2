@@ -8,7 +8,6 @@ import {
   PlusCircle,
   ListFilter,
   ClipboardCheck,
-  ArrowUpRight,
   Calendar,
   Clock,
   User,
@@ -393,34 +392,41 @@ export default function HostDashboard({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Host Earnings & Wallet Stats */}
-      <div className="bg-white rounded-3xl border border-[#008000] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 shadow-xs">
-        <div>
+      <div className="bg-white rounded-3xl border border-[#008000] p-5 md:p-6 shadow-xs">
+        <div className="mb-4">
           <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
             {T.host.totalEarningsLabel}
           </span>
-          <div className="mt-1 flex flex-col gap-0.5">
-            <span className="text-2xl md:text-3xl font-black text-neutral-900">
-              ₩{totalHostEarnings.toLocaleString()}
-            </span>
-            <span className="text-xs font-bold text-neutral-900">
-              {T.host.confirmedCountPrefix}{confirmedCount}{T.host.confirmedCountSuffix}
-            </span>
-            <span className="text-xs font-bold text-neutral-900">
-              {T.host.completedCountPrefix}{completedCount}{T.host.completedCountSuffix}
-            </span>
+          <div className="mt-1 text-2xl md:text-3xl font-black text-neutral-900">
+            ₩{totalHostEarnings.toLocaleString()}
           </div>
         </div>
 
-        <div className="border-t md:border-t-0 md:border-l border-[#008000] pt-3 md:pt-0 md:pl-6 flex flex-col justify-center text-xs text-neutral-500 font-semibold shrink-0">
-          <span className="text-neutral-400 text-[10px] uppercase font-bold mb-0.5">{T.host.pendingFundsLabel}</span>
-          <span className="font-extrabold text-sm text-neutral-900">
-            ₩
-            {receivedBookings
-              .filter((b) => b.status === "pending")
-              .reduce((s, b) => s + b.totalPrice, 0)
-              .toLocaleString()}{" "}
-            {T.host.pendingCountPrefix}{pendingCount}{T.host.pendingCountSuffix}
-          </span>
+        <div className="grid grid-cols-2 gap-4 pb-4 border-b border-neutral-100">
+          <div>
+            <span className="text-[11px] font-semibold text-neutral-500 block">{T.host.confirmedCountPrefix}</span>
+            <span className="text-lg font-bold text-neutral-900">{confirmedCount}{T.host.confirmedCountSuffix}</span>
+          </div>
+          <div>
+            <span className="text-[11px] font-semibold text-neutral-500 block">{T.host.completedCountPrefix}</span>
+            <span className="text-lg font-bold text-neutral-900">{completedCount}{T.host.completedCountSuffix}</span>
+          </div>
+        </div>
+
+        <div className="pt-4 flex items-center justify-between">
+          <span className="text-[11px] font-semibold text-neutral-500">{T.host.pendingFundsLabel}</span>
+          <div className="text-right">
+            <span className="text-sm font-extrabold text-neutral-900">
+              ₩
+              {receivedBookings
+                .filter((b) => b.status === "pending")
+                .reduce((s, b) => s + b.totalPrice, 0)
+                .toLocaleString()}
+            </span>
+            <span className="text-xs text-neutral-500 ml-1">
+              {T.host.pendingCountPrefix}{pendingCount}{T.host.pendingCountSuffix}
+            </span>
+          </div>
         </div>
       </div>
 
