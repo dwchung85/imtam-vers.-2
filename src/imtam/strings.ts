@@ -39,7 +39,7 @@ export const T = {
     loginSignup: "로그인/회원가입",
     mobileListingsTours: "둘러보기",
     mobileBookingHistory: "예약내역",
-    mobileListingsShort: "내집등록",
+    mobileListingsShort: "내집관리",
   },
   auth: {
     fillEmailPassword: "이메일과 비밀번호를 모두 입력해주세요.",
