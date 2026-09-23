@@ -154,6 +154,8 @@ export default function HostDashboard({
     .filter((b) => b.status === "confirmed")
     .reduce((sum, b) => sum + b.totalPrice, 0);
 
+  const confirmedCount = receivedBookings.filter((b) => b.status === "confirmed").length;
+  const completedCount = receivedBookings.filter((b) => b.status === "completed").length;
   const pendingCount = receivedBookings.filter((b) => b.status === "pending").length;
 
   // --- Handlers for up to 8 uploaded compressed images ---
@@ -396,13 +398,15 @@ export default function HostDashboard({
           <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
             {T.host.totalEarningsLabel}
           </span>
-          <div className="mt-1 flex flex-wrap items-baseline gap-2">
+          <div className="mt-1 flex flex-col gap-0.5">
             <span className="text-2xl md:text-3xl font-black text-neutral-900">
               ₩{totalHostEarnings.toLocaleString()}
             </span>
-            <span className="text-xs text-neutral-400 font-bold text-emerald-600 inline-flex items-center gap-0.5">
-              <ArrowUpRight className="w-3.5 h-3.5 inline" />
-              <span>{T.host.confirmedCountPrefix}{receivedBookings.filter((b) => b.status === "confirmed").length}{T.host.confirmedCountSuffix}</span>
+            <span className="text-xs font-bold text-neutral-900">
+              {T.host.confirmedCountPrefix}{confirmedCount}{T.host.confirmedCountSuffix}
+            </span>
+            <span className="text-xs font-bold text-neutral-900">
+              {T.host.completedCountPrefix}{completedCount}{T.host.completedCountSuffix}
             </span>
           </div>
         </div>
