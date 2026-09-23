@@ -387,7 +387,10 @@ export default function HostDashboard({
       {/* Form to List new house */}
       <div className="max-w-3xl mx-auto w-full bg-white rounded-3xl border border-[#008000] p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
-            <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">{T.host.registerListingTitle}</h3>
+            <h3 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
+              <PlusCircle className="w-4 h-4 text-blue-600" />
+              <span>{T.host.registerListingTitle}</span>
+            </h3>
           </div>
 
           {isSuccess && (
