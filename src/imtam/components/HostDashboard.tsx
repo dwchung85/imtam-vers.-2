@@ -857,7 +857,6 @@ export default function HostDashboard({
               {T.host.submitListingButton}
             </button>
           </form>
-        </div>
       </div>
     </div>
   );
