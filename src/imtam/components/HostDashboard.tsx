@@ -859,7 +859,7 @@ export default function HostDashboard({
         {/* List of current listings */}
         <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4">
           <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
-            <ListFilter className="w-4 h-4 text-blue-600" />
+            <ListFilter className="w-4 h-4 text-[#008000]" />
             <span>{T.host.myListingsPrefix}{hostHouses.length}{T.host.myListingsSuffix}</span>
           </h4>
 
@@ -920,7 +920,7 @@ export default function HostDashboard({
         <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4 flex flex-col h-[400px]">
           <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ClipboardCheck className="w-4 h-4 text-blue-600" />
+              <ClipboardCheck className="w-4 h-4 text-[#008000]" />
               <span>{T.host.applicantsListTitle}</span>
             </div>
             {pendingCount > 0 && (
