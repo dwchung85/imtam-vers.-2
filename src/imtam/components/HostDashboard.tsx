@@ -22,26 +22,12 @@ import {
 } from "lucide-react";
 
 interface HostDashboardProps {
-  houses: House[];
-  bookings: Booking[];
-  currentUserId: string;
   onAddHouse: (newHouse: Omit<House, "id" | "hostId" | "hostName" | "hostAvatar" | "rating" | "reviewsCount">) => void;
-  onUpdateBookingStatus: (bookingId: string, status: "confirmed" | "cancelled" | "completed") => void;
-  onSelectHouse: (house: House) => void;
 }
 
 export default function HostDashboard({
-  houses,
-  bookings,
-  currentUserId,
   onAddHouse,
-  onUpdateBookingStatus,
-  onSelectHouse,
 }: HostDashboardProps) {
-  // Filter objects owned by the current host
-  const hostHouses = houses.filter((h) => h.hostId === currentUserId);
-  const hostHouseIds = hostHouses.map((h) => h.id);
-  const receivedBookings = bookings.filter((b) => hostHouseIds.includes(b.houseId));
 
   // Form states in host section
   const [title, setTitle] = useState("");
@@ -147,15 +133,6 @@ export default function HostDashboard({
     T.host.timeSlotEvening,
   ]);
   const [customTimeInput, setCustomTimeInput] = useState<string>("");
-
-  // Stats calculation
-  const totalHostEarnings = receivedBookings
-    .filter((b) => b.status === "confirmed" || b.status === "completed")
-    .reduce((sum, b) => sum + b.totalPrice, 0);
-
-  const confirmedCount = receivedBookings.filter((b) => b.status === "confirmed").length;
-  const completedCount = receivedBookings.filter((b) => b.status === "completed").length;
-  const pendingCount = receivedBookings.filter((b) => b.status === "pending").length;
 
   // --- Handlers for up to 8 uploaded compressed images ---
   const compressAndAndImage = (file: File): Promise<string> => {
