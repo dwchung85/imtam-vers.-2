@@ -1,22 +1,17 @@
 import React from "react";
 import { T } from "../strings";
 import { House, Booking } from "../types";
-import { ListFilter, ClipboardCheck, Calendar, User, Eye } from "lucide-react";
 
 interface MyInfoDashboardProps {
   houses: House[];
   bookings: Booking[];
   currentUserId: string;
-  onUpdateBookingStatus: (bookingId: string, status: "confirmed" | "cancelled" | "completed") => void;
-  onSelectHouse: (house: House) => void;
 }
 
 export default function MyInfoDashboard({
   houses,
   bookings,
   currentUserId,
-  onUpdateBookingStatus,
-  onSelectHouse,
 }: MyInfoDashboardProps) {
   // Filter objects owned by the current host
   const hostHouses = houses.filter((h) => h.hostId === currentUserId);
@@ -30,7 +25,6 @@ export default function MyInfoDashboard({
 
   const confirmedCount = receivedBookings.filter((b) => b.status === "confirmed").length;
   const completedCount = receivedBookings.filter((b) => b.status === "completed").length;
-  const pendingCount = receivedBookings.filter((b) => b.status === "pending").length;
 
   return (
     <div className="space-y-8 animate-fadeIn">

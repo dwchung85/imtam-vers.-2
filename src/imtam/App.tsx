@@ -472,7 +472,14 @@ export default function App() {
               {/* Host Dashboard Page */}
               {activeTab === "host" &&
                 (currentUser ? (
-                  <HostDashboard onAddHouse={handleAddHouseListing} />
+                  <HostDashboard
+                    houses={houses}
+                    bookings={bookings}
+                    currentUserId={currentUser.id}
+                    onAddHouse={handleAddHouseListing}
+                    onUpdateBookingStatus={handleUpdateBookingStatus}
+                    onSelectHouse={(h) => setSelectedHouse(h)}
+                  />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
                 ))}
@@ -484,8 +491,6 @@ export default function App() {
                     houses={houses}
                     bookings={bookings}
                     currentUserId={currentUser.id}
-                    onUpdateBookingStatus={handleUpdateBookingStatus}
-                    onSelectHouse={(h) => setSelectedHouse(h)}
                   />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
