@@ -402,7 +402,7 @@ export default function HostDashboard({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 pb-4 border-b border-neutral-100">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <span className="text-[11px] font-semibold text-neutral-500 block">{T.host.confirmedCountPrefix}</span>
             <span className="text-lg font-bold text-neutral-900">{confirmedCount}{T.host.confirmedCountSuffix}</span>
@@ -410,22 +410,6 @@ export default function HostDashboard({
           <div>
             <span className="text-[11px] font-semibold text-neutral-500 block">{T.host.completedCountPrefix}</span>
             <span className="text-lg font-bold text-neutral-900">{completedCount}{T.host.completedCountSuffix}</span>
-          </div>
-        </div>
-
-        <div className="pt-4 flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-neutral-500">{T.host.pendingFundsLabel}</span>
-          <div className="text-right">
-            <span className="text-sm font-extrabold text-neutral-900">
-              ₩
-              {receivedBookings
-                .filter((b) => b.status === "pending")
-                .reduce((s, b) => s + b.totalPrice, 0)
-                .toLocaleString()}
-            </span>
-            <span className="text-xs text-neutral-500 ml-1">
-              {T.host.pendingCountPrefix}{pendingCount}{T.host.pendingCountSuffix}
-            </span>
           </div>
         </div>
       </div>
