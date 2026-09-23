@@ -31,7 +31,7 @@ export const T = {
   navbar: {
     findListingsAndTours: "둘러보기",
     myTourBookings: "예약내역",
-    myListingsManagement: "내집등록",
+    myListingsManagement: "내집관리",
     myInfo: "내정보",
     userMenuAriaLabel: "사용자 메뉴",
     imtamMember: "임탐 회원",
