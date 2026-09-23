@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../types';
-import { Compass, Calendar, Briefcase, LogIn, LogOut, ShieldCheck } from 'lucide-react';
+import { Compass, Calendar, Briefcase, LogIn, LogOut, ShieldCheck, UserRound } from 'lucide-react';
 import { T } from '../strings';
 
-type TabKey = 'browse' | 'guest' | 'host' | 'admin';
+type TabKey = 'browse' | 'guest' | 'host' | 'myinfo' | 'admin';
 
 interface NavbarProps {
   currentTab: TabKey;
@@ -118,8 +118,24 @@ export default function Navbar({
             >
               <Briefcase className="w-3.5 h-3.5" />
               {T.navbar.myListingsManagement}
+            </button>
+            <button
+              onClick={() => {
+                if (!currentUser) {
+                  onOpenAuth();
+                } else {
+                  setTab('myinfo');
+                }
+              }}
+              className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                currentTab === 'myinfo'
+                  ? 'bg-white text-blue-600 shadow-xs'
+                  : 'text-neutral-500 hover:text-neutral-950'
+              }`}
+            >
+              <UserRound className="w-3.5 h-3.5" />
+              {T.navbar.myInfo}
               <Badge count={hostBadge} tone="rose" />
-
             </button>
             {isAdmin && (
               <button
