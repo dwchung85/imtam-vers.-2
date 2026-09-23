@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../types';
-import { Compass, Calendar, Briefcase, LogIn, LogOut, ShieldCheck } from 'lucide-react';
+import { Compass, Calendar, Briefcase, LogIn, LogOut, ShieldCheck, UserRound } from 'lucide-react';
 import { T } from '../strings';
 
-type TabKey = 'browse' | 'guest' | 'host' | 'admin';
+type TabKey = 'browse' | 'guest' | 'host' | 'myinfo' | 'admin';
 
 interface NavbarProps {
   currentTab: TabKey;
@@ -118,8 +118,24 @@ export default function Navbar({
             >
               <Briefcase className="w-3.5 h-3.5" />
               {T.navbar.myListingsManagement}
+            </button>
+            <button
+              onClick={() => {
+                if (!currentUser) {
+                  onOpenAuth();
+                } else {
+                  setTab('myinfo');
+                }
+              }}
+              className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                currentTab === 'myinfo'
+                  ? 'bg-white text-blue-600 shadow-xs'
+                  : 'text-neutral-500 hover:text-neutral-950'
+              }`}
+            >
+              <UserRound className="w-3.5 h-3.5" />
+              {T.navbar.myInfo}
               <Badge count={hostBadge} tone="rose" />
-
             </button>
             {isAdmin && (
               <button
@@ -251,14 +267,30 @@ export default function Navbar({
           >
             <div className="relative">
               <Briefcase className="w-4 h-4" />
+            </div>
+            <span>{T.navbar.mobileListingsShort}</span>
+          </button>
+          <button
+            onClick={() => {
+              if (!currentUser) {
+                onOpenAuth();
+              } else {
+                setTab('myinfo');
+              }
+            }}
+            className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
+              currentTab === 'myinfo' ? 'text-blue-600' : 'text-neutral-400'
+            }`}
+          >
+            <div className="relative">
+              <UserRound className="w-4 h-4" />
               {hostBadge > 0 && (
                 <span className="absolute -top-1 -right-2 min-w-[14px] h-3.5 px-1 inline-flex items-center justify-center rounded-full bg-rose-500 text-white text-[8px] font-black">
                   {hostBadge > 9 ? '9+' : hostBadge}
                 </span>
               )}
             </div>
-            <span>{T.navbar.mobileListingsShort}</span>
-
+            <span>{T.navbar.myInfo}</span>
           </button>
           {isAdmin && (
             <button

@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import HouseCard from "./components/HouseCard";
 import HouseDetail from "./components/HouseDetail";
 import HostDashboard from "./components/HostDashboard";
+import MyInfoDashboard from "./components/MyInfoDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import GuestDashboard from "./components/GuestDashboard";
 import AuthModal from "./components/AuthModal";
@@ -29,7 +30,7 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   
-  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host" | "admin">("browse");
+  const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host" | "myinfo" | "admin">("browse");
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
@@ -471,11 +472,18 @@ export default function App() {
               {/* Host Dashboard Page */}
               {activeTab === "host" &&
                 (currentUser ? (
-                  <HostDashboard
+                  <HostDashboard onAddHouse={handleAddHouseListing} />
+                ) : (
+                  <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
+                ))}
+
+              {/* My Info Page */}
+              {activeTab === "myinfo" &&
+                (currentUser ? (
+                  <MyInfoDashboard
                     houses={houses}
                     bookings={bookings}
                     currentUserId={currentUser.id}
-                    onAddHouse={handleAddHouseListing}
                     onUpdateBookingStatus={handleUpdateBookingStatus}
                     onSelectHouse={(h) => setSelectedHouse(h)}
                   />
