@@ -99,10 +99,6 @@ export default function MyInfoDashboard({
             <span className="text-[11px] font-semibold text-neutral-500">{T.host.accountJoinedLabel}</span>
             <span className="text-sm font-bold text-neutral-900">{joinedAt || "-"}</span>
           </div>
-          <div className="py-2.5 flex items-center justify-between gap-2">
-            <span className="text-[11px] font-semibold text-neutral-500">{T.host.accountBalanceLabel}</span>
-            <span className="text-sm font-bold text-neutral-900">₩{currentUser.balance.toLocaleString()}</span>
-          </div>
         </div>
       </div>
     </div>
