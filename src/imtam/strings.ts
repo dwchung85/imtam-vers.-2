@@ -32,6 +32,7 @@ export const T = {
     findListingsAndTours: "둘러보기",
     myTourBookings: "예약내역",
     myListingsManagement: "내집등록",
+    myInfo: "내정보",
     userMenuAriaLabel: "사용자 메뉴",
     imtamMember: "임탐 회원",
     logout: "로그아웃",
