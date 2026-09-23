@@ -490,7 +490,7 @@ export default function App() {
                   <MyInfoDashboard
                     houses={houses}
                     bookings={bookings}
-                    currentUserId={currentUser.id}
+                    currentUser={currentUser}
                   />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
