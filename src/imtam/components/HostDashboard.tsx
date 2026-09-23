@@ -391,33 +391,8 @@ export default function HostDashboard({
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      {/* Host Earnings & Wallet Stats */}
-      <div className="bg-white rounded-3xl border border-[#008000] p-5 md:p-6 shadow-xs">
-        <div className="mb-4">
-          <span className="text-[11px] font-semibold text-neutral-500 block">
-            {T.host.totalEarningsLabel}
-          </span>
-          <div className="mt-1 text-2xl md:text-3xl font-black text-neutral-900">
-            ₩{totalHostEarnings.toLocaleString()}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <span className="text-[11px] font-semibold text-neutral-500 block">{T.host.confirmedCountPrefix}</span>
-            <span className="text-lg font-bold text-neutral-900">{confirmedCount}{T.host.confirmedCountSuffix}</span>
-          </div>
-          <div>
-            <span className="text-[11px] font-semibold text-neutral-500 block">{T.host.completedCountPrefix}</span>
-            <span className="text-lg font-bold text-neutral-900">{completedCount}{T.host.completedCountSuffix}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Grid: Management Form (Left) & Visitor Reservation list (Right) */}
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-        {/* Form to List new house (3/5 width) */}
-        <div className="xl:col-span-3 bg-white rounded-3xl border border-[#008000] p-6 md:p-8 space-y-6">
+      {/* Form to List new house */}
+      <div className="max-w-3xl mx-auto w-full bg-white rounded-3xl border border-[#008000] p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
             <h3 className="text-lg md:text-xl font-black text-neutral-900 tracking-tight">{T.host.registerListingTitle}</h3>
           </div>
