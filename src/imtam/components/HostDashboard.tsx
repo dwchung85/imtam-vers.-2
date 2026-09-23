@@ -394,7 +394,7 @@ export default function HostDashboard({
       {/* Host Earnings & Wallet Stats */}
       <div className="bg-white rounded-3xl border border-[#008000] p-5 md:p-6 shadow-xs">
         <div className="mb-4">
-          <span className="text-[10px] font-extrabold tracking-wider text-neutral-400 uppercase block">
+          <span className="text-[11px] font-semibold text-neutral-500 block">
             {T.host.totalEarningsLabel}
           </span>
           <div className="mt-1 text-2xl md:text-3xl font-black text-neutral-900">
