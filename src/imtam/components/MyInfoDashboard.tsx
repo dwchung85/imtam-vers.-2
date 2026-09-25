@@ -4,6 +4,31 @@ import { supabase } from "@/integrations/supabase/client";
 import { T } from "../strings";
 import { House, Booking, UserProfile } from "../types";
 
+// 한국 주요 은행 목록 (은행명 드롭다운용)
+const KOREAN_BANKS = [
+  "국민은행",
+  "신한은행",
+  "우리은행",
+  "하나은행",
+  "농협은행",
+  "카카오뱅크",
+  "토스뱅크",
+  "케이뱅크",
+  "기업은행",
+  "산업은행",
+  "SC제일은행",
+  "한국씨티은행",
+  "수협은행",
+  "우체국예금",
+  "대구은행",
+  "부산은행",
+  "경남은행",
+  "광주은행",
+  "전북은행",
+  "제주은행",
+  "저축은행",
+];
+
 interface MyInfoDashboardProps {
   houses: House[];
   bookings: Booking[];
@@ -164,13 +189,16 @@ export default function MyInfoDashboard({
             <span className="text-[11px] font-semibold text-neutral-500 shrink-0">{T.host.accountBankLabel}</span>
             {isEditing ? (
               <div className="flex flex-col items-end gap-1.5">
-                <input
-                  type="text"
+                <select
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  placeholder={T.host.accountBankNamePlaceholder}
-                  className="w-40 md:w-56 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-neutral-400"
-                />
+                  className="w-40 md:w-56 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-neutral-400"
+                >
+                  <option value="">{T.host.accountBankSelectPlaceholder}</option>
+                  {KOREAN_BANKS.map((bank) => (
+                    <option key={bank} value={bank}>{bank}</option>
+                  ))}
+                </select>
                 <input
                   type="text"
                   value={bankAccount}
