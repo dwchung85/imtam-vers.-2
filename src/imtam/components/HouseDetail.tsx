@@ -239,9 +239,9 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           setHearted(!next);
                         }
                       }}
-                      className="absolute top-4 right-4 bg-white p-2.5 rounded-full shadow-md text-neutral-700 hover:scale-105 active:scale-95 transition-transform cursor-pointer z-10"
+                      className="absolute top-4 right-4 z-10 cursor-pointer hover:scale-110 active:scale-95 transition-transform"
                     >
-                      <Heart className={`w-5 h-5 ${hearted ? "fill-rose-500 text-rose-500" : "text-neutral-400"}`} />
+                      <Heart className={`w-7 h-7 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] ${hearted ? "fill-rose-500 text-rose-500" : "text-white/90 fill-white/60"}`} />
                     </button>
                   </div>
 
