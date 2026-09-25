@@ -491,6 +491,7 @@ export default function App() {
                     houses={houses}
                     bookings={bookings}
                     currentUser={currentUser}
+                    onSelectHouse={(h) => setSelectedHouse(h)}
                   />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
