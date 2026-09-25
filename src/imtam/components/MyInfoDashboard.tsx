@@ -192,7 +192,7 @@ export default function MyInfoDashboard({
                 <select
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="w-40 md:w-56 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-neutral-400"
+                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 bg-white appearance-none focus:outline-none focus:border-neutral-400"
                 >
                   <option value="">{T.host.accountBankSelectPlaceholder}</option>
                   {KOREAN_BANKS.map((bank) => (
@@ -204,7 +204,7 @@ export default function MyInfoDashboard({
                   value={bankAccount}
                   onChange={(e) => setBankAccount(e.target.value)}
                   placeholder={T.host.accountBankAccountPlaceholder}
-                  className="w-40 md:w-56 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-neutral-400"
+                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
                 />
               </div>
             ) : (
