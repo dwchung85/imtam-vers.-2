@@ -385,7 +385,7 @@ export default function HostDashboard({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Form to List new house */}
-      <div className="max-w-3xl mx-auto w-full bg-white rounded-3xl border border-[#008000] p-6 md:p-8 space-y-6">
+      <div className="max-w-3xl mx-auto w-full bg-white rounded-3xl border border-neutral-200 p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
             <h3 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
               <PlusCircle className="w-4 h-4 text-[#008000]" />
