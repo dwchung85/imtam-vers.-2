@@ -179,25 +179,34 @@ export type Database = {
         Row: {
           avatar: string
           balance: number
+          bank_account: string
+          bank_name: string
           created_at: string
           id: string
           name: string
+          phone: string
           updated_at: string
         }
         Insert: {
           avatar?: string
           balance?: number
+          bank_account?: string
+          bank_name?: string
           created_at?: string
           id: string
           name: string
+          phone?: string
           updated_at?: string
         }
         Update: {
           avatar?: string
           balance?: number
+          bank_account?: string
+          bank_name?: string
           created_at?: string
           id?: string
           name?: string
+          phone?: string
           updated_at?: string
         }
         Relationships: []

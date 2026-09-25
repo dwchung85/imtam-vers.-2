@@ -108,7 +108,7 @@ function bookingFromRow(r: BookingRow): Booking {
 export async function fetchProfile(userId: string): Promise<UserProfile | null> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, name, avatar, balance')
+    .select('id, name, avatar, balance, phone, bank_name, bank_account')
     .eq('id', userId)
     .maybeSingle();
   if (error) {
@@ -121,6 +121,9 @@ export async function fetchProfile(userId: string): Promise<UserProfile | null> 
     name: data.name,
     avatar: data.avatar,
     balance: Number(data.balance ?? 0),
+    phone: data.phone ?? '',
+    bankName: data.bank_name ?? '',
+    bankAccount: data.bank_account ?? '',
   };
 }
 

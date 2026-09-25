@@ -50,6 +50,9 @@ export interface UserProfile {
   name: string;
   avatar: string;
   balance: number;
+  phone: string;
+  bankName: string;
+  bankAccount: string;
 }
 
 // 특정 매물의 날짜·시간대별 이미 예약된 인원 수 (정원 마감 판단용)
