@@ -47,7 +47,7 @@ export default function MyInfoDashboard({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Host Earnings & Wallet Stats */}
-      <div className="bg-white rounded-3xl border border-[#008000] p-5 md:p-6 shadow-xs">
+      <div className="bg-white rounded-3xl border border-neutral-200 p-5 md:p-6 shadow-xs">
         <div className="mb-4">
           <span className="text-[11px] font-semibold text-neutral-500 block">
             {T.host.totalEarningsLabel}
@@ -70,7 +70,7 @@ export default function MyInfoDashboard({
       </div>
 
       {/* Account Info */}
-      <div className="bg-white rounded-3xl border border-[#008000] p-5 md:p-6 shadow-xs">
+      <div className="bg-white rounded-3xl border border-neutral-200 p-5 md:p-6 shadow-xs">
         <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2 mb-4">
           <UserCircle2 className="w-4 h-4 text-[#008000]" />
           <span>{T.host.accountInfoTitle}</span>
