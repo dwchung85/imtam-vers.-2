@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { fetchFavoriteIds, setFavorite } from "../favorites";
 import { House, Booking, SlotLoad } from "../types";
 import LocationPickerMap from "./LocationPickerMap";
 import {
@@ -38,6 +39,15 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
   const [visitTimeSlot, setVisitTimeSlot] = useState<string>(resolvedTimeSlots[0] ?? "");
   const [guestsCount, setGuestsCount] = useState<number>(1);
   const [hearted, setHearted] = useState<boolean>(false);
+  useEffect(() => {
+    let c = false;
+    fetchFavoriteIds(currentUserId).then((ids) => {
+      if (!c) setHearted(ids.includes(house.id));
+    });
+    return () => {
+      c = true;
+    };
+  }, [currentUserId, house.id]);
   const [successBooking, setSuccessBooking] = useState<boolean>(false);
   const [activeImageIdx, setActiveImageIdx] = useState<number>(0);
   const [slotLoads, setSlotLoads] = useState<SlotLoad[]>([]);
@@ -216,7 +226,19 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                     {/* Heart button */}
                     <button
-                      onClick={() => setHearted(!hearted)}
+                      onClick={async () => {
+                        if (!currentUserId) {
+                          alert("찜하려면 로그인이 필요합니다.");
+                          return;
+                        }
+                        const next = !hearted;
+                        setHearted(next);
+                        try {
+                          await setFavorite(currentUserId, house.id, next);
+                        } catch {
+                          setHearted(!next);
+                        }
+                      }}
                       className="absolute top-4 right-4 bg-white p-2.5 rounded-full shadow-md text-neutral-700 hover:scale-105 active:scale-95 transition-transform cursor-pointer z-10"
                     >
                       <Heart className={`w-5 h-5 ${hearted ? "fill-rose-500 text-rose-500" : "text-neutral-400"}`} />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { UserCircle2 } from "lucide-react";
+import { UserCircle2, Heart } from "lucide-react";
+import { fetchFavoriteIds, setFavorite } from "../favorites";
 import { supabase } from "@/integrations/supabase/client";
 import { T } from "../strings";
 import { House, Booking, UserProfile } from "../types";
@@ -33,15 +34,22 @@ interface MyInfoDashboardProps {
   houses: House[];
   bookings: Booking[];
   currentUser: UserProfile;
+  onSelectHouse?: (h: House) => void;
 }
 
 export default function MyInfoDashboard({
   houses,
   bookings,
   currentUser,
+  onSelectHouse,
 }: MyInfoDashboardProps) {
   const [accountEmail, setAccountEmail] = useState<string>("");
   const [joinedAt, setJoinedAt] = useState<string>("");
+  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
+  useEffect(() => {
+    fetchFavoriteIds(currentUser.id).then(setFavoriteIds);
+  }, [currentUser.id]);
+  const favoriteHouses = houses.filter((h) => favoriteIds.includes(h.id));
 
   const [phone, setPhone] = useState<string>(currentUser.phone ?? "");
   const [bankName, setBankName] = useState<string>(currentUser.bankName ?? "");
@@ -235,6 +243,42 @@ export default function MyInfoDashboard({
             >
               {T.host.accountSaveButton}
             </button>
+          </div>
+        )}
+      </div>
+
+      {/* 찜한 매물 */}
+      <div className="bg-white rounded-3xl border border-neutral-200 p-6 space-y-4">
+        <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
+          <Heart className="w-4 h-4 text-[#008000]" />
+          찜한 매물 ({favoriteHouses.length})
+        </h4>
+        {favoriteHouses.length === 0 ? (
+          <p className="text-xs text-neutral-500">아직 찜한 매물이 없습니다. 상세보기에서 하트를 눌러 찜해보세요.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {favoriteHouses.map((h) => (
+              <div key={h.id} className="flex items-center gap-3 border border-neutral-200 rounded-2xl p-2">
+                <button type="button" onClick={() => onSelectHouse?.(h)} className="flex items-center gap-3 flex-1 min-w-0 text-left">
+                  <img src={h.imageUrl} alt={h.title} className="w-14 h-14 rounded-xl object-cover bg-neutral-100" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-neutral-900 truncate">{h.title}</p>
+                    <p className="text-[11px] text-neutral-500 truncate">{h.location}</p>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  aria-label="찜 해제"
+                  onClick={async () => {
+                    setFavoriteIds((ids) => ids.filter((x) => x !== h.id));
+                    await setFavorite(currentUser.id, h.id, false).catch(() => {});
+                  }}
+                  className="p-2"
+                >
+                  <Heart className="w-4 h-4 fill-rose-500 text-rose-500" />
+                </button>
+              </div>
+            ))}
           </div>
         )}
       </div>
