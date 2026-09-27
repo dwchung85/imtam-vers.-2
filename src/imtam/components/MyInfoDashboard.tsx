@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { UserCircle2, Heart } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { UserCircle2, Heart, Camera } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { fetchFavoriteIds, setFavorite } from "../favorites";
 import { supabase } from "@/integrations/supabase/client";
 import { T } from "../strings";
@@ -35,6 +36,7 @@ interface MyInfoDashboardProps {
   bookings: Booking[];
   currentUser: UserProfile;
   onSelectHouse?: (h: House) => void;
+  onProfileUpdated?: (profile: UserProfile) => void;
 }
 
 export default function MyInfoDashboard({
@@ -42,6 +44,7 @@ export default function MyInfoDashboard({
   bookings,
   currentUser,
   onSelectHouse,
+  onProfileUpdated,
 }: MyInfoDashboardProps) {
   const [accountEmail, setAccountEmail] = useState<string>("");
   const [joinedAt, setJoinedAt] = useState<string>("");
@@ -54,6 +57,8 @@ export default function MyInfoDashboard({
   const [phone, setPhone] = useState<string>(currentUser.phone ?? "");
   const [bankName, setBankName] = useState<string>(currentUser.bankName ?? "");
   const [bankAccount, setBankAccount] = useState<string>(currentUser.bankAccount ?? "");
+  const [avatar, setAvatar] = useState(currentUser.avatar);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -76,7 +81,8 @@ export default function MyInfoDashboard({
     setPhone(currentUser.phone ?? "");
     setBankName(currentUser.bankName ?? "");
     setBankAccount(currentUser.bankAccount ?? "");
-  }, [currentUser.id, currentUser.phone, currentUser.bankName, currentUser.bankAccount]);
+    setAvatar(currentUser.avatar);
+  }, [currentUser.id, currentUser.phone, currentUser.bankName, currentUser.bankAccount, currentUser.avatar]);
 
   // Filter objects owned by the current host
   const hostHouses = houses.filter((h) => h.hostId === currentUser.id);
@@ -91,6 +97,30 @@ export default function MyInfoDashboard({
   const confirmedCount = receivedBookings.filter((b) => b.status === "confirmed").length;
   const completedCount = receivedBookings.filter((b) => b.status === "completed").length;
 
+  const handleAvatarChange = async (file?: File) => {
+    if (!file) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) {
+      alert(T.host.accountAvatarInvalidAlert);
+      return;
+    }
+    try {
+      const image = await createImageBitmap(file);
+      const size = 320;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Image canvas unavailable");
+      const square = Math.min(image.width, image.height);
+      context.drawImage(image, (image.width - square) / 2, (image.height - square) / 2, square, square, 0, 0, size, size);
+      image.close();
+      setAvatar(canvas.toDataURL("image/jpeg", 0.8));
+    } catch (error) {
+      console.error("avatar preparation error", error);
+      alert(T.host.accountAvatarInvalidAlert);
+    }
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     const { error } = await supabase
@@ -99,6 +129,7 @@ export default function MyInfoDashboard({
         phone: phone.trim(),
         bank_name: bankName.trim(),
         bank_account: bankAccount.trim(),
+        avatar,
       })
       .eq("id", currentUser.id);
     setIsSaving(false);
@@ -107,6 +138,13 @@ export default function MyInfoDashboard({
       alert(T.host.accountSaveFailedAlert);
       return;
     }
+    onProfileUpdated?.({
+      ...currentUser,
+      phone: phone.trim(),
+      bankName: bankName.trim(),
+      bankAccount: bankAccount.trim(),
+      avatar,
+    });
     setIsEditing(false);
   };
 
@@ -146,24 +184,43 @@ export default function MyInfoDashboard({
             <span>{T.host.accountInfoTitle}</span>
           </h4>
           {!isEditing && (
-            <button
+            <Button
               type="button"
               onClick={() => setIsEditing(true)}
-              className="text-xs font-semibold text-neutral-600 border border-neutral-200 rounded-full px-3 py-1 hover:bg-neutral-50 transition-colors"
+              variant="outline"
+              size="sm"
+              className="text-xs font-semibold rounded-full"
             >
               {T.host.accountEditButton}
-            </button>
+            </Button>
           )}
         </div>
 
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex flex-col items-center gap-2 mb-4">
           <img
-            src={currentUser.avatar}
-            alt=""
-            className="w-12 h-12 rounded-full object-cover border-2 border-black bg-neutral-100"
+            src={avatar}
+            alt={T.host.accountAvatarAlt}
+            className="w-20 h-20 rounded-full object-cover bg-muted"
             referrerPolicy="no-referrer"
           />
-          <span className="text-base font-bold text-neutral-900">{currentUser.name}</span>
+          {isEditing && (
+            <>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                aria-label={T.host.accountAvatarUpdateButton}
+                onChange={(e) => {
+                  void handleAvatarChange(e.target.files?.[0]);
+                  e.target.value = "";
+                }}
+              />
+              <Button type="button" variant="ghost" size="sm" className="text-xs" onClick={() => avatarInputRef.current?.click()}>
+                <Camera aria-hidden="true" /> {T.host.accountAvatarUpdateButton}
+              </Button>
+            </>
+          )}
         </div>
 
         <div className="divide-y divide-neutral-150">
@@ -223,26 +280,30 @@ export default function MyInfoDashboard({
 
         {isEditing && (
           <div className="mt-4 flex items-center justify-end gap-2">
-            <button
+            <Button
               type="button"
               onClick={() => {
                 setPhone(currentUser.phone ?? "");
                 setBankName(currentUser.bankName ?? "");
                 setBankAccount(currentUser.bankAccount ?? "");
+                setAvatar(currentUser.avatar);
                 setIsEditing(false);
               }}
-              className="text-xs font-semibold text-neutral-600 border border-neutral-200 rounded-full px-4 py-1.5 hover:bg-neutral-50 transition-colors"
+              variant="outline"
+              size="sm"
+              className="text-xs font-semibold rounded-full"
             >
               {T.host.accountCancelButton}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={handleSave}
               disabled={isSaving}
-              className="text-xs font-semibold text-white bg-neutral-900 rounded-full px-4 py-1.5 hover:bg-neutral-700 transition-colors disabled:opacity-50"
+              size="sm"
+              className="text-xs font-semibold rounded-full"
             >
               {T.host.accountSaveButton}
-            </button>
+            </Button>
           </div>
         )}
       </div>
