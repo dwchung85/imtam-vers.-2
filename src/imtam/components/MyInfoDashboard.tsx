@@ -62,6 +62,7 @@ export default function MyInfoDashboard({
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isProcessingAvatar, setIsProcessingAvatar] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -103,6 +104,7 @@ export default function MyInfoDashboard({
       alert(T.host.accountAvatarInvalidAlert);
       return;
     }
+    setIsProcessingAvatar(true);
     try {
       const image = await createImageBitmap(file);
       const size = 320;
@@ -118,6 +120,8 @@ export default function MyInfoDashboard({
     } catch (error) {
       console.error("avatar preparation error", error);
       alert(T.host.accountAvatarInvalidAlert);
+    } finally {
+      setIsProcessingAvatar(false);
     }
   };
 
@@ -216,7 +220,7 @@ export default function MyInfoDashboard({
                   e.target.value = "";
                 }}
               />
-              <Button type="button" variant="ghost" size="sm" className="text-xs" onClick={() => avatarInputRef.current?.click()}>
+              <Button type="button" variant="ghost" size="sm" className="text-xs" disabled={isProcessingAvatar || isSaving} onClick={() => avatarInputRef.current?.click()}>
                 <Camera aria-hidden="true" /> {T.host.accountAvatarUpdateButton}
               </Button>
             </>
@@ -298,7 +302,7 @@ export default function MyInfoDashboard({
             <Button
               type="button"
               onClick={handleSave}
-              disabled={isSaving}
+              disabled={isSaving || isProcessingAvatar}
               size="sm"
               className="text-xs font-semibold rounded-full"
             >
