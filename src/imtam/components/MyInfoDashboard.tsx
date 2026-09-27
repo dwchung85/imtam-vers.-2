@@ -288,6 +288,7 @@ export default function MyInfoDashboard({
             <Button
               type="button"
               onClick={() => {
+                if (!window.confirm(T.host.accountCancelConfirm)) return;
                 setPhone(currentUser.phone ?? "");
                 setBankName(currentUser.bankName ?? "");
                 setBankAccount(currentUser.bankAccount ?? "");
