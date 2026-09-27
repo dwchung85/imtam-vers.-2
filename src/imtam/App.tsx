@@ -492,6 +492,7 @@ export default function App() {
                     bookings={bookings}
                     currentUser={currentUser}
                     onSelectHouse={(h) => setSelectedHouse(h)}
+                     onProfileUpdated={setCurrentUser}
                   />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
