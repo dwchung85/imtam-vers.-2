@@ -342,6 +342,52 @@ export default function MyInfoDashboard({
           </div>
         )}
       </div>
+
+      {/* 확인 대화상자 */}
+      {pendingConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6"
+          onClick={() => setPendingConfirm(null)}
+        >
+          <div
+            className="w-full max-w-xs bg-white rounded-2xl border border-neutral-200 shadow-xl p-5 space-y-4 animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm font-semibold text-neutral-900 text-center whitespace-pre-line leading-relaxed">
+              {pendingConfirm === "save" ? T.host.accountSaveConfirm : T.host.accountCancelConfirm}
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setPendingConfirm(null)}
+                className="flex-1 h-9 text-xs font-semibold text-neutral-700 border border-neutral-200 rounded-full hover:bg-neutral-50 focus:outline-none focus:border-neutral-400"
+              >
+                {T.host.confirmDialogCancel}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const action = pendingConfirm;
+                  setPendingConfirm(null);
+                  if (action === "save") {
+                    handleSave();
+                  } else {
+                    setPhone(currentUser.phone ?? "");
+                    setBankName(currentUser.bankName ?? "");
+                    setBankAccount(currentUser.bankAccount ?? "");
+                    setAvatar(currentUser.avatar);
+                    setIsEditing(false);
+                  }
+                }}
+                disabled={pendingConfirm === "save" && (isSaving || isProcessingAvatar)}
+                className="flex-1 h-9 text-xs font-semibold text-white bg-neutral-900 rounded-full hover:bg-neutral-800 disabled:opacity-50 focus:outline-none"
+              >
+                {T.host.confirmDialogConfirm}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
