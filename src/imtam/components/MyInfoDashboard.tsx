@@ -126,6 +126,7 @@ export default function MyInfoDashboard({
   };
 
   const handleSave = async () => {
+    if (!window.confirm(T.host.accountSaveConfirm)) return;
     setIsSaving(true);
     const { error } = await supabase
       .from("profiles")
