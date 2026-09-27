@@ -126,6 +126,7 @@ export default function MyInfoDashboard({
   };
 
   const handleSave = async () => {
+    if (!window.confirm(T.host.accountSaveConfirm)) return;
     setIsSaving(true);
     const { error } = await supabase
       .from("profiles")
@@ -287,6 +288,7 @@ export default function MyInfoDashboard({
             <Button
               type="button"
               onClick={() => {
+                if (!window.confirm(T.host.accountCancelConfirm)) return;
                 setPhone(currentUser.phone ?? "");
                 setBankName(currentUser.bankName ?? "");
                 setBankAccount(currentUser.bankAccount ?? "");
