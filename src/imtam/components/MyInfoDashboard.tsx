@@ -127,7 +127,6 @@ export default function MyInfoDashboard({
   };
 
   const handleSave = async () => {
-    if (!window.confirm(T.host.accountSaveConfirm)) return;
     setIsSaving(true);
     const { error } = await supabase
       .from("profiles")
@@ -288,14 +287,7 @@ export default function MyInfoDashboard({
           <div className="mt-4 flex items-center justify-end gap-2">
             <Button
               type="button"
-              onClick={() => {
-                if (!window.confirm(T.host.accountCancelConfirm)) return;
-                setPhone(currentUser.phone ?? "");
-                setBankName(currentUser.bankName ?? "");
-                setBankAccount(currentUser.bankAccount ?? "");
-                setAvatar(currentUser.avatar);
-                setIsEditing(false);
-              }}
+              onClick={() => setPendingConfirm("cancel")}
               variant="outline"
               size="sm"
               className="text-xs font-semibold rounded-full"
@@ -304,7 +296,7 @@ export default function MyInfoDashboard({
             </Button>
             <Button
               type="button"
-              onClick={handleSave}
+              onClick={() => setPendingConfirm("save")}
               disabled={isSaving || isProcessingAvatar}
               size="sm"
               className="text-xs font-semibold rounded-full"
