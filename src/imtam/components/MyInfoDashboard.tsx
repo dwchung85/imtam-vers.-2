@@ -62,6 +62,7 @@ export default function MyInfoDashboard({
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [pendingConfirm, setPendingConfirm] = useState<null | "save" | "cancel">(null);
   const [isProcessingAvatar, setIsProcessingAvatar] = useState(false);
 
   useEffect(() => {
