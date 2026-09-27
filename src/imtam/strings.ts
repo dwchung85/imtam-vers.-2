@@ -194,6 +194,8 @@ export const T = {
   accountSaveFailedAlert: "정보 저장에 실패했습니다. 다시 시도해주세요.",
   accountSaveConfirm: "정보를 저장하시겠습니까?",
   accountCancelConfirm: "수정을 취소하시겠습니까?\n변경한 내용은 저장되지 않습니다.",
+  confirmDialogConfirm: "확인",
+  confirmDialogCancel: "취소",
     accountAvatarAlt: "프로필 사진",
     accountAvatarUpdateButton: "사진 변경",
     accountAvatarInvalidAlert: "JPG, PNG, WEBP 사진을 5MB 이하로 선택해 주세요.",
