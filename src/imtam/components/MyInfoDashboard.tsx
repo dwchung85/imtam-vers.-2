@@ -280,7 +280,7 @@ export default function MyInfoDashboard({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="010-1234-5678"
-                className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
               />
             ) : (
               <span className="text-sm font-bold text-neutral-900 break-all text-right">{phone || "-"}</span>
@@ -293,7 +293,7 @@ export default function MyInfoDashboard({
                 <select
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 bg-white appearance-none focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 bg-white appearance-none focus:outline-none focus:border-neutral-400"
                 >
                   <option value="">{T.host.accountBankSelectPlaceholder}</option>
                   {KOREAN_BANKS.map((bank) => (
@@ -305,7 +305,7 @@ export default function MyInfoDashboard({
                   value={bankAccount}
                   onChange={(e) => setBankAccount(e.target.value)}
                   placeholder={T.host.accountBankAccountPlaceholder}
-                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
                 />
               </div>
             ) : (
@@ -322,7 +322,7 @@ export default function MyInfoDashboard({
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder={T.host.accountNewPasswordPlaceholder}
                   autoComplete="new-password"
-                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
                 />
                 <input
                   type="password"
@@ -330,7 +330,7 @@ export default function MyInfoDashboard({
                   onChange={(e) => setNewPasswordConfirm(e.target.value)}
                   placeholder={T.host.accountNewPasswordConfirmPlaceholder}
                   autoComplete="new-password"
-                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
                 />
               </div>
             </div>
