@@ -291,6 +291,7 @@ export default function MyInfoDashboard({
             {isEditing ? (
               <div className="flex flex-col items-end gap-1.5">
                 <select
+                  dir="rtl"
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
                   className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 bg-white appearance-none focus:outline-none focus:border-neutral-400"
