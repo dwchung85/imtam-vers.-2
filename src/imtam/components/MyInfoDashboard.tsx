@@ -430,6 +430,7 @@ export default function MyInfoDashboard({
                     setBankName(currentUser.bankName ?? "");
                     setBankAccount(currentUser.bankAccount ?? "");
                     setAvatar(currentUser.avatar);
+                    resetPasswordFields();
                     setIsEditing(false);
                   }
                 }}
