@@ -64,6 +64,8 @@ export default function MyInfoDashboard({
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [pendingConfirm, setPendingConfirm] = useState<null | "save" | "cancel">(null);
   const [isProcessingAvatar, setIsProcessingAvatar] = useState(false);
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
@@ -126,7 +128,19 @@ export default function MyInfoDashboard({
     }
   };
 
+  const passwordChangeRequested = newPassword.length > 0 || newPasswordConfirm.length > 0;
+
   const handleSave = async () => {
+    if (passwordChangeRequested) {
+      if (newPassword.length < 6) {
+        alert(T.host.accountPasswordTooShortAlert);
+        return;
+      }
+      if (newPassword !== newPasswordConfirm) {
+        alert(T.host.accountPasswordMismatchAlert);
+        return;
+      }
+    }
     setIsSaving(true);
     const { error } = await supabase
       .from("profiles")
@@ -137,12 +151,22 @@ export default function MyInfoDashboard({
         avatar,
       })
       .eq("id", currentUser.id);
-    setIsSaving(false);
     if (error) {
+      setIsSaving(false);
       console.error("profile update error", error);
       alert(T.host.accountSaveFailedAlert);
       return;
     }
+    if (passwordChangeRequested) {
+      const { error: passwordError } = await supabase.auth.updateUser({ password: newPassword });
+      if (passwordError) {
+        setIsSaving(false);
+        console.error("password change error", passwordError);
+        alert(T.host.accountPasswordChangeFailedAlert);
+        return;
+      }
+    }
+    setIsSaving(false);
     onProfileUpdated?.({
       ...currentUser,
       phone: phone.trim(),
@@ -150,7 +174,14 @@ export default function MyInfoDashboard({
       bankAccount: bankAccount.trim(),
       avatar,
     });
+    setNewPassword("");
+    setNewPasswordConfirm("");
     setIsEditing(false);
+  };
+
+  const resetPasswordFields = () => {
+    setNewPassword("");
+    setNewPasswordConfirm("");
   };
 
   const bankDisplay =
@@ -281,6 +312,29 @@ export default function MyInfoDashboard({
               <span className="text-sm font-bold text-neutral-900 break-all text-right">{bankDisplay}</span>
             )}
           </div>
+          {isEditing && (
+            <div className="py-2.5 flex items-center justify-between gap-2">
+              <span className="text-[11px] font-semibold text-neutral-500 shrink-0">{T.host.accountPasswordLabel}</span>
+              <div className="flex flex-col items-end gap-1.5">
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder={T.host.accountNewPasswordPlaceholder}
+                  autoComplete="new-password"
+                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                />
+                <input
+                  type="password"
+                  value={newPasswordConfirm}
+                  onChange={(e) => setNewPasswordConfirm(e.target.value)}
+                  placeholder={T.host.accountNewPasswordConfirmPlaceholder}
+                  autoComplete="new-password"
+                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {isEditing && (
@@ -376,6 +430,7 @@ export default function MyInfoDashboard({
                     setBankName(currentUser.bankName ?? "");
                     setBankAccount(currentUser.bankAccount ?? "");
                     setAvatar(currentUser.avatar);
+                    resetPasswordFields();
                     setIsEditing(false);
                   }
                 }}
