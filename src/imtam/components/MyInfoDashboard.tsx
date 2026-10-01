@@ -64,6 +64,8 @@ export default function MyInfoDashboard({
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [pendingConfirm, setPendingConfirm] = useState<null | "save" | "cancel">(null);
   const [isProcessingAvatar, setIsProcessingAvatar] = useState(false);
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
