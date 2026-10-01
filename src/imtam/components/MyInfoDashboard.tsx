@@ -312,6 +312,29 @@ export default function MyInfoDashboard({
               <span className="text-sm font-bold text-neutral-900 break-all text-right">{bankDisplay}</span>
             )}
           </div>
+          {isEditing && (
+            <div className="py-2.5 flex items-center justify-between gap-2">
+              <span className="text-[11px] font-semibold text-neutral-500 shrink-0">{T.host.accountPasswordLabel}</span>
+              <div className="flex flex-col items-end gap-1.5">
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder={T.host.accountNewPasswordPlaceholder}
+                  autoComplete="new-password"
+                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                />
+                <input
+                  type="password"
+                  value={newPasswordConfirm}
+                  onChange={(e) => setNewPasswordConfirm(e.target.value)}
+                  placeholder={T.host.accountNewPasswordConfirmPlaceholder}
+                  autoComplete="new-password"
+                  className="w-40 md:w-56 h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {isEditing && (
