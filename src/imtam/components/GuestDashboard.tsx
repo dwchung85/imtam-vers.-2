@@ -58,7 +58,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                       referrerPolicy="no-referrer"
                     />
                     <div className="min-w-0">
-                      <div className="flex items-center gap-1.5 mb-11 flex-wrap">
+                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
                         {isConfirmed && (
                           <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-0.5">
                             <CheckCircle className="w-3 h-3 text-emerald-600" />
