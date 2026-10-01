@@ -128,7 +128,19 @@ export default function MyInfoDashboard({
     }
   };
 
+  const passwordChangeRequested = newPassword.length > 0 || newPasswordConfirm.length > 0;
+
   const handleSave = async () => {
+    if (passwordChangeRequested) {
+      if (newPassword.length < 6) {
+        alert(T.host.accountPasswordTooShortAlert);
+        return;
+      }
+      if (newPassword !== newPasswordConfirm) {
+        alert(T.host.accountPasswordMismatchAlert);
+        return;
+      }
+    }
     setIsSaving(true);
     const { error } = await supabase
       .from("profiles")
@@ -139,12 +151,22 @@ export default function MyInfoDashboard({
         avatar,
       })
       .eq("id", currentUser.id);
-    setIsSaving(false);
     if (error) {
+      setIsSaving(false);
       console.error("profile update error", error);
       alert(T.host.accountSaveFailedAlert);
       return;
     }
+    if (passwordChangeRequested) {
+      const { error: passwordError } = await supabase.auth.updateUser({ password: newPassword });
+      if (passwordError) {
+        setIsSaving(false);
+        console.error("password change error", passwordError);
+        alert(T.host.accountPasswordChangeFailedAlert);
+        return;
+      }
+    }
+    setIsSaving(false);
     onProfileUpdated?.({
       ...currentUser,
       phone: phone.trim(),
@@ -152,7 +174,14 @@ export default function MyInfoDashboard({
       bankAccount: bankAccount.trim(),
       avatar,
     });
+    setNewPassword("");
+    setNewPasswordConfirm("");
     setIsEditing(false);
+  };
+
+  const resetPasswordFields = () => {
+    setNewPassword("");
+    setNewPasswordConfirm("");
   };
 
   const bankDisplay =
