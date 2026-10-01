@@ -380,7 +380,7 @@ export default function MyInfoDashboard({
                   }
                 }}
                 disabled={pendingConfirm === "save" && (isSaving || isProcessingAvatar)}
-                className="flex-1 h-9 text-xs font-semibold text-white bg-neutral-900 rounded-full hover:bg-neutral-800 disabled:opacity-50 focus:outline-none"
+                className="flex-1 h-9 text-xs font-semibold text-white bg-[#008000] rounded-full hover:bg-[#006d00] disabled:opacity-50 focus:outline-none"
               >
                 {T.host.confirmDialogConfirm}
               </button>
