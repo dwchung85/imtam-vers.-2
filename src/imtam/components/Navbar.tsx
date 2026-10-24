@@ -76,7 +76,7 @@ export default function Navbar({
               onClick={() => setTab('browse')}
               className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
                 currentTab === 'browse'
-                  ? 'bg-white text-blue-600 shadow-xs'
+                  ? 'bg-white text-[#008000] shadow-xs'
                   : 'text-neutral-500 hover:text-neutral-950'
               }`}
             >
@@ -93,7 +93,7 @@ export default function Navbar({
               }}
               className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
                 currentTab === 'guest'
-                  ? 'bg-white text-blue-600 shadow-xs'
+                  ? 'bg-white text-[#008000] shadow-xs'
                   : 'text-neutral-500 hover:text-neutral-950'
               }`}
             >
@@ -112,7 +112,7 @@ export default function Navbar({
               }}
               className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
                 currentTab === 'host'
-                  ? 'bg-white text-blue-600 shadow-xs'
+                  ? 'bg-white text-[#008000] shadow-xs'
                   : 'text-neutral-500 hover:text-neutral-950'
               }`}
             >
@@ -129,7 +129,7 @@ export default function Navbar({
               }}
               className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
                 currentTab === 'myinfo'
-                  ? 'bg-white text-blue-600 shadow-xs'
+                  ? 'bg-white text-[#008000] shadow-xs'
                   : 'text-neutral-500 hover:text-neutral-950'
               }`}
             >
@@ -142,7 +142,7 @@ export default function Navbar({
                 onClick={() => setTab('admin')}
                 className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
                   currentTab === 'admin'
-                    ? 'bg-white text-blue-600 shadow-xs'
+                    ? 'bg-white text-[#008000] shadow-xs'
                     : 'text-neutral-500 hover:text-neutral-950'
                 }`}
               >
@@ -224,7 +224,7 @@ export default function Navbar({
           <button
             onClick={() => setTab('browse')}
             className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
-              currentTab === 'browse' ? 'text-blue-600' : 'text-neutral-400'
+              currentTab === 'browse' ? 'text-[#008000]' : 'text-neutral-400'
             }`}
           >
             <Compass className="w-4 h-4" />
@@ -239,7 +239,7 @@ export default function Navbar({
               }
             }}
             className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
-              currentTab === 'guest' ? 'text-blue-600' : 'text-neutral-400'
+              currentTab === 'guest' ? 'text-[#008000]' : 'text-neutral-400'
             }`}
           >
             <div className="relative">
@@ -262,7 +262,7 @@ export default function Navbar({
               }
             }}
             className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
-              currentTab === 'host' ? 'text-blue-600' : 'text-neutral-400'
+              currentTab === 'host' ? 'text-[#008000]' : 'text-neutral-400'
             }`}
           >
             <div className="relative">
@@ -279,7 +279,7 @@ export default function Navbar({
               }
             }}
             className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
-              currentTab === 'myinfo' ? 'text-blue-600' : 'text-neutral-400'
+              currentTab === 'myinfo' ? 'text-[#008000]' : 'text-neutral-400'
             }`}
           >
             <div className="relative">
@@ -296,7 +296,7 @@ export default function Navbar({
             <button
               onClick={() => setTab('admin')}
               className={`flex flex-col items-center gap-0.5 text-[10px] font-bold px-2 py-1 transition-colors ${
-                currentTab === 'admin' ? 'text-blue-600' : 'text-neutral-400'
+                currentTab === 'admin' ? 'text-[#008000]' : 'text-neutral-400'
               }`}
             >
               <div className="relative">
