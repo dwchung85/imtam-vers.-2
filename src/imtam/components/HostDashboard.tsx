@@ -411,7 +411,8 @@ export default function HostDashboard({
                   type="text"
                   placeholder={T.host.titlePlaceholder}
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  maxLength={T.host.titleMaxLength}
+                  onChange={(e) => setTitle(e.target.value.slice(0, T.host.titleMaxLength))}
                   className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   required
                 />
