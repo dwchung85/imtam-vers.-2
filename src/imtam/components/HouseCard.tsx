@@ -19,7 +19,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
     <div
       id={`house-card-${house.id}`}
       onClick={onClick}
-      className="cursor-pointer bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-xs flex flex-col h-full"
+      className="cursor-pointer bg-white rounded-[10px] border border-neutral-200 overflow-hidden shadow-xs flex flex-col h-full"
     >
       {/* House Image Container */}
       <div className="relative aspect-[4/3] w-full bg-neutral-100 overflow-hidden">
