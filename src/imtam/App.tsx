@@ -314,7 +314,7 @@ export default function App() {
               {activeTab === "browse" && (
                 <div className="space-y-6 md:space-y-8 animate-fadeIn">
                   {/* Visual Header / Search / Filter row */}
-                  <div className="bg-white rounded-3xl border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
+                  <div className="bg-white rounded-[10px] border border-blue-100 p-5 md:p-8 shadow-xs space-y-6">
                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                       {/* Search Bar inside card */}
                       <div className="relative w-full">
