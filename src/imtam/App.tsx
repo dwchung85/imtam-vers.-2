@@ -318,7 +318,7 @@ export default function App() {
                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                       {/* Search Bar inside card */}
                       <div className="relative w-full">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#008000]" />
                         <input
                           type="text"
                           placeholder={T.app.searchPlaceholder}
