@@ -324,7 +324,7 @@ export default function App() {
                           placeholder={T.app.searchPlaceholder}
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-xl border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
+                          className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-[10px] border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
                         />
                       </div>
                     </div>
@@ -336,7 +336,7 @@ export default function App() {
                         <select
                           value={minRooms}
                           onChange={(e) => setMinRooms(Number(e.target.value))}
-                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minRooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden truncate ${
+                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minRooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minRooms > 0
                               ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
@@ -369,7 +369,7 @@ export default function App() {
                         <select
                           value={minBathrooms}
                           onChange={(e) => setMinBathrooms(Number(e.target.value))}
-                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minBathrooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden truncate ${
+                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minBathrooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minBathrooms > 0
                               ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
@@ -401,7 +401,7 @@ export default function App() {
                         <select
                           value={minArea}
                           onChange={(e) => setMinArea(Number(e.target.value))}
-                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minArea > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-full border transition-all cursor-pointer focus:outline-hidden truncate ${
+                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minArea > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minArea > 0
                               ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
