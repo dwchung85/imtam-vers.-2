@@ -1,5 +1,5 @@
 import { House } from '../types';
-import { Star, MapPin, Users, CalendarCheck, ShieldCheck } from 'lucide-react';
+import { Star, MapPin, ShieldCheck } from 'lucide-react';
 import { T } from "../strings";
 
 interface HouseCardProps {
@@ -30,22 +30,22 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           className="w-full h-full object-cover"
         />
         {isOwnListing ? (
-          <span className="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
+          <span className="absolute top-3 left-3 bg-[#008000] text-white text-[10px] font-bold px-2.5 py-1 rounded-[10px] shadow-sm uppercase tracking-wider">
             {T.houseCard.ownListingBadge}
           </span>
         ) : (
-          <span className="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
+          <span className="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-[10px] shadow-sm uppercase tracking-wider">
             {T.houseCard.inProgressBadge}
           </span>
         )}
         {house.reviewsCount && house.reviewsCount > 0 && typeof house.rating === 'number' ? (
-          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-xs font-semibold px-2 py-1 rounded-lg text-neutral-800 flex items-center gap-1 shadow-xs">
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-xs font-semibold px-2 py-1 rounded-[10px] text-neutral-800 flex items-center gap-1 shadow-xs">
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <span>{house.rating.toFixed(1)}</span>
             <span className="text-neutral-400 font-normal">({house.reviewsCount})</span>
           </div>
         ) : (
-          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-[10px] font-bold px-2 py-1 rounded-lg text-neutral-500 shadow-xs">
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-[10px] font-bold px-2 py-1 rounded-[10px] text-neutral-500 shadow-xs">
             {T.houseCard.noRatingLabel}
           </div>
         )}
@@ -56,7 +56,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
         <div>
           {/* Location & Tags */}
           <div className="flex items-center gap-1 text-xs text-neutral-500 mb-1.5 font-medium">
-            <MapPin className="w-3 h-3 text-blue-500 shrink-0" />
+            <MapPin className="w-3 h-3 text-[#008000] shrink-0" />
             <span className="truncate">{house.location}</span>
           </div>
 
@@ -88,15 +88,13 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           {/* Divider */}
           <div className="border-t border-neutral-100 my-2 pt-2.5 flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs text-neutral-600 font-semibold">
-              <CalendarCheck className="w-3.5 h-3.5 text-blue-500" />
-              <span>{T.houseCard.maxGuestsPrefix}{house.maxGuests}{T.houseCard.maxGuestsSuffix}</span>
+              <span>{T.houseCard.tourBookingLabel}</span>
             </div>
             
             <div className="text-right">
               <span className="text-base md:text-lg font-black text-blue-600">
                 ₩{formatPrice(house.pricePerVisit)}
               </span>
-              <span className="text-[10px] text-neutral-400 ml-0.5 block font-bold">{T.houseCard.tourBookingLabel}</span>
             </div>
           </div>
 
