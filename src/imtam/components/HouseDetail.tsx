@@ -429,9 +429,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-[10px] p-3 bg-white">
-                      <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
-                        {T.houseDetail.guestsCountLabel}
-                      </label>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-neutral-500 font-semibold">{T.houseDetail.totalGuestsLabel}</span>
                         <div className="flex items-center gap-3">
