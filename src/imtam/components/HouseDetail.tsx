@@ -502,11 +502,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           : T.houseDetail.submitButtonLabel}
                     </button>
                   </form>
-
-                  <div className="flex items-center gap-2 text-[10px] text-neutral-500 justify-center">
-                    <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>{T.houseDetail.trustLabel}</span>
-                  </div>
                 </div>
               </div>
             </div>
