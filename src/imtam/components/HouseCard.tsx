@@ -92,7 +92,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
             </div>
             
             <div className="text-right">
-              <span className="text-base md:text-lg font-black text-blue-600">
+              <span className="text-base md:text-lg font-black text-neutral-600">
                 ₩{formatPrice(house.pricePerVisit)}
               </span>
             </div>
