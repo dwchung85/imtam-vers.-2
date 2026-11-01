@@ -330,7 +330,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 pb-4 border-b border-neutral-150 text-sm text-neutral-600">
                     <div className="flex flex-col gap-0.5 font-medium text-neutral-800 w-full">
                       <span className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4 text-blue-500 shrink-0" />
+                        <MapPin className="w-4 h-4 text-[#008000] shrink-0" />
                         <span>{house.location}</span>
                       </span>
                       {house.locationDetail && (
@@ -379,7 +379,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     {/* Visitor inputs mapping host-configured arrays: resolvedDates and resolvedTimeSlots */}
                     <div className="border border-neutral-200 rounded-[10px] overflow-hidden bg-white divide-y divide-neutral-150">
                       <div className="p-3">
-                        <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
+                        <label className="block text-xs font-bold text-blue-600 tracking-wider mb-1 flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5 text-blue-500" />
                           <span>
                             {T.houseDetail.visitDateLabelPrefix}
@@ -402,7 +402,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </div>
 
                       <div className="p-3">
-                        <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
+                        <label className="block text-xs font-bold text-blue-600 tracking-wider mb-1 flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-blue-500" />
                           <span>{T.houseDetail.timeSlotLabel}</span>
                         </label>
