@@ -380,7 +380,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <div className="border border-neutral-200 rounded-[10px] overflow-hidden bg-white divide-y divide-neutral-150">
                       <div className="p-3">
                         <label className="block text-xs font-bold text-neutral-700 tracking-wider mb-1 flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                          <Calendar className="w-3.5 h-3.5 text-[#008000]" />
                           <span>
                             {T.houseDetail.visitDateLabelPrefix}
                             {resolvedDates.length}
@@ -403,7 +403,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                       <div className="p-3">
                         <label className="block text-xs font-bold text-neutral-700 tracking-wider mb-1 flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-blue-500" />
+                          <Clock className="w-3.5 h-3.5 text-[#008000]" />
                           <span>{T.houseDetail.timeSlotLabel}</span>
                         </label>
                         <select
