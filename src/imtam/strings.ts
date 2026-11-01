@@ -119,7 +119,7 @@ export const T = {
     tourCostLabel: "투어 비용",
     submittingLabel: "예약 신청 중...",
     slotFullButtonLabel: "해당 시간대 마감",
-    submitButtonLabel: "현장 임탐 희망 예약하기",
+    submitButtonLabel: "투어 예약 신청하기",
     trustLabel: "등기 의무 허위 등록 및 불일치시 100% 반환",
   },
   guest: {
