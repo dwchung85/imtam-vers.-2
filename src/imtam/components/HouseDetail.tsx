@@ -146,7 +146,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl flex flex-col items-center justify-center border border-blue-100"
+            className="bg-white rounded-[10px] p-8 max-w-md w-full text-center shadow-2xl flex flex-col items-center justify-center border border-blue-100"
           >
             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white mb-4 animate-bounce shadow-md">
               <svg className="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl"
+            className="bg-white rounded-[10px] overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl"
           >
             {/* Modal Header */}
             <div className="sticky top-0 bg-white z-10 border-b border-blue-100 flex items-center justify-end px-6 py-4">
@@ -182,7 +182,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
               <div className="md:col-span-3 space-y-6">
                 {/* Large Beautiful Cover with Multi-Image Carousel / Gallery */}
                 <div className="space-y-3">
-                  <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-100 shadow-xs group">
+                  <div className="relative aspect-[16/10] rounded-[10px] overflow-hidden bg-neutral-100 shadow-xs group">
                     {/* Active image render */}
                     <img
                       src={
@@ -253,7 +253,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                           key={idx}
                           type="button"
                           onClick={() => setActiveImageIdx(idx)}
-                          className={`relative aspect-video w-16 md:w-20 rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
+                          className={`relative aspect-video w-16 md:w-20 rounded-[10px] overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
                             activeImageIdx === idx
                               ? "border-blue-600 ring-2 ring-blue-100 opacity-100"
                               : "border-neutral-200 opacity-60 hover:opacity-100"
@@ -311,17 +311,17 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                   {/* Specs row */}
                   <div className="flex flex-wrap items-center gap-2 mt-4">
-                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
+                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-[10px]">
                       {T.houseDetail.roomsPrefix}
                       {house.rooms ?? 3}
                       {T.houseDetail.unitSuffix}
                     </span>
-                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
+                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-[10px]">
                       {T.houseDetail.bathroomsPrefix}
                       {house.bathrooms ?? 2}
                       {T.houseDetail.unitSuffix}
                     </span>
-                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-lg">
+                    <span className="bg-neutral-100 text-neutral-800 text-xs font-bold px-3 py-1 rounded-[10px]">
                       {house.area ?? 24}
                       {T.houseDetail.areaSuffix}
                     </span>
@@ -337,7 +337,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                         <span className="text-neutral-600 pl-5">{house.locationDetail}</span>
                       )}
                       {house.lat != null && house.lng != null && (
-                        <div className="mt-3 w-full rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                        <div className="mt-3 w-full rounded-[10px] overflow-hidden border border-neutral-200 bg-neutral-100">
                           <LocationPickerMap lat={house.lat} lng={house.lng} readOnly />
                         </div>
                       )}
@@ -355,7 +355,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       {house.amenities.map((amenity, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-2 text-sm text-neutral-700 bg-neutral-50 rounded-xl p-2.5 px-3 border border-neutral-100"
+                          className="flex items-center gap-2 text-sm text-neutral-700 bg-neutral-50 rounded-[10px] p-2.5 px-3 border border-neutral-100"
                         >
                           <Coffee className="w-4 h-4 text-blue-500 shrink-0" />
                           <span className="font-medium">{amenity}</span>
@@ -368,16 +368,16 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
               {/* Right Column: Reservation form widget (2/5 width) */}
               <div className="md:col-span-2">
-                <div className="sticky top-0 bg-blue-50/10 rounded-3xl border border-blue-100 p-5 space-y-4">
+                <div className="sticky top-0 bg-blue-50/10 rounded-[10px] border border-blue-100 p-5 space-y-4">
                   {!hasSchedule && (
-                    <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-[11px] font-bold text-amber-700">
+                    <div className="rounded-[10px] bg-amber-50 border border-amber-200 p-3 text-[11px] font-bold text-amber-700">
                       {T.houseDetail.noScheduleWarning}
                     </div>
                   )}
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4">
                     {/* Visitor inputs mapping host-configured arrays: resolvedDates and resolvedTimeSlots */}
-                    <div className="border border-neutral-200 rounded-2xl overflow-hidden bg-white divide-y divide-neutral-150">
+                    <div className="border border-neutral-200 rounded-[10px] overflow-hidden bg-white divide-y divide-neutral-150">
                       <div className="p-3">
                         <label className="block text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1 flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5 text-blue-500" />
@@ -428,7 +428,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     </div>
 
                     {/* Guests count */}
-                    <div className="border border-neutral-200 rounded-2xl p-3 bg-white">
+                    <div className="border border-neutral-200 rounded-[10px] p-3 bg-white">
                       <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
                         {T.houseDetail.guestsCountLabel}
                       </label>
@@ -487,7 +487,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     </div>
 
                     {bookingError && (
-                      <div className="rounded-xl bg-rose-50 border border-rose-200 px-3 py-2 text-[11px] font-bold text-rose-600">
+                      <div className="rounded-[10px] bg-rose-50 border border-rose-200 px-3 py-2 text-[11px] font-bold text-rose-600">
                         {bookingError}
                       </div>
                     )}
@@ -496,7 +496,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <button
                       type="submit"
                       disabled={!hasSchedule || isSlotFull || submitting}
-                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
+                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-[10px] shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
                     >
                       {submitting
                         ? T.houseDetail.submittingLabel
