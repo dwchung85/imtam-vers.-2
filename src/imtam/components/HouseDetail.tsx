@@ -427,20 +427,6 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                       </div>
                     </div>
 
-                    {hasSchedule && (
-                      <div
-                        className={`rounded-xl px-3 py-2 text-[11px] font-bold ${
-                          isSlotFull
-                            ? "bg-rose-50 border border-rose-200 text-rose-600"
-                            : "bg-emerald-50 border border-emerald-200 text-emerald-700"
-                        }`}
-                      >
-                        {isSlotFull
-                          ? T.houseDetail.slotFullMessage
-                          : `${T.houseDetail.slotRemainingSummaryPart1}${remainingSeats}${T.houseDetail.slotRemainingSummaryPart2}${house.maxGuests}${T.houseDetail.slotRemainingSummaryPart3}`}
-                      </div>
-                    )}
-
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-2xl p-3 bg-white">
                       <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
