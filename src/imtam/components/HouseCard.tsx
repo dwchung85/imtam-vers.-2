@@ -87,7 +87,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
         <div>
           {/* Divider */}
           <div className="border-t border-neutral-100 my-2 pt-2.5 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs text-neutral-600 font-semibold">
+            <div className="flex items-center gap-1.5 text-base md:text-lg font-black text-neutral-600">
               <span>{T.houseCard.tourBookingLabel}</span>
             </div>
             
