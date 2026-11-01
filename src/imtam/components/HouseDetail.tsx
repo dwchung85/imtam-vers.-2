@@ -463,21 +463,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
 
                     {/* Cost Split block */}
                     <div className="space-y-2 pt-3.5 border-t border-neutral-200 text-xs text-neutral-600">
-                      <div className="flex justify-between">
-                        <span className="underline">
-                          {T.houseDetail.openingFeeLabelPrefix}
-                          {house.pricePerVisit.toLocaleString()}
-                          {T.houseDetail.openingFeeLabelMiddle}
-                          {guestsCount}
-                          {T.houseDetail.openingFeeLabelSuffix}
-                        </span>
-                        <span>₩{rawPrice.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-[11px] text-neutral-400">
-                        <span>{T.houseDetail.additionalFeeLabel}</span>
-                        <span>{T.houseDetail.noneLabel}</span>
-                      </div>
-                      <div className="flex justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-2.5 text-sm">
+                      <div className="flex justify-between font-bold text-neutral-900 text-sm">
                         <span>{T.houseDetail.tourCostLabel}</span>
                         <span className="text-blue-600 font-black text-base">₩{totalPrice.toLocaleString()}</span>
                       </div>
