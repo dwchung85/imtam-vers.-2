@@ -430,7 +430,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     {/* Guests count */}
                     <div className="border border-neutral-200 rounded-[10px] p-3 bg-white">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-neutral-500 font-semibold">{T.houseDetail.totalGuestsLabel}</span>
+                        <span className="text-xs text-neutral-900 font-semibold">{T.houseDetail.totalGuestsLabel}</span>
                         <div className="flex items-center gap-3">
                           <button
                             type="button"
@@ -465,7 +465,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <div className="space-y-2 pt-3.5 border-t border-neutral-200 text-xs text-neutral-600">
                       <div className="flex justify-between font-bold text-neutral-900 text-sm">
                         <span>{T.houseDetail.tourCostLabel}</span>
-                        <span className="text-blue-600 font-black text-base">₩{totalPrice.toLocaleString()}</span>
+                        <span className="text-neutral-900 font-black text-base">₩{totalPrice.toLocaleString()}</span>
                       </div>
                     </div>
 
@@ -479,7 +479,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <button
                       type="submit"
                       disabled={!hasSchedule || isSlotFull || submitting}
-                      className="w-full bg-blue-600 cursor-pointer text-white text-sm font-bold py-3.5 px-4 rounded-[10px] shadow-md hover:bg-blue-700 transition-colors text-center block disabled:bg-neutral-300 disabled:cursor-not-allowed disabled:shadow-none"
+                      className="w-full bg-transparent cursor-pointer text-[#008000] text-sm font-bold py-3.5 px-4 rounded-[10px] border border-[#008000] hover:bg-[#008000]/5 transition-colors text-center block disabled:text-neutral-400 disabled:border-neutral-300 disabled:cursor-not-allowed"
                     >
                       {submitting
                         ? T.houseDetail.submittingLabel
