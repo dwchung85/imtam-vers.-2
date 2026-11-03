@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Booking } from '../types';
-import { Calendar, Receipt, CheckCircle, Clock, AlertCircle, Star, Award } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, AlertCircle, Star, Award } from 'lucide-react';
 import { T } from '../strings';
 
 interface GuestDashboardProps {
@@ -108,10 +108,6 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
 
                   {/* Payment Receipt breakdown toggle style */}
                   <div className="border-t border-neutral-100 pt-3.5 space-y-1.5">
-                    <div className="flex items-center text-xs font-bold text-neutral-500 mb-1">
-                      <Receipt className="w-3.5 h-3.5 mr-1 text-blue-600" />
-                      <span>{T.guest.receiptDetailTitle}</span>
-                    </div>
                     <div className="flex justify-between text-xs text-neutral-500 font-semibold">
                       <span>{T.guest.entryFeeLabel}{booking.housePricePerVisit?.toLocaleString()} × {booking.totalVisitors}{T.guest.personSuffix}</span>
                       <span>₩{baseTicketTotal.toLocaleString()}</span>
