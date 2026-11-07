@@ -59,7 +59,6 @@ export const createTourPayment = createServerFn({ method: "POST" })
       .eq("id", data.houseId)
       .maybeSingle();
     if (hErr || !house) throw new Error("매물을 찾을 수 없습니다.");
-    if (house.host_id === userId) throw new Error("본인 매물은 예약할 수 없습니다.");
 
     const { data: profile } = await supabase.from("profiles").select("name").eq("id", userId).maybeSingle();
     const amount = computeTourAmount(house.price_per_visit, data.totalVisitors);
