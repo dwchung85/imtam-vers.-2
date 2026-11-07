@@ -173,14 +173,13 @@ export default function App() {
       return T.app.loginRequiredError;
     }
     try {
-      const { booking, error } = await addBookingDb({
-        ...bookingData,
-        guestId: currentUser.id,
-        guestName: currentUser.name,
+      // 예약 생성 후 토스페이먼츠 계좌이체 결제창으로 이동 (투어 비용 100% IMTAM 결제)
+      return await startTourCheckout({
+        houseId: bookingData.houseId,
+        visitDate: bookingData.visitDate,
+        visitTimeSlot: bookingData.visitTimeSlot,
+        totalVisitors: bookingData.totalVisitors,
       });
-      if (error) return error;
-      if (booking) setBookings((prev) => [booking, ...prev]);
-      return null;
     } catch (error) {
       console.error("DB error booking house:", error);
       return T.app.bookingErrorGeneric;
@@ -212,20 +211,43 @@ export default function App() {
   // 3. Confirm / Cancel / Complete Booking Incoming (Host Action)
   const handleUpdateBookingStatus = async (bookingId: string, status: "confirmed" | "cancelled" | "completed") => {
     try {
-      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status } : b)));
-      await updateBookingStatusDb(bookingId, status);
+      if (status === "cancelled") {
+        const r = await cancelTourBooking({ data: { bookingId } });
+        setBookings((prev) =>
+          prev.map((b) =>
+            b.id === bookingId
+              ? { ...b, status, paymentStatus: r.refunded ? "refunded" : b.paymentStatus }
+              : b,
+          ),
+        );
+      } else if (status === "completed") {
+        await completeTourBooking({ data: { bookingId } });
+        setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status } : b)));
+      } else {
+        await updateBookingStatusDb(bookingId, status);
+        setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status } : b)));
+      }
     } catch (error) {
       console.error("DB error updating booking:", error);
+      alert(error instanceof Error ? error.message : T.app.bookingErrorGeneric);
     }
   };
 
   // 4. Cancel Guest Reservation (Guest Action)
   const handleCancelBooking = async (bookingId: string) => {
     try {
-      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status: "cancelled" as const } : b)));
-      await updateBookingStatusDb(bookingId, "cancelled");
+      const r = await cancelTourBooking({ data: { bookingId } });
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === bookingId
+            ? { ...b, status: "cancelled" as const, paymentStatus: r.refunded ? "refunded" : b.paymentStatus }
+            : b,
+        ),
+      );
+      if (r.refunded) alert("예약이 취소되고 투어 비용 전액이 환불되었습니다.");
     } catch (error) {
       console.error("DB error cancelling booking:", error);
+      alert(error instanceof Error ? error.message : T.app.bookingErrorGeneric);
     }
   };
 

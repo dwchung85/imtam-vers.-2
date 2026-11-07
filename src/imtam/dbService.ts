@@ -49,6 +49,7 @@ type BookingRow = {
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   rating: number | null;
   created_at: string;
+  payment_status?: string | null;
 };
 
 function houseFromRow(r: HouseRow): House {
@@ -97,6 +98,7 @@ function bookingFromRow(r: BookingRow): Booking {
     totalVisitors: r.total_visitors,
     totalPrice: r.total_price,
     status: r.status,
+    paymentStatus: (r.payment_status ?? 'not_required') as Booking['paymentStatus'],
     rating: r.rating ?? undefined,
     createdAt: (r.created_at ?? '').split('T')[0],
   };

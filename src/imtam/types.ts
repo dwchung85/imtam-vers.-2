@@ -42,6 +42,7 @@ export interface Booking {
   totalPrice: number; // 최종 결제 집 구경 요금
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   createdAt: string;
+  paymentStatus?: 'unpaid' | 'paid' | 'failed' | 'refunded' | 'not_required';
   rating?: number; // 1-5 별점 (게스트가 임장 완료 후 작성한 평점)
 }
 
