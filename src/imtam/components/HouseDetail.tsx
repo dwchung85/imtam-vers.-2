@@ -110,6 +110,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
       return;
     }
 
+    setShowBookingConfirm(true);
+  };
+
+  const handleConfirmBooking = async () => {
+    setShowBookingConfirm(false);
     setSubmitting(true);
     const errorMessage = await onBook({
       houseId: house.id,
