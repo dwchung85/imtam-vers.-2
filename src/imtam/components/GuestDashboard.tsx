@@ -118,8 +118,6 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                         </span>
                       </div>
                     )}
-                    <div className="hidden">
-                    </div>
                   </div>
 
                   {/* Star rating block for completed tours */}
