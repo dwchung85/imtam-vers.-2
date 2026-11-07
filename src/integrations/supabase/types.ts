@@ -24,6 +24,7 @@ export type Database = {
           house_price_per_visit: number
           house_title: string
           id: string
+          payment_status: string
           rating: number | null
           status: string
           total_price: number
@@ -41,6 +42,7 @@ export type Database = {
           house_price_per_visit?: number
           house_title?: string
           id?: string
+          payment_status?: string
           rating?: number | null
           status?: string
           total_price?: number
@@ -58,6 +60,7 @@ export type Database = {
           house_price_per_visit?: number
           house_title?: string
           id?: string
+          payment_status?: string
           rating?: number | null
           status?: string
           total_price?: number
@@ -203,6 +206,77 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          approved_at: string | null
+          booking_id: string
+          cancel_reason: string | null
+          created_at: string
+          guest_id: string
+          host_id: string
+          host_payout_amount: number | null
+          id: string
+          method: string | null
+          order_id: string
+          payment_key: string | null
+          payout_requested_at: string | null
+          payout_status: string
+          platform_fee_amount: number | null
+          refunded_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          approved_at?: string | null
+          booking_id: string
+          cancel_reason?: string | null
+          created_at?: string
+          guest_id: string
+          host_id: string
+          host_payout_amount?: number | null
+          id?: string
+          method?: string | null
+          order_id: string
+          payment_key?: string | null
+          payout_requested_at?: string | null
+          payout_status?: string
+          platform_fee_amount?: number | null
+          refunded_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          approved_at?: string | null
+          booking_id?: string
+          cancel_reason?: string | null
+          created_at?: string
+          guest_id?: string
+          host_id?: string
+          host_payout_amount?: number | null
+          id?: string
+          method?: string | null
+          order_id?: string
+          payment_key?: string | null
+          payout_requested_at?: string | null
+          payout_status?: string
+          platform_fee_amount?: number | null
+          refunded_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
