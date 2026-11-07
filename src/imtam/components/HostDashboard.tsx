@@ -42,7 +42,9 @@ export default function HostDashboard({
   // Filter objects owned by the current host
   const hostHouses = houses.filter((h) => h.hostId === currentUserId);
   const hostHouseIds = hostHouses.map((h) => h.id);
-  const receivedBookings = bookings.filter((b) => hostHouseIds.includes(b.houseId));
+  const receivedBookings = bookings.filter(
+    (b) => hostHouseIds.includes(b.houseId) && b.paymentStatus !== "unpaid" && b.paymentStatus !== "failed",
+  );
   const pendingCount = receivedBookings.filter((b) => b.status === "pending").length;
 
   // Form states in host section

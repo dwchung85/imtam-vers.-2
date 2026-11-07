@@ -14,7 +14,6 @@ import {
   fetchBookings,
   fetchProfile,
   addHouseListingDb,
-  addBookingDb,
   updateBookingStatusDb,
   submitBookingReviewDb,
   checkIsAdmin,
@@ -23,6 +22,8 @@ import {
 
 import { Search, Info, Compass, LogIn } from "lucide-react";
 import { T } from "./strings";
+import { startTourCheckout } from "./tossCheckout";
+import { cancelTourBooking, completeTourBooking } from "@/lib/payments.functions";
 
 export default function App() {
   const [houses, setHouses] = useState<House[]>([]);

@@ -12,7 +12,9 @@ interface GuestDashboardProps {
 
 export default function GuestDashboard({ bookings, currentUserId, onCancelBooking, onSubmitReview }: GuestDashboardProps) {
   // Filter bookings belonging to current user
-  const guestBookings = bookings.filter((b) => b.guestId === currentUserId);
+  const guestBookings = bookings.filter(
+    (b) => b.guestId === currentUserId && b.paymentStatus !== 'unpaid' && b.paymentStatus !== 'failed',
+  );
   const [draftRatings, setDraftRatings] = useState<Record<string, number>>({});
   const [hoverRatings, setHoverRatings] = useState<Record<string, number>>({});
 
@@ -108,6 +110,15 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                     <div className="flex justify-between text-sm text-neutral-900 font-bold font-mono">
                       <span>{T.guest.tourCostLabel}</span>
                       <span className="text-blue-600 font-black">₩{booking.totalPrice.toLocaleString()}</span>
+                    </div>
+                    {(booking.paymentStatus === 'paid' || booking.paymentStatus === 'refunded') && (
+                      <div className="flex justify-end mt-1">
+                        <span className="text-[11px] font-bold text-[#008000]">
+                          {booking.paymentStatus === 'paid' ? T.guest.paymentPaid : T.guest.paymentRefunded}
+                        </span>
+                      </div>
+                    )}
+                    <div className="hidden">
                     </div>
                   </div>
 
