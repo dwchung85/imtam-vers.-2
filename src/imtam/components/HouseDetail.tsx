@@ -53,6 +53,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
   const [slotLoads, setSlotLoads] = useState<SlotLoad[]>([]);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
+  const [showBookingConfirm, setShowBookingConfirm] = useState<boolean>(false);
 
   // 날짜·시간대별 이미 예약된 인원 로드 (중복/초과 예약 방지)
   useEffect(() => {
@@ -109,6 +110,11 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
       return;
     }
 
+    setShowBookingConfirm(true);
+  };
+
+  const handleConfirmBooking = async () => {
+    setShowBookingConfirm(false);
     setSubmitting(true);
     const errorMessage = await onBook({
       houseId: house.id,
@@ -494,6 +500,39 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* 예약 신청 확인 대화상자 */}
+      {showBookingConfirm && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-6"
+          onClick={() => setShowBookingConfirm(false)}
+        >
+          <div
+            className="w-full max-w-xs bg-white rounded-[10px] border border-neutral-200 p-5 space-y-4 animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm font-semibold text-neutral-900 text-center leading-relaxed">
+              {T.houseDetail.bookingConfirmMessage}
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setShowBookingConfirm(false)}
+                className="flex-1 h-9 text-xs font-semibold text-neutral-700 border border-neutral-200 rounded-[10px] hover:bg-neutral-50 focus:outline-none focus:border-neutral-400 cursor-pointer"
+              >
+                {T.houseDetail.bookingConfirmCancel}
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmBooking}
+                className="flex-1 h-9 text-xs font-semibold text-white bg-[#008000] rounded-[10px] hover:bg-[#006d00] focus:outline-none cursor-pointer"
+              >
+                {T.houseDetail.bookingConfirmConfirm}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

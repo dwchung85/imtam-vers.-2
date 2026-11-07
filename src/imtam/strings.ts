@@ -120,6 +120,9 @@ export const T = {
     submittingLabel: "예약 신청 중...",
     slotFullButtonLabel: "해당 시간대 마감",
     submitButtonLabel: "투어 예약 신청하기",
+    bookingConfirmMessage: "예약 신청을 하시겠습니까?",
+    bookingConfirmConfirm: "확인",
+    bookingConfirmCancel: "취소",
     trustLabel: "등기 의무 허위 등록 및 불일치시 100% 반환",
   },
   guest: {
