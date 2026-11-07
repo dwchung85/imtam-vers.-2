@@ -134,7 +134,6 @@ export const T = {
     visitTimeLabel: "방문 시간",
     accompanyingLabel: "총 방문자 수",
     peopleIncludingApplicant: "명 (신청인 포함)",
-    receiptDetailTitle: "임장 가이드 & 청구 영수증 상세",
     tourCostLabel: "투어 비용",
     myRatingLabel: "내가 남긴 임장 가이드 평점",
     rateGuideLabel: "임장 가이드 별점 평가",
