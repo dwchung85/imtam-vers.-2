@@ -53,6 +53,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
   const [slotLoads, setSlotLoads] = useState<SlotLoad[]>([]);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
+  const [showBookingConfirm, setShowBookingConfirm] = useState<boolean>(false);
 
   // 날짜·시간대별 이미 예약된 인원 로드 (중복/초과 예약 방지)
   useEffect(() => {
