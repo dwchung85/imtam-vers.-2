@@ -35,9 +35,6 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
             const isCancelled = booking.status === 'cancelled';
             const isCompleted = booking.status === 'completed';
 
-            const baseTicketTotal = (booking.housePricePerVisit || 0) * (booking.totalVisitors || 1);
-            const extraFees = booking.totalPrice - baseTicketTotal;
-
             const draft = draftRatings[booking.id] ?? 0;
             const hover = hoverRatings[booking.id] ?? 0;
             const display = hover || draft || booking.rating || 0;
@@ -106,18 +103,10 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                     </div>
                   </div>
 
-                  {/* Payment Receipt breakdown toggle style */}
-                  <div className="border-t border-neutral-100 pt-3.5 space-y-1.5">
-                    <div className="flex justify-between text-xs text-neutral-500 font-semibold">
-                      <span>{T.guest.entryFeeLabel}{booking.housePricePerVisit?.toLocaleString()} × {booking.totalVisitors}{T.guest.personSuffix}</span>
-                      <span>₩{baseTicketTotal.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between text-xs text-neutral-500 font-semibold">
-                      <span>{T.guest.brokerageFeeLabel}</span>
-                      <span>₩{extraFees.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between text-sm text-neutral-900 font-bold border-t border-dashed border-neutral-200 pt-2 font-mono">
-                      <span>{T.guest.finalTotalLabel}</span>
+                  {/* Payment total */}
+                  <div className="border-t border-neutral-100 pt-3.5">
+                    <div className="flex justify-between text-sm text-neutral-900 font-bold font-mono">
+                      <span>{T.guest.tourCostLabel}</span>
                       <span className="text-blue-600 font-black">₩{booking.totalPrice.toLocaleString()}</span>
                     </div>
                   </div>
