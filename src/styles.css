@@ -174,3 +174,18 @@
 @utility animate-shake {
   animation: imtam-shake 0.28s ease-in-out both;
 }
+
+.payment-close-control {
+  position: fixed;
+  inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) auto auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.payment-close-control::backdrop {
+  background: transparent;
+  pointer-events: none;
+}

@@ -12,3 +12,5 @@
 Profile photos are resized and square-cropped in the browser before updating `profiles.avatar`; this follows the existing database-backed image pattern and keeps uploads small without adding file storage infrastructure.
 
 Toss Payments money flows (checkout confirm, refund on cancel/reject, completion settlement) run only in server functions in `src/lib/payments.functions.ts`; a database trigger blocks browser code from changing booking payment state, so amounts and refunds can't be tampered with client-side.
+
+Dismiss Toss checkout through the SDK payment.destroy() API and server-side unpaid-order cleanup; render the app close control in a manual top-layer popover so it remains accessible above provider frames without editing their DOM.

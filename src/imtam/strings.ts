@@ -1,5 +1,10 @@
 // IMTAM 화면 문구 모음 — 모든 UI 텍스트는 이 파일에서 관리합니다.
 export const T = {
+  payment: {
+    closeLabel: "결제 취소 및 닫기",
+    closeError: "결제창을 닫지 못했습니다. X를 다시 눌러 주세요.",
+    cancelled: "결제가 취소되어 예약이 접수되지 않았습니다.",
+  },
   app: {
     loginRequiredError: "로그인이 필요합니다.",
     bookingErrorGeneric: "예약 신청 중 오류가 발생했습니다.",
