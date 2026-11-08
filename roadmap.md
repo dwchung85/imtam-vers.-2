@@ -1,5 +1,7 @@
 # Tasks
 
+- [x] Add a top-right X that closes Toss checkout and cancels the unpaid order; verified actual Toss frame dismissal, saved cancellation, and mobile retry.
+
 - [x] Connect Toss Payments account-transfer checkout after booking confirmation, collecting 100% of the tour cost for IMTAM (test keys saved).
 - [x] Record host 80% / IMTAM 20% settlement as "pending payout" when a paid tour is completed.
 - [x] Automatically refund 100% when a paid tour is cancelled or rejected; refunded or settled funds cannot be processed again.

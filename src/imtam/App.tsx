@@ -23,9 +23,12 @@ import {
 import { Search, Info, Compass, LogIn } from "lucide-react";
 import { T } from "./strings";
 import { startTourCheckout } from "./tossCheckout";
+import PaymentCloseButton from "./components/PaymentCloseButton";
+import type { PaymentClose } from "./dismissiblePayment";
 import { cancelTourBooking, completeTourBooking } from "@/lib/payments.functions";
 
 export default function App() {
+  const [closePayment, setClosePayment] = useState<PaymentClose | null>(null);
   const [houses, setHouses] = useState<House[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
@@ -180,7 +183,7 @@ export default function App() {
         visitDate: bookingData.visitDate,
         visitTimeSlot: bookingData.visitTimeSlot,
         totalVisitors: bookingData.totalVisitors,
-      });
+      }, (close) => setClosePayment(() => close));
     } catch (error) {
       console.error("DB error booking house:", error);
       return T.app.bookingErrorGeneric;
@@ -548,6 +551,7 @@ export default function App() {
       )}
 
       {/* Auth Modal Trigger overlay */}
+      {closePayment && <PaymentCloseButton close={closePayment} />}
       {isAuthModalOpen && <AuthModal onClose={() => setIsAuthModalOpen(false)} onLoginSuccess={handleLoginSuccess} />}
 
       {/* Footer */}
