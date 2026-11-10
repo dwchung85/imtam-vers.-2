@@ -84,9 +84,9 @@ export default function WalletCard() {
           <input
             type="number"
             min={1}
-            max={200}
+            max={100}
             value={units}
-            onChange={(e) => setUnits(Math.max(1, Math.min(200, Math.floor(Number(e.target.value) || 1))))}
+            onChange={(e) => setUnits(Math.max(1, Math.min(100, Math.floor(Number(e.target.value) || 1))))}
             className="w-24 h-9 px-3 rounded-[10px] border border-neutral-200 text-sm font-bold text-right"
             aria-label="충전 금액(만원)"
           />

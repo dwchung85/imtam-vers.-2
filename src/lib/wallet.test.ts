@@ -9,6 +9,12 @@ describe("선불 충전 금액", () => {
     expect(isValidTopupAmount(5000)).toBe(false);
     expect(isValidTopupAmount(0)).toBe(false);
   });
+
+  it("한 번에 최대 100만원까지 충전 가능", () => {
+    expect(isValidTopupAmount(1_000_000)).toBe(true);
+    expect(isValidTopupAmount(1_010_000)).toBe(false);
+    expect(isValidTopupAmount(2_000_000)).toBe(false);
+  });
 });
 
 describe("잔액 환급·출금", () => {

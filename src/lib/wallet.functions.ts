@@ -40,7 +40,7 @@ export const createTopup = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { amount: number }) => {
     const amount = Number(input?.amount);
-    if (!isValidTopupAmount(amount)) throw new Error("충전 금액은 1만원 단위로 입력해 주세요.");
+    if (!isValidTopupAmount(amount)) throw new Error("충전 금액은 1만원 단위, 최대 100만원까지 입력해 주세요.");
     return { amount };
   })
   .handler(async ({ data, context }) => {
