@@ -14,3 +14,4 @@ Profile photos are resized and square-cropped in the browser before updating `pr
 Toss Payments money flows (checkout confirm, refund on cancel/reject, completion settlement) run only in server functions in `src/lib/payments.functions.ts`; a database trigger blocks browser code from changing booking payment state, so amounts and refunds can't be tampered with client-side.
 
 Dismiss Toss checkout through the SDK payment.destroy() API and server-side unpaid-order cleanup; render the app close control in a manual top-layer popover so it remains accessible above provider frames without editing their DOM.
+- Prepaid wallet balances change only through the service-role `wallet_apply` SQL function (atomic, no negative balance, idempotent per type+ref), called from server functions; browsers can only read their own wallet.

@@ -22,7 +22,7 @@ import {
 
 import { Search, Info, Compass, LogIn } from "lucide-react";
 import { T } from "./strings";
-import { startTourCheckout } from "./tossCheckout";
+import { payTourFromWallet } from "./tossCheckout";
 import PaymentCloseButton from "./components/PaymentCloseButton";
 import type { PaymentClose } from "./dismissiblePayment";
 import { cancelTourBooking, completeTourBooking } from "@/lib/payments.functions";
@@ -177,13 +177,18 @@ export default function App() {
       return T.app.loginRequiredError;
     }
     try {
-      // 예약 생성 후 토스페이먼츠 계좌이체 결제창으로 이동 (투어 비용 100% IMTAM 결제)
-      return await startTourCheckout({
+      // 선불 잔액에서 투어 비용 결제 (100% IMTAM 보관)
+      const err = await payTourFromWallet({
         houseId: bookingData.houseId,
         visitDate: bookingData.visitDate,
         visitTimeSlot: bookingData.visitTimeSlot,
         totalVisitors: bookingData.totalVisitors,
-      }, (close) => setClosePayment(() => close));
+      });
+      if (!err) {
+        fetchBookings().then(setBookings).catch(() => {});
+        alert("잔액에서 투어 비용이 결제되어 예약 신청이 완료되었습니다.");
+      }
+      return err;
     } catch (error) {
       console.error("DB error booking house:", error);
       return T.app.bookingErrorGeneric;

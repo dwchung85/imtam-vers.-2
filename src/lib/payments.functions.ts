@@ -109,6 +109,61 @@ export const createTourPayment = createServerFn({ method: "POST" })
     };
   });
 
+// 1-b) 선불 잔액으로 즉시 결제
+export const payTourWithWallet = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    (input: { houseId: string; visitDate: string; visitTimeSlot: string; totalVisitors: number }) => {
+      if (!input?.houseId || !input.visitDate || !input.visitTimeSlot) throw new Error("예약 정보가 올바르지 않습니다.");
+      const n = Number(input.totalVisitors);
+      if (!Number.isInteger(n) || n < 1 || n > 20) throw new Error("방문자 수가 올바르지 않습니다.");
+      return { ...input, totalVisitors: n };
+    },
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { data: house } = await supabase
+      .from("houses")
+      .select("id, title, image_url, price_per_visit, host_id")
+      .eq("id", data.houseId)
+      .maybeSingle();
+    if (!house) throw new Error("매물을 찾을 수 없습니다.");
+    const amount = computeTourAmount(house.price_per_visit, data.totalVisitors);
+    const db = await admin();
+    const { data: w } = await db.from("wallets").select("balance").eq("user_id", userId).maybeSingle();
+    const balance = w?.balance ?? 0;
+    if (balance < amount) {
+      throw new Error(`잔액이 부족합니다. (잔액 ₩${balance.toLocaleString()} / 필요 ₩${amount.toLocaleString()}) 내정보에서 충전해 주세요.`);
+    }
+    const { data: profile } = await supabase.from("profiles").select("name").eq("id", userId).maybeSingle();
+    const { data: booking, error: bErr } = await supabase
+      .from("bookings")
+      .insert({
+        house_id: house.id, house_title: house.title, house_image: house.image_url,
+        house_price_per_visit: house.price_per_visit, guest_id: userId, guest_name: profile?.name ?? "",
+        visit_date: data.visitDate, visit_time_slot: data.visitTimeSlot,
+        total_visitors: data.totalVisitors, total_price: amount, status: "pending",
+      })
+      .select("id")
+      .single();
+    if (bErr || !booking) throw new Error(bErr?.message || "예약 생성에 실패했습니다.");
+
+    const { error: aErr } = await db.rpc("wallet_apply", {
+      _user_id: userId, _delta: -amount, _type: "tour_payment", _booking_id: booking.id, _ref: booking.id,
+    });
+    if (aErr) {
+      await db.from("bookings").update({ status: "cancelled", payment_status: "failed" }).eq("id", booking.id);
+      throw new Error("잔액이 부족합니다. 내정보에서 충전해 주세요.");
+    }
+    const now = new Date().toISOString();
+    await db.from("payments").insert({
+      booking_id: booking.id, guest_id: userId, host_id: house.host_id,
+      order_id: `WALLET-${booking.id}`, amount, method: "WALLET", status: "paid", approved_at: now,
+    });
+    await db.from("bookings").update({ payment_status: "paid" }).eq("id", booking.id);
+    return { bookingId: booking.id, amount, balance: balance - amount };
+  });
+
 // 2) 결제창 인증 후 최종 승인 (IMTAM 계좌로 100% 입금)
 export const confirmTourPayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -201,7 +256,17 @@ export const cancelTourBooking = createServerFn({ method: "POST" })
     let refunded = false;
     const now = new Date().toISOString();
 
-    if (pay && pay.status === "paid" && pay.payment_key) {
+    if (pay && pay.status === "paid" && pay.method === "WALLET") {
+      const reason = isHost ? "호스트 예약 거절" : "게스트 예약 취소";
+      await db.rpc("wallet_apply", {
+        _user_id: pay.guest_id, _delta: pay.amount, _type: "tour_refund", _booking_id: booking.id, _ref: booking.id,
+      });
+      await db
+        .from("payments")
+        .update({ status: "refunded", refunded_at: now, cancel_reason: reason, updated_at: now })
+        .eq("id", pay.id);
+      refunded = true;
+    } else if (pay && pay.status === "paid" && pay.payment_key) {
       const reason = isHost ? "호스트 예약 거절" : "게스트 예약 취소";
       await tossPost(`/payments/${encodeURIComponent(pay.payment_key)}/cancel`, { cancelReason: reason }, `cancel-${pay.id}`);
       await db
@@ -235,6 +300,18 @@ export const completeTourBooking = createServerFn({ method: "POST" })
     const { data: pay } = await db.from("payments").select("*").eq("booking_id", booking.id).maybeSingle();
     if (pay && pay.status === "paid" && pay.payout_status === "none") {
       const { hostAmount, platformAmount } = computeSettlement(pay.amount);
+      // 호스트 80%는 호스트 선불 잔액으로 즉시 적립 → 호스트가 출금 신청
+      const { error: eErr } = await db.rpc("wallet_apply", {
+        _user_id: pay.host_id, _delta: hostAmount, _type: "tour_earning", _booking_id: booking.id, _ref: booking.id,
+      });
+      if (!eErr) {
+        await db.from("payments").update({
+          host_payout_amount: hostAmount, platform_fee_amount: platformAmount,
+          payout_status: "paid", payout_requested_at: now, updated_at: now,
+        }).eq("id", pay.id);
+        await db.from("bookings").update({ status: "completed" }).eq("id", booking.id);
+        return { ok: true };
+      }
       // 실제 호스트 송금은 토스 지급대행 계약 후 활성화. 지금은 정산 대기로 기록.
       await db
         .from("payments")

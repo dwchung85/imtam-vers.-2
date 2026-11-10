@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { fetchFavoriteIds, setFavorite } from "../favorites";
 import { supabase } from "@/integrations/supabase/client";
 import { T } from "../strings";
+import WalletCard from "./WalletCard";
 import { House, Booking, UserProfile } from "../types";
 
 // 한국 주요 은행 목록 (은행명 드롭다운용)
@@ -189,6 +190,7 @@ export default function MyInfoDashboard({
 
   return (
     <div className="space-y-8 animate-fadeIn">
+      <WalletCard />
       {/* Host Earnings & Wallet Stats */}
       <div className="bg-white rounded-[10px] border border-neutral-200 p-5 md:p-6">
         <div className="mb-4">

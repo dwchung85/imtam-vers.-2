@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PaymentFailRouteImport } from './routes/payment.fail'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
+import { Route as WalletSuccessRouteImport } from './routes/wallet.success'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,45 @@ const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
   path: '/payment/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WalletSuccessRoute = WalletSuccessRouteImport.update({
+  id: '/wallet/success',
+  path: '/wallet/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/payment/fail': typeof PaymentFailRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/wallet/success': typeof WalletSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/payment/fail': typeof PaymentFailRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/wallet/success': typeof WalletSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/payment/fail': typeof PaymentFailRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/wallet/success': typeof WalletSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/payment/fail' | '/payment/success'
+  fullPaths: '/' | '/payment/fail' | '/payment/success' | '/wallet/success'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/payment/fail' | '/payment/success'
-  id: '__root__' | '/' | '/payment/fail' | '/payment/success'
+  to: '/' | '/payment/fail' | '/payment/success' | '/wallet/success'
+  id:
+    '__root__' | '/' | '/payment/fail' | '/payment/success' | '/wallet/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PaymentFailRoute: typeof PaymentFailRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
+  WalletSuccessRoute: typeof WalletSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +93,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wallet/success': {
+      id: '/wallet/success'
+      path: '/wallet/success'
+      fullPath: '/wallet/success'
+      preLoaderRoute: typeof WalletSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +107,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PaymentFailRoute: PaymentFailRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
+  WalletSuccessRoute: WalletSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

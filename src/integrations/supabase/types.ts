@@ -335,6 +335,129 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_topups: {
+        Row: {
+          amount: number
+          approved_at: string | null
+          created_at: string
+          id: string
+          order_id: string
+          payment_key: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          approved_at?: string | null
+          created_at?: string
+          id?: string
+          order_id: string
+          payment_key?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          approved_at?: string | null
+          created_at?: string
+          id?: string
+          order_id?: string
+          payment_key?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          booking_id: string | null
+          created_at: string
+          id: string
+          ref: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          booking_id?: string | null
+          created_at?: string
+          id?: string
+          ref?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          booking_id?: string | null
+          created_at?: string
+          id?: string
+          ref?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallet_withdrawals: {
+        Row: {
+          amount: number
+          bank_account: string
+          bank_name: string
+          created_at: string
+          error: string | null
+          id: string
+          processed_at: string | null
+          provider_ref: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          bank_account: string
+          bank_name: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          processed_at?: string | null
+          provider_ref?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          bank_account?: string
+          bank_name?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          processed_at?: string | null
+          provider_ref?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallets: {
+        Row: {
+          balance: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -354,6 +477,16 @@ export type Database = {
           visit_date: string
           visit_time_slot: string
         }[]
+      }
+      wallet_apply: {
+        Args: {
+          _booking_id: string
+          _delta: number
+          _ref: string
+          _type: string
+          _user_id: string
+        }
+        Returns: number
       }
     }
     Enums: {
