@@ -383,7 +383,7 @@ export default function HostDashboard({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Form to List new house */}
-      <div className="max-w-3xl mx-auto w-full bg-white rounded-3xl border border-neutral-200 p-6 md:p-8 space-y-6">
+      <div className="max-w-3xl mx-auto w-full bg-white rounded-[10px] border border-neutral-200 p-6 md:p-8 space-y-6">
           <div className="flex items-center gap-2.5">
             <h3 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
               <PlusCircle className="w-4 h-4 text-[#008000]" />
@@ -392,8 +392,8 @@ export default function HostDashboard({
           </div>
 
           {isSuccess && (
-            <div className="bg-emerald-50 text-emerald-800 text-xs md:text-sm font-bold p-4 rounded-2xl border border-emerald-200 flex items-center gap-2 animate-bounce">
-              <svg className="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-[#008000]/10 text-[#008000] text-xs md:text-sm font-bold p-4 rounded-[10px] border border-[#008000] flex items-center gap-2 animate-bounce">
+              <svg className="w-5 h-5 text-[#008000] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
               </svg>
               <span>{T.host.listingSuccessMessage}</span>
@@ -411,7 +411,7 @@ export default function HostDashboard({
                   value={title}
                   maxLength={T.host.titleMaxLength}
                   onChange={(e) => setTitle(e.target.value.slice(0, T.host.titleMaxLength))}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   required
                 />
               </div>
@@ -425,7 +425,7 @@ export default function HostDashboard({
                   rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   required
                 />
               </div>
@@ -440,7 +440,7 @@ export default function HostDashboard({
                   placeholder={T.host.pricePlaceholder}
                   value={pricePerVisit}
                   onChange={(e) => setPricePerVisit(Math.max(1000, Number(e.target.value)))}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   min="1000"
                   step="1000"
                   required
@@ -451,7 +451,7 @@ export default function HostDashboard({
                 <label className="block text-xs font-bold text-neutral-700 mb-1.5">
                   {T.host.maxGuestsLabel}
                 </label>
-                <div className="flex items-center border border-neutral-200 rounded-xl bg-neutral-50/50 p-2 text-xs justify-between">
+                <div className="flex items-center border border-neutral-200 rounded-[10px] bg-neutral-50/50 p-2 text-xs justify-between">
                   <span className="text-neutral-500 pl-2 text-xs">{T.host.accompaniedTourLabel}</span>
                   <div className="flex items-center gap-2">
                     <button
@@ -483,13 +483,13 @@ export default function HostDashboard({
                     placeholder={T.host.locationPlaceholder}
                     value={location}
                     readOnly
-                    className="flex-1 text-xs font-bold border border-neutral-200 focus:outline-hidden p-3 rounded-xl bg-neutral-100 text-neutral-800 cursor-default"
+                    className="flex-1 text-xs font-bold border border-neutral-200 focus:outline-hidden p-3 rounded-[10px] bg-neutral-100 text-neutral-800 cursor-default"
                     required
                   />
                   <button
                     type="button"
                     onClick={openAddressSearch}
-                    className="shrink-0 px-3 text-xs font-bold rounded-xl border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white transition-all"
+                    className="shrink-0 px-3 text-xs font-bold rounded-[10px] border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white transition-all"
                   >
                     {T.host.addressSearchButton}
                   </button>
@@ -500,12 +500,12 @@ export default function HostDashboard({
                   placeholder={T.host.locationDetailPlaceholder}
                   value={locationDetail}
                   onChange={(e) => setLocationDetail(e.target.value)}
-                  className="mt-2 w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="mt-2 w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   aria-label={T.host.locationDetailLabel}
                 />
 
                 {(isGeocoding || coords) && (
-                  <div className="mt-2 w-full rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                  <div className="mt-2 w-full rounded-[10px] overflow-hidden border border-neutral-200 bg-neutral-100">
                     {coords ? (
                       <>
                         <p className="px-3 pt-2 text-[11px] font-bold text-neutral-500">
@@ -526,7 +526,7 @@ export default function HostDashboard({
                 )}
 
                 {isAddressSearchOpen && (
-                  <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl bg-white shadow-2xl border border-neutral-200 overflow-hidden">
+                  <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-[10px] bg-white shadow-2xl border border-neutral-200 overflow-hidden">
                     <button
                       type="button"
                       onClick={() => setIsAddressSearchOpen(false)}
@@ -550,7 +550,7 @@ export default function HostDashboard({
                   placeholder={T.host.roomsPlaceholder}
                   value={rooms}
                   onChange={(e) => setRooms(Math.max(1, Number(e.target.value)))}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   min="1"
                   required
                 />
@@ -563,7 +563,7 @@ export default function HostDashboard({
                   placeholder={T.host.bathroomsPlaceholder}
                   value={bathrooms}
                   onChange={(e) => setBathrooms(Math.max(1, Number(e.target.value)))}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   min="1"
                   required
                 />
@@ -576,7 +576,7 @@ export default function HostDashboard({
                   placeholder={T.host.areaPlaceholder}
                   value={area}
                   onChange={(e) => setArea(Math.max(1, Number(e.target.value)))}
-                  className="w-full text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-3 rounded-xl bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
+                  className="w-full text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-3 rounded-[10px] bg-neutral-50/50 focus:bg-white transition-all text-neutral-800"
                   min="1"
                   required
                 />
@@ -598,10 +598,10 @@ export default function HostDashboard({
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                className={`flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all gap-2 block ${
+                className={`flex flex-col items-center justify-center border-2 border-dashed rounded-[10px] p-6 text-center cursor-pointer transition-all gap-2 block ${
                   isDragging
-                    ? "border-blue-600 bg-blue-50/50 scale-[0.99] text-blue-700"
-                    : "border-neutral-250 bg-neutral-50/50 hover:bg-neutral-50 hover:border-blue-400 text-neutral-500"
+                    ? "border-[#008000] bg-[#008000]/10/50 scale-[0.99] text-[#008000]"
+                    : "border-neutral-250 bg-neutral-50/50 hover:bg-neutral-50 hover:border-[#008000] text-neutral-500"
                 }`}
               >
                 <input
@@ -614,7 +614,7 @@ export default function HostDashboard({
                   disabled={uploadedImages.length >= 8}
                 />
 
-                <Upload className={`w-8 h-8 ${isDragging ? "text-blue-600 animate-bounce" : "text-neutral-400"}`} />
+                <Upload className={`w-8 h-8 ${isDragging ? "text-[#008000] animate-bounce" : "text-neutral-400"}`} />
                 <div>
                   <p className="text-xs font-bold text-neutral-800">
                     {T.host.dropzoneTitle}
@@ -631,7 +631,7 @@ export default function HostDashboard({
                   {uploadedImages.map((imageUri, index) => (
                     <div
                       key={index}
-                      className="relative rounded-xl overflow-hidden aspect-square border border-neutral-200 bg-neutral-100 shadow-xs animate-fadeIn group"
+                      className="relative rounded-[10px] overflow-hidden aspect-square border border-neutral-200 bg-neutral-100 animate-fadeIn group"
                     >
                       <img
                         src={imageUri}
@@ -644,7 +644,7 @@ export default function HostDashboard({
                       <button
                         type="button"
                         onClick={() => handleRemoveImage(index)}
-                        className="absolute top-1 right-1 bg-black/75 hover:bg-red-600 text-white p-1 rounded-full shadow-md transition-colors cursor-pointer"
+                        className="absolute top-1 right-1 bg-black/75 hover:bg-red-600 text-white p-1 rounded-full transition-colors cursor-pointer"
                         title={T.host.deletePhotoTitle}
                       >
                         <X className="w-3 h-3" />
@@ -652,7 +652,7 @@ export default function HostDashboard({
 
                       {/* Main representative image badge on first index */}
                       {index === 0 && (
-                        <div className="absolute bottom-1 left-1 right-1 bg-blue-600 text-white py-0.5 text-[8px] font-black text-center rounded-md pointer-events-none select-none tracking-tight">
+                        <div className="absolute bottom-1 left-1 right-1 bg-[#008000] text-white py-0.5 text-[8px] font-black text-center rounded-[10px] pointer-events-none select-none tracking-tight">
                           {T.host.mainPhotoBadge}
                         </div>
                       )}
@@ -665,7 +665,7 @@ export default function HostDashboard({
             {/* 거주 증빙 문서 추가 (주민등록등본/초본 + 요금 납부 영수증) */}
             <div className="space-y-3 border-t border-neutral-100 pt-5">
               <div className="flex items-center gap-1.5 text-xs font-black text-neutral-800">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <ShieldCheck className="w-4 h-4 text-[#008000]" />
                 <span>{T.host.residencyTitle}</span>
               </div>
               <p className="text-[11px] text-neutral-450 leading-normal">{T.host.residencyHelp}</p>
@@ -678,7 +678,7 @@ export default function HostDashboard({
                   <div key={doc.id} className="space-y-1.5">
                     <label className="block text-[11px] font-bold text-neutral-700">{doc.label}</label>
                     {doc.value ? (
-                      <div className="relative rounded-2xl overflow-hidden border border-emerald-200 bg-neutral-100 aspect-4/3">
+                      <div className="relative rounded-[10px] overflow-hidden border border-[#008000] bg-neutral-100 aspect-4/3">
                         <img src={doc.value} alt={doc.label} className="w-full h-full object-cover" />
                         <button
                           type="button"
@@ -688,14 +688,14 @@ export default function HostDashboard({
                         >
                           <X className="w-3 h-3" />
                         </button>
-                        <div className="absolute bottom-1.5 left-1.5 right-1.5 bg-emerald-600 text-white py-0.5 text-[9px] font-black text-center rounded-md">
+                        <div className="absolute bottom-1.5 left-1.5 right-1.5 bg-[#008000] text-white py-0.5 text-[9px] font-black text-center rounded-[10px]">
                           {T.host.residencyUploadedBadge}
                         </div>
                       </div>
                     ) : (
                       <label
                         htmlFor={doc.id}
-                        className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-neutral-250 bg-neutral-50/50 hover:bg-neutral-50 hover:border-emerald-400 rounded-2xl p-5 text-center cursor-pointer transition-all aspect-4/3"
+                        className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-neutral-250 bg-neutral-50/50 hover:bg-neutral-50 hover:border-[#008000] rounded-[10px] p-5 text-center cursor-pointer transition-all aspect-4/3"
                       >
                         <input
                           type="file"
@@ -718,7 +718,7 @@ export default function HostDashboard({
               {/* Left Side: Appointment Dates Selection */}
               <div className="space-y-3">
                 <label className="block text-xs font-black text-neutral-800 flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <Calendar className="w-4 h-4 text-[#008000]" />
                   <span>{T.host.visitDatesLabel}</span>
                 </label>
                 <p className="text-[11px] text-neutral-450 leading-normal">
@@ -731,18 +731,18 @@ export default function HostDashboard({
                     value={dateInput}
                     min={new Date().toISOString().split("T")[0]}
                     onChange={(e) => setDateInput(e.target.value)}
-                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50/50 text-neutral-800"
+                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-2 rounded-[10px] bg-neutral-50/50 text-neutral-800"
                   />
                   <button
                     type="button"
                     onClick={handleAddDate}
-                    className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                    className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-[10px] transition-all cursor-pointer whitespace-nowrap"
                   >
                     {T.host.addDateButton}
                   </button>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 overflow-y-auto max-h-[85px] p-2 bg-neutral-50 rounded-xl border border-neutral-150">
+                <div className="flex flex-wrap gap-1.5 overflow-y-auto max-h-[85px] p-2 bg-neutral-50 rounded-[10px] border border-neutral-150">
                   {availableDates.length === 0 ? (
                     <span className="text-[10px] text-neutral-400 font-semibold p-1">
                       {T.host.noDatesSet}
@@ -751,13 +751,13 @@ export default function HostDashboard({
                     availableDates.map((date) => (
                       <span
                         key={date}
-                        className="inline-flex items-center gap-1 text-[11px] font-bold bg-blue-50 text-blue-700 p-1 px-2.5 rounded-lg border border-blue-100 animate-fadeIn"
+                        className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#008000]/10 text-[#008000] p-1 px-2.5 rounded-[10px] border border-[#008000]/10 animate-fadeIn"
                       >
                         {date}
                         <button
                           type="button"
                           onClick={() => handleRemoveDate(date)}
-                          className="hover:bg-blue-100 text-blue-900 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center text-[9px] font-black cursor-pointer"
+                          className="hover:bg-[#008000]/10 text-[#008000] rounded-full w-3.5 h-3.5 inline-flex items-center justify-center text-[9px] font-black cursor-pointer"
                         >
                           ×
                         </button>
@@ -770,7 +770,7 @@ export default function HostDashboard({
               {/* Right Side: Appointment Hours / Time slots Selection */}
               <div className="space-y-3">
                 <label className="block text-xs font-black text-neutral-800 flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-blue-600" />
+                  <Clock className="w-4 h-4 text-[#008000]" />
                   <span>{T.host.timeSlotsLabel}</span>
                 </label>
                 <p className="text-[11px] text-neutral-450 leading-normal">
@@ -787,9 +787,9 @@ export default function HostDashboard({
                           type="button"
                           key={slot}
                           onClick={() => handleToggleTimeSlot(slot)}
-                          className={`text-[11px] font-bold py-1.5 rounded-lg border transition-all cursor-pointer ${
+                          className={`text-[11px] font-bold py-1.5 rounded-[10px] border transition-all cursor-pointer ${
                             isChecked
-                              ? "bg-blue-600 border-blue-600 text-white font-extrabold"
+                              ? "bg-[#008000] border-[#008000] text-white font-extrabold"
                               : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300"
                           }`}
                         >
@@ -807,18 +807,18 @@ export default function HostDashboard({
                     placeholder={T.host.customTimeSlotPlaceholder}
                     value={customTimeInput}
                     onChange={(e) => setCustomTimeInput(e.target.value)}
-                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-blue-400 focus:outline-hidden p-2 rounded-xl bg-neutral-50/50 text-neutral-800"
+                    className="flex-1 text-xs font-bold border border-neutral-200 focus:border-[#008000] focus:outline-hidden p-2 rounded-[10px] bg-neutral-50/50 text-neutral-800"
                   />
                   <button
                     type="button"
                     onClick={handleAddCustomTimeSlot}
-                    className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                    className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-[10px] transition-all cursor-pointer whitespace-nowrap"
                   >
                     {T.host.addTimeSlotButton}
                   </button>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 overflow-y-auto max-h-[85px] p-2 bg-neutral-50 rounded-xl border border-neutral-150">
+                <div className="flex flex-wrap gap-1.5 overflow-y-auto max-h-[85px] p-2 bg-neutral-50 rounded-[10px] border border-neutral-150">
                   {availableTimeSlots.length === 0 ? (
                     <span className="text-[10px] text-neutral-400 font-semibold p-1">
                       {T.host.noTimeSlotsActive}
@@ -827,7 +827,7 @@ export default function HostDashboard({
                     availableTimeSlots.map((slot) => (
                       <span
                         key={slot}
-                        className="inline-flex items-center gap-1 text-[11px] font-bold bg-neutral-100 text-neutral-800 p-1 px-2.5 rounded-lg border border-neutral-200"
+                        className="inline-flex items-center gap-1 text-[11px] font-bold bg-neutral-100 text-neutral-800 p-1 px-2.5 rounded-[10px] border border-neutral-200"
                       >
                         {slot}
                         <button
@@ -847,7 +847,7 @@ export default function HostDashboard({
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-xl cursor-pointer shadow-md transition-all mt-4"
+              className="w-full bg-[#008000] hover:bg-[#006d00] text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-[10px] cursor-pointer transition-all mt-4"
             >
               {T.host.submitListingButton}
             </button>
@@ -856,7 +856,7 @@ export default function HostDashboard({
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* List of current listings */}
-        <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4">
+        <div className="bg-white rounded-[10px] border border-neutral-200 p-5 space-y-4">
           <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
             <ListFilter className="w-4 h-4 text-[#008000]" />
             <span>{T.host.myListingsPrefix}{hostHouses.length}{T.host.myListingsSuffix}</span>
@@ -874,7 +874,7 @@ export default function HostDashboard({
                     <img
                       src={hCode.imageUrl}
                       alt=""
-                      className="w-10 h-10 rounded-lg object-cover bg-neutral-100 shrink-0 border border-neutral-200"
+                      className="w-10 h-10 rounded-[10px] object-cover bg-neutral-100 shrink-0 border border-neutral-200"
                       referrerPolicy="no-referrer"
                     />
                     <div className="min-w-0">
@@ -884,7 +884,7 @@ export default function HostDashboard({
                       <p className="text-[10px] text-neutral-500 font-semibold">
                         {T.host.specRoomsPrefix}{hCode.rooms ?? 3}{T.host.specRoomsMid}{hCode.bathrooms ?? 2}{T.host.specBathroomsMid}{hCode.area ?? 24}{T.host.specAreaSuffix}
                       </p>
-                      <p className="text-[10px] text-blue-600 font-bold">
+                      <p className="text-[10px] text-[#008000] font-bold">
                         ₩{hCode.pricePerVisit.toLocaleString()}{T.host.perGuideSuffix}
                       </p>
                       {(hCode.approvalStatus ?? 'pending') !== 'approved' && (
@@ -904,9 +904,9 @@ export default function HostDashboard({
                   </div>
                   <button
                     onClick={() => onSelectHouse(hCode)}
-                    className="shrink-0 text-[10px] font-bold px-2 py-1 border border-neutral-200 hover:border-blue-400 hover:text-blue-600 rounded-lg text-neutral-600 bg-white flex items-center gap-1 cursor-pointer"
+                    className="shrink-0 text-[10px] font-bold px-2 py-1 border border-neutral-200 hover:border-[#008000] hover:text-[#008000] rounded-[10px] text-neutral-600 bg-white flex items-center gap-1 cursor-pointer"
                   >
-                    <Eye className="w-3 h-3 text-blue-500" />
+                    <Eye className="w-3 h-3 text-[#008000]" />
                     {T.host.inspectButton}
                   </button>
                 </div>
@@ -916,21 +916,21 @@ export default function HostDashboard({
         </div>
 
         {/* Incoming Bookings panel */}
-        <div className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4 flex flex-col h-[400px]">
+        <div className="bg-white rounded-[10px] border border-neutral-200 p-5 space-y-4 flex flex-col h-[400px]">
           <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ClipboardCheck className="w-4 h-4 text-[#008000]" />
               <span>{T.host.applicantsListTitle}</span>
             </div>
             {pendingCount > 0 && (
-              <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-[#008000]/10 text-[#008000] text-[10px] font-bold px-2 py-0.5 rounded-full">
                 {T.host.negotiatingPrefix}{pendingCount}
               </span>
             )}
           </h4>
 
           {receivedBookings.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-neutral-50 rounded-[10px] border border-dashed border-neutral-200">
               <Calendar className="w-10 h-10 text-neutral-300 mb-2" />
               <p className="text-neutral-500 text-xs font-bold">{T.host.noBookingsYet}</p>
               <p className="text-[10px] text-neutral-400 mt-1 max-w-[200px] leading-relaxed font-semibold">
@@ -942,12 +942,12 @@ export default function HostDashboard({
               {receivedBookings.map((bk) => (
                 <div
                   key={bk.id}
-                  className="p-3.5 bg-neutral-50 border border-neutral-200 rounded-2xl flex flex-col gap-2.5 relative"
+                  className="p-3.5 bg-neutral-50 border border-neutral-200 rounded-[10px] flex flex-col gap-2.5 relative"
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0">
-                        <User className="w-3.5 h-3.5 text-blue-600" />
+                      <div className="w-7 h-7 rounded-full bg-[#008000]/10 text-[#008000] flex items-center justify-center font-bold text-xs shrink-0">
+                        <User className="w-3.5 h-3.5 text-[#008000]" />
                       </div>
                       <div>
                         <span className="text-xs font-bold text-neutral-800">{bk.guestName}</span>
@@ -959,12 +959,12 @@ export default function HostDashboard({
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         bk.status === "confirmed"
-                          ? "bg-emerald-100 text-emerald-700"
+                          ? "bg-[#008000]/10 text-[#008000]"
                           : bk.status === "cancelled"
                             ? "bg-neutral-200 text-neutral-600"
                             : bk.status === "completed"
-                              ? "bg-indigo-100 text-indigo-700"
-                              : "bg-blue-100 text-blue-700"
+                              ? "bg-[#008000]/10 text-[#008000]"
+                              : "bg-[#008000]/10 text-[#008000]"
                       }`}
                     >
                       {bk.status === "confirmed"
@@ -986,7 +986,7 @@ export default function HostDashboard({
                     <p className="text-[11px]">
                       <span className="text-neutral-400 shrink-0">{T.host.accompanyCountLabel}</span> {bk.totalVisitors}{T.host.peopleSuffix}
                     </p>
-                    <p className="text-[11px] font-bold text-blue-700">
+                    <p className="text-[11px] font-bold text-[#008000]">
                       <span className="text-neutral-400 font-semibold text-neutral-600">{T.host.settlementAmountLabel}</span> ₩
                       {bk.totalPrice.toLocaleString()}
                     </p>
@@ -997,13 +997,13 @@ export default function HostDashboard({
                     <div className="grid grid-cols-2 gap-2 border-t border-neutral-150 pt-2 text-xs font-sans">
                       <button
                         onClick={() => onUpdateBookingStatus(bk.id, "cancelled")}
-                        className="py-1 px-2 border border-neutral-300 rounded-lg hover:border-neutral-400 font-bold text-neutral-500 hover:text-neutral-850 bg-white cursor-pointer transition-all"
+                        className="py-1 px-2 border border-neutral-300 rounded-[10px] hover:border-neutral-400 font-bold text-neutral-500 hover:text-neutral-850 bg-white cursor-pointer transition-all"
                       >
                         {T.host.rejectButton}
                       </button>
                       <button
                         onClick={() => onUpdateBookingStatus(bk.id, "confirmed")}
-                        className="py-1 px-2 bg-blue-600 hover:bg-blue-700 font-bold text-white rounded-lg cursor-pointer transition-all"
+                        className="py-1 px-2 bg-[#008000] hover:bg-[#006d00] font-bold text-white rounded-[10px] cursor-pointer transition-all"
                       >
                         {T.host.acceptButton}
                       </button>
@@ -1023,7 +1023,7 @@ export default function HostDashboard({
                             onUpdateBookingStatus(bk.id, "completed");
                           }
                         }}
-                        className="w-full py-1.5 px-2 bg-indigo-600 hover:bg-indigo-700 font-bold text-white rounded-lg cursor-pointer transition-all text-xs"
+                        className="w-full py-1.5 px-2 bg-[#008000] hover:bg-[#006d00] font-bold text-white rounded-[10px] cursor-pointer transition-all text-xs"
                       >
                         {T.host.completeGuideButton}
                       </button>

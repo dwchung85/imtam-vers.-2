@@ -190,7 +190,7 @@ export default function MyInfoDashboard({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Host Earnings & Wallet Stats */}
-      <div className="bg-white rounded-3xl border border-neutral-200 p-5 md:p-6 shadow-xs">
+      <div className="bg-white rounded-[10px] border border-neutral-200 p-5 md:p-6">
         <div className="mb-4">
           <span className="text-[11px] font-semibold text-neutral-500 block">
             {T.host.totalEarningsLabel}
@@ -213,7 +213,7 @@ export default function MyInfoDashboard({
       </div>
 
       {/* Account Info */}
-      <div className="bg-white rounded-3xl border border-neutral-200 p-5 md:p-6 shadow-xs">
+      <div className="bg-white rounded-[10px] border border-neutral-200 p-5 md:p-6">
         <div className="flex items-center justify-between gap-2 mb-4">
           <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
             <UserCircle2 className="w-4 h-4 text-[#008000]" />
@@ -280,7 +280,7 @@ export default function MyInfoDashboard({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="010-1234-5678"
-                className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-[10px] px-2.5 focus:outline-none focus:border-neutral-400"
               />
             ) : (
               <span className="text-sm font-bold text-neutral-900 break-all text-right">{phone || "-"}</span>
@@ -294,7 +294,7 @@ export default function MyInfoDashboard({
                   dir="rtl"
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 bg-white appearance-none focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-[10px] px-2.5 bg-white appearance-none focus:outline-none focus:border-neutral-400"
                 >
                   <option value="">{T.host.accountBankSelectPlaceholder}</option>
                   {KOREAN_BANKS.map((bank) => (
@@ -306,7 +306,7 @@ export default function MyInfoDashboard({
                   value={bankAccount}
                   onChange={(e) => setBankAccount(e.target.value)}
                   placeholder={T.host.accountBankAccountPlaceholder}
-                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-[10px] px-2.5 focus:outline-none focus:border-neutral-400"
                 />
               </div>
             ) : (
@@ -323,7 +323,7 @@ export default function MyInfoDashboard({
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder={T.host.accountNewPasswordPlaceholder}
                   autoComplete="new-password"
-                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-[10px] px-2.5 focus:outline-none focus:border-neutral-400"
                 />
                 <input
                   type="password"
@@ -331,7 +331,7 @@ export default function MyInfoDashboard({
                   onChange={(e) => setNewPasswordConfirm(e.target.value)}
                   placeholder={T.host.accountNewPasswordConfirmPlaceholder}
                   autoComplete="new-password"
-                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-lg px-2.5 focus:outline-none focus:border-neutral-400"
+                  className="w-60 md:w-[336px] h-9 text-sm font-bold text-neutral-900 text-right border border-neutral-200 rounded-[10px] px-2.5 focus:outline-none focus:border-neutral-400"
                 />
               </div>
             </div>
@@ -363,7 +363,7 @@ export default function MyInfoDashboard({
       </div>
 
       {/* 찜한 매물 */}
-      <div className="bg-white rounded-3xl border border-neutral-200 p-6 space-y-4">
+      <div className="bg-white rounded-[10px] border border-neutral-200 p-6 space-y-4">
         <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
           <Heart className="w-4 h-4 text-[#008000]" />
           찜한 매물 ({favoriteHouses.length})
@@ -373,9 +373,9 @@ export default function MyInfoDashboard({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {favoriteHouses.map((h) => (
-              <div key={h.id} className="flex items-center gap-3 border border-neutral-200 rounded-2xl p-2">
+              <div key={h.id} className="flex items-center gap-3 border border-neutral-200 rounded-[10px] p-2">
                 <button type="button" onClick={() => onSelectHouse?.(h)} className="flex items-center gap-3 flex-1 min-w-0 text-left">
-                  <img src={h.imageUrl} alt={h.title} className="w-14 h-14 rounded-xl object-cover bg-neutral-100" />
+                  <img src={h.imageUrl} alt={h.title} className="w-14 h-14 rounded-[10px] object-cover bg-neutral-100" />
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-neutral-900 truncate">{h.title}</p>
                     <p className="text-[11px] text-neutral-500 truncate">{h.location}</p>
@@ -405,7 +405,7 @@ export default function MyInfoDashboard({
           onClick={() => setPendingConfirm(null)}
         >
           <div
-            className="w-full max-w-xs bg-white rounded-2xl border border-neutral-200 shadow-xl p-5 space-y-4 animate-fadeIn"
+            className="w-full max-w-xs bg-white rounded-[10px] border border-neutral-200 shadow-xl p-5 space-y-4 animate-fadeIn"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-sm font-semibold text-neutral-900 text-center whitespace-pre-line leading-relaxed">
