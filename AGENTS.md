@@ -9,7 +9,7 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-Keep browse filter controls in BrowseFilters with parent-owned values so the search bar and right-side sheet share the same live filtering state.
+Keep browse filter controls in BrowseFilters with parent-owned values so the search bar and centered popup dialog share the same live filtering state.
 
 Profile photos are resized and square-cropped in the browser before updating `profiles.avatar`; this follows the existing database-backed image pattern and keeps uploads small without adding file storage infrastructure.
 
