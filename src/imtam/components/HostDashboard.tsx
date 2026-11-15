@@ -736,7 +736,7 @@ export default function HostDashboard({
                   <button
                     type="button"
                     onClick={handleAddDate}
-                    className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-[10px] transition-all cursor-pointer whitespace-nowrap"
+                    className="bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white text-xs font-black px-3 py-2 rounded-[10px] transition-all cursor-pointer whitespace-nowrap"
                   >
                     {T.host.addDateButton}
                   </button>
@@ -789,7 +789,7 @@ export default function HostDashboard({
                           onClick={() => handleToggleTimeSlot(slot)}
                           className={`text-[11px] font-bold py-1.5 rounded-[10px] border transition-all cursor-pointer ${
                             isChecked
-                              ? "bg-[#008000] border-[#008000] text-white font-extrabold"
+                              ? "bg-white border-[#008000] text-[#008000] font-extrabold"
                               : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300"
                           }`}
                         >
@@ -812,7 +812,7 @@ export default function HostDashboard({
                   <button
                     type="button"
                     onClick={handleAddCustomTimeSlot}
-                    className="bg-neutral-900 hover:bg-neutral-850 text-white text-xs font-black px-3 py-2 rounded-[10px] transition-all cursor-pointer whitespace-nowrap"
+                    className="bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white text-xs font-black px-3 py-2 rounded-[10px] transition-all cursor-pointer whitespace-nowrap"
                   >
                     {T.host.addTimeSlotButton}
                   </button>
@@ -847,7 +847,7 @@ export default function HostDashboard({
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-[#008000] hover:bg-[#006d00] text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-[10px] cursor-pointer transition-all mt-4"
+              className="w-full bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white text-xs md:text-sm font-bold py-3.5 px-4 rounded-[10px] cursor-pointer transition-all mt-4"
             >
               {T.host.submitListingButton}
             </button>
@@ -1003,7 +1003,7 @@ export default function HostDashboard({
                       </button>
                       <button
                         onClick={() => onUpdateBookingStatus(bk.id, "confirmed")}
-                        className="py-1 px-2 bg-[#008000] hover:bg-[#006d00] font-bold text-white rounded-[10px] cursor-pointer transition-all"
+                        className="py-1 px-2 bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white font-bold rounded-[10px] cursor-pointer transition-all"
                       >
                         {T.host.acceptButton}
                       </button>
@@ -1023,7 +1023,7 @@ export default function HostDashboard({
                             onUpdateBookingStatus(bk.id, "completed");
                           }
                         }}
-                        className="w-full py-1.5 px-2 bg-[#008000] hover:bg-[#006d00] font-bold text-white rounded-[10px] cursor-pointer transition-all text-xs"
+                        className="w-full py-1.5 px-2 bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white font-bold rounded-[10px] cursor-pointer transition-all text-xs"
                       >
                         {T.host.completeGuideButton}
                       </button>

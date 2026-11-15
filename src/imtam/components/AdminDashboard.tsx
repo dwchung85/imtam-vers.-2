@@ -109,7 +109,7 @@ export default function AdminDashboard({ houses, onReviewHouse }: AdminDashboard
               onClick={() => setFilter(t.key)}
               className={`text-[11px] md:text-xs font-bold px-3.5 py-2 rounded-full border transition-colors cursor-pointer ${
                 filter === t.key
-                  ? 'bg-[#008000] border-[#008000] text-white'
+                  ? 'bg-white border-[#008000] text-[#008000]'
                   : 'bg-white border-neutral-200 text-neutral-700 hover:border-[#008000]'
               }`}
             >
@@ -204,7 +204,7 @@ export default function AdminDashboard({ houses, onReviewHouse }: AdminDashboard
                       <button
                         disabled={busyId === h.id}
                         onClick={() => handle(h.id, 'approved')}
-                        className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-[10px] bg-[#008000] hover:bg-[#006d00] text-white cursor-pointer disabled:opacity-50"
+                        className="flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-[10px] bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white cursor-pointer disabled:opacity-50"
                       >
                         <Check className="w-3.5 h-3.5" />
                         {T.admin.approveButton}

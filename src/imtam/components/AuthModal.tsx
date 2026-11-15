@@ -218,7 +218,7 @@ export default function AuthModal({ onClose, onLoginSuccess }: AuthModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 disabled:bg-blue-350 text-white font-bold text-xs md:text-sm py-3.5 px-4 rounded-xl shadow-md transition-all mt-2 flex items-center justify-center gap-2"
+            className="w-full bg-white border border-[#008000] text-[#008000] cursor-pointer hover:bg-[#008000] hover:text-white disabled:opacity-50 font-bold text-xs md:text-sm py-3.5 px-4 rounded-xl transition-all mt-2 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             {isSignUp ? T.auth.submitSignUp : T.auth.submitLogin}

@@ -369,7 +369,7 @@ export default function App() {
                           onChange={(e) => setMinRooms(Number(e.target.value))}
                           className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minRooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minRooms > 0
-                              ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+                              ? "bg-white border-[#008000] text-[#008000] hover:border-[#008000]"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
                           }`}
                         >
@@ -384,7 +384,7 @@ export default function App() {
                             type="button"
                             onClick={() => setMinRooms(0)}
                             aria-label={T.app.roomsFilterResetAriaLabel}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
                           >
                             <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                           </button>
@@ -402,7 +402,7 @@ export default function App() {
                           onChange={(e) => setMinBathrooms(Number(e.target.value))}
                           className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minBathrooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minBathrooms > 0
-                              ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+                              ? "bg-white border-[#008000] text-[#008000] hover:border-[#008000]"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
                           }`}
                         >
@@ -416,7 +416,7 @@ export default function App() {
                             type="button"
                             onClick={() => setMinBathrooms(0)}
                             aria-label={T.app.bathroomsFilterResetAriaLabel}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
                           >
                             <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                           </button>
@@ -434,7 +434,7 @@ export default function App() {
                           onChange={(e) => setMinArea(Number(e.target.value))}
                           className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minArea > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
                             minArea > 0
-                              ? "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+                              ? "bg-white border-[#008000] text-[#008000] hover:border-[#008000]"
                               : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
                           }`}
                         >
@@ -449,7 +449,7 @@ export default function App() {
                             type="button"
                             onClick={() => setMinArea(0)}
                             aria-label={T.app.areaFilterResetAriaLabel}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
                           >
                             <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                           </button>
@@ -579,7 +579,7 @@ function LoginRequired({ onOpenAuth }: { onOpenAuth: () => void }) {
       </p>
       <button
         onClick={onOpenAuth}
-        className="bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs py-2.5 px-5 rounded-xl cursor-pointer shadow-xs transition-colors"
+        className="bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white font-bold text-xs py-2.5 px-5 rounded-xl cursor-pointer transition-colors"
       >
         {T.app.loginSignup}
       </button>

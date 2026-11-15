@@ -525,7 +525,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
               <button
                 type="button"
                 onClick={handleConfirmBooking}
-                className="flex-1 h-9 text-xs font-semibold text-white bg-[#008000] rounded-[10px] hover:bg-[#006d00] focus:outline-none cursor-pointer"
+                className="flex-1 h-9 text-xs font-semibold bg-white border border-[#008000] text-[#008000] rounded-[10px] hover:bg-[#008000] hover:text-white focus:outline-none cursor-pointer"
               >
                 {T.houseDetail.bookingConfirmConfirm}
               </button>

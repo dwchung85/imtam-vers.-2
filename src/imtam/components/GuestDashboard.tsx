@@ -171,7 +171,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                               if (!draft) return;
                               onSubmitReview(booking.id, draft);
                             }}
-                            className="text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-400 bg-blue-600 hover:bg-blue-700 text-white"
+                            className="text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all cursor-pointer disabled:cursor-not-allowed disabled:border-neutral-200 disabled:text-neutral-400 disabled:hover:bg-white disabled:hover:text-neutral-400 bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white"
                           >
                             {T.guest.registerRating}
                           </button>

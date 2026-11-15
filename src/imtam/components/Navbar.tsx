@@ -210,7 +210,7 @@ export default function Navbar({
             ) : (
               <button
                 onClick={onOpenAuth}
-                className="bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold py-2 px-3.5 rounded-xl cursor-pointer shadow-xs flex items-center gap-1.5 transition-colors"
+                className="bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white text-xs font-bold py-2 px-3.5 rounded-xl cursor-pointer flex items-center gap-1.5 transition-colors"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>{T.navbar.loginSignup}</span>

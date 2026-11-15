@@ -95,7 +95,7 @@ export default function WalletCard() {
             type="button"
             disabled={busy}
             onClick={topup}
-            className="ml-auto h-9 px-4 rounded-[10px] bg-[#008000] text-white text-sm font-bold disabled:opacity-50"
+            className="ml-auto h-9 px-4 rounded-[10px] bg-white border border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white text-sm font-bold disabled:opacity-50"
           >
             ₩{(units * 10000).toLocaleString()} 충전
           </button>
