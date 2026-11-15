@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { T } from "../strings";
 
 type Filters = {
@@ -39,24 +39,23 @@ export default function BrowseFilters({ filters, onChange }: Props) {
   );
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div className="flex items-center gap-3 rounded-[10px] border border-border bg-filter-surface p-4 md:p-6">
         {addressInput("browse-address")}
-        <SheetTrigger asChild>
-          <Button variant="filter" size="icon" aria-label={T.app.filtersOpen} title={T.app.filtersOpen}
-            className={`size-11 shrink-0 rounded-full border-transparent ${active ? "bg-filter-muted" : ""}`}>
-            <SlidersHorizontal />
-          </Button>
-        </SheetTrigger>
+        <Button variant="filter" size="icon" aria-label={T.app.filtersOpen} title={T.app.filtersOpen}
+          onClick={() => setOpen(true)}
+          className={`size-11 shrink-0 rounded-full border-transparent ${active ? "bg-filter-muted" : ""}`}>
+          <SlidersHorizontal />
+        </Button>
       </div>
-      <SheetContent side="right" aria-describedby={undefined}
-        className="flex h-dvh w-full max-w-[420px] flex-col gap-0 p-0 sm:max-w-[420px] [&>button]:hidden motion-reduce:animate-none motion-reduce:transition-none">
-        <SheetHeader className="shrink-0 flex-row items-center justify-between space-y-0 border-b border-border px-5 py-4 text-left">
-          <SheetTitle>{T.app.filtersTitle}</SheetTitle>
-          <SheetClose asChild>
+      <DialogContent aria-describedby={undefined}
+        className="flex max-h-[85dvh] w-[calc(100vw-32px)] max-w-[420px] flex-col gap-0 rounded-[10px] p-0 sm:max-w-[420px] [&>button]:hidden">
+        <DialogHeader className="shrink-0 flex-row items-center justify-between space-y-0 border-b border-border px-5 py-4 text-left">
+          <DialogTitle>{T.app.filtersTitle}</DialogTitle>
+          <DialogClose asChild>
             <Button variant="filter" size="icon" className="size-10 rounded-full" aria-label={T.app.filtersClose}><X /></Button>
-          </SheetClose>
-        </SheetHeader>
+          </DialogClose>
+        </DialogHeader>
         <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-5 py-6">
           {([
             { key: "minRooms", label: T.app.roomsLabel, values: [1, 2, 3, 4], labels: [T.app.rooms1Plus, T.app.rooms2Plus, T.app.rooms3Plus, T.app.rooms4Plus] },
@@ -91,9 +90,9 @@ export default function BrowseFilters({ filters, onChange }: Props) {
         </div>
         <div className="flex shrink-0 gap-3 border-t border-border p-5 pb-[max(20px,env(safe-area-inset-bottom))]">
           <Button variant="filter" className="h-11 rounded-[10px]" onClick={() => onChange({ searchQuery: "", minRooms: 0, minBathrooms: 0, minArea: 0, visitDateFrom: "", visitDateTo: "" })}>{T.app.filtersReset}</Button>
-          <SheetClose asChild><Button variant="filter" className="h-11 flex-1 rounded-[10px]">{T.app.filtersApply}</Button></SheetClose>
+          <DialogClose asChild><Button variant="filter" className="h-11 flex-1 rounded-[10px]">{T.app.filtersApply}</Button></DialogClose>
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
