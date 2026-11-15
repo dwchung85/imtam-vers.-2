@@ -471,7 +471,7 @@ export default function App() {
 
                       {/* Visit Date Range */}
                       <div
-                        className={`relative min-w-0 col-span-3 md:col-span-1 flex items-center gap-1.5 text-[11px] md:text-xs font-bold pl-3 md:pl-4 pr-2 py-1.5 rounded-[10px] border transition-all ${
+                        className={`relative min-w-0 col-span-3 md:col-span-1 flex items-center gap-1.5 text-[11px] md:text-xs font-bold pl-3 md:pl-4 pr-2 py-2.5 rounded-[10px] border transition-all ${
                           visitDateFrom || visitDateTo
                             ? "bg-white border-[#008000] text-[#008000]"
                             : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
