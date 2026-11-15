@@ -44,7 +44,7 @@ export default function BrowseFilters({ filters, onChange }: Props) {
         {addressInput("browse-address")}
         <SheetTrigger asChild>
           <Button variant="filter" size="icon" aria-label={T.app.filtersOpen} title={T.app.filtersOpen}
-            className={`size-11 shrink-0 rounded-full ${active ? "bg-filter-muted" : ""}`}>
+            className={`size-11 shrink-0 rounded-full border-transparent ${active ? "bg-filter-muted" : ""}`}>
             <SlidersHorizontal />
           </Button>
         </SheetTrigger>
