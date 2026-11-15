@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { House, Booking, UserProfile } from "./types";
 import Navbar from "./components/Navbar";
 import HouseCard from "./components/HouseCard";
@@ -21,6 +21,10 @@ import {
 } from "./dbService";
 
 import { Search, Info, Compass, LogIn, Calendar } from "lucide-react";
+import { Calendar as CalendarPicker } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
+import type { DateRange } from "react-day-picker";
 import { T } from "./strings";
 import { payTourFromWallet } from "./tossCheckout";
 import PaymentCloseButton from "./components/PaymentCloseButton";
@@ -45,6 +49,29 @@ export default function App() {
   const [minArea, setMinArea] = useState<number>(0);
   const [visitDateFrom, setVisitDateFrom] = useState<string>("");
   const [visitDateTo, setVisitDateTo] = useState<string>("");
+  const [visitDateOpen, setVisitDateOpen] = useState<boolean>(false);
+  const visitDateRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!visitDateOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (visitDateRef.current && !visitDateRef.current.contains(e.target as Node)) {
+        setVisitDateOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [visitDateOpen]);
+
+  const visitDateRange: DateRange | undefined =
+    visitDateFrom || visitDateTo
+      ? {
+          from: visitDateFrom ? new Date(visitDateFrom + "T00:00:00") : undefined,
+          to: visitDateTo ? new Date(visitDateTo + "T00:00:00") : undefined,
+        }
+      : undefined;
+  const formatVisitDate = (s: string) =>
+    s ? format(new Date(s + "T00:00:00"), "M/d") : "";
 
   // Load houses (public) on mount
   useEffect(() => {
@@ -470,44 +497,63 @@ export default function App() {
                       </div>
 
                       {/* Visit Date Range */}
-                      <div
-                        className={`relative min-w-0 col-span-3 md:col-span-1 flex items-center gap-1.5 text-[11px] md:text-xs font-bold pl-3 md:pl-4 pr-2 py-2.5 rounded-[10px] border transition-all ${
-                          visitDateFrom || visitDateTo
-                            ? "bg-white border-[#008000] text-[#008000]"
-                            : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
-                        }`}
-                      >
-                        <Calendar className="w-3.5 h-3.5 shrink-0 text-[#008000]" />
-                        <span className="shrink-0">{T.app.visitDateLabel}</span>
-                        <input
-                          type="date"
-                          value={visitDateFrom}
-                          max={visitDateTo || undefined}
-                          onChange={(e) => setVisitDateFrom(e.target.value)}
-                          aria-label={T.app.visitDateStartAriaLabel}
-                          className="w-[7.6rem] bg-transparent focus:outline-hidden text-inherit"
-                        />
-                        <span className="text-neutral-400">~</span>
-                        <input
-                          type="date"
-                          value={visitDateTo}
-                          min={visitDateFrom || undefined}
-                          onChange={(e) => setVisitDateTo(e.target.value)}
-                          aria-label={T.app.visitDateEndAriaLabel}
-                          className="w-[7.6rem] bg-transparent focus:outline-hidden text-inherit"
-                        />
-                        {(visitDateFrom || visitDateTo) && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setVisitDateFrom("");
-                              setVisitDateTo("");
-                            }}
-                            aria-label={T.app.visitDateResetAriaLabel}
-                            className="w-5 h-5 shrink-0 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
-                          >
-                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                          </button>
+                      <div ref={visitDateRef} className="relative min-w-0 col-span-3 md:col-span-1">
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          aria-label={T.app.visitDateLabel}
+                          onClick={() => setVisitDateOpen((v) => !v)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setVisitDateOpen((v) => !v);
+                            }
+                          }}
+                          className={`min-w-0 flex items-center gap-1.5 text-[11px] md:text-xs font-bold pl-3 md:pl-4 pr-2 py-2.5 rounded-[10px] border transition-all cursor-pointer ${
+                            visitDateFrom || visitDateTo
+                              ? "bg-white border-[#008000] text-[#008000]"
+                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
+                          }`}
+                        >
+                          <Calendar className="w-3.5 h-3.5 shrink-0 text-[#008000]" />
+                          <span className="shrink-0">{T.app.visitDateLabel}</span>
+                          {(visitDateFrom || visitDateTo) && (
+                            <span className="flex-1 min-w-0 flex items-center justify-center gap-1">
+                              <span>{formatVisitDate(visitDateFrom)}</span>
+                              <span className="text-neutral-400">~</span>
+                              <span>{formatVisitDate(visitDateTo)}</span>
+                            </span>
+                          )}
+                          {(visitDateFrom || visitDateTo) && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setVisitDateFrom("");
+                                setVisitDateTo("");
+                              }}
+                              aria-label={T.app.visitDateResetAriaLabel}
+                              className="w-5 h-5 shrink-0 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
+                            >
+                              <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                            </button>
+                          )}
+                        </div>
+                        {visitDateOpen && (
+                          <div className="absolute left-0 top-full mt-1 z-50 rounded-[10px] border border-neutral-200 bg-white shadow-lg">
+                              <CalendarPicker
+                                mode="range"
+                                selected={visitDateRange}
+                                onSelect={(range) => {
+                                  setVisitDateFrom(range?.from ? format(range.from, "yyyy-MM-dd") : "");
+                                  setVisitDateTo(range?.to ? format(range.to, "yyyy-MM-dd") : "");
+                                }}
+                                numberOfMonths={1}
+                                locale={ko}
+                                defaultMonth={visitDateRange?.from}
+                                className="p-3 pointer-events-auto"
+                              />
+                          </div>
                         )}
                       </div>
                     </div>
