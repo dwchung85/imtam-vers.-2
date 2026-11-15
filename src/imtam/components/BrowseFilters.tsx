@@ -58,10 +58,6 @@ export default function BrowseFilters({ filters, onChange }: Props) {
           </SheetClose>
         </SheetHeader>
         <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-5 py-6">
-          <div className="space-y-2">
-            <label htmlFor="filter-address" className="text-sm font-bold">{T.app.addressLabel}</label>
-            {addressInput("filter-address")}
-          </div>
           {([
             { key: "minRooms", label: T.app.roomsLabel, values: [1, 2, 3, 4], labels: [T.app.rooms1Plus, T.app.rooms2Plus, T.app.rooms3Plus, T.app.rooms4Plus] },
             { key: "minBathrooms", label: T.app.bathroomsLabel, values: [1, 2, 3], labels: [T.app.bathrooms1Plus, T.app.bathrooms2Plus, T.app.bathrooms3Plus] },
