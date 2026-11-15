@@ -6,6 +6,12 @@ export const T = {
     cancelled: "결제가 취소되어 예약이 접수되지 않았습니다.",
   },
   app: {
+    filtersTitle: "검색 조건",
+    filtersOpen: "검색 필터 열기",
+    filtersClose: "검색 필터 닫기",
+    filtersReset: "초기화",
+    filtersApply: "결과 보기",
+    addressLabel: "주소",
     loginRequiredError: "로그인이 필요합니다.",
     bookingErrorGeneric: "예약 신청 중 오류가 발생했습니다.",
     bookingRequestFailed: "예약 신청에 실패했습니다.",

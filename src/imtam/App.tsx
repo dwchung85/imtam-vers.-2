@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { House, Booking, UserProfile } from "./types";
 import Navbar from "./components/Navbar";
 import HouseCard from "./components/HouseCard";
@@ -20,11 +20,8 @@ import {
   updateHouseApprovalDb,
 } from "./dbService";
 
-import { Search, Info, Compass, LogIn, Calendar } from "lucide-react";
-import { Calendar as CalendarPicker } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
-import type { DateRange } from "react-day-picker";
+import { Info, Compass, LogIn } from "lucide-react";
+import BrowseFilters from "./components/BrowseFilters";
 import { T } from "./strings";
 import { payTourFromWallet } from "./tossCheckout";
 import PaymentCloseButton from "./components/PaymentCloseButton";
@@ -49,30 +46,6 @@ export default function App() {
   const [minArea, setMinArea] = useState<number>(0);
   const [visitDateFrom, setVisitDateFrom] = useState<string>("");
   const [visitDateTo, setVisitDateTo] = useState<string>("");
-  const [visitDateOpen, setVisitDateOpen] = useState<boolean>(false);
-  const visitDateRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!visitDateOpen) return;
-    const onPointerDown = (e: PointerEvent) => {
-      if (visitDateRef.current && !visitDateRef.current.contains(e.target as Node)) {
-        setVisitDateOpen(false);
-      }
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [visitDateOpen]);
-
-  const visitDateRange: DateRange | undefined =
-    visitDateFrom || visitDateTo
-      ? {
-          from: visitDateFrom ? new Date(visitDateFrom + "T00:00:00") : undefined,
-          to: visitDateTo ? new Date(visitDateTo + "T00:00:00") : undefined,
-        }
-      : undefined;
-  const formatVisitDate = (s: string) =>
-    s ? format(new Date(s + "T00:00:00"), "M/d") : "";
-
   // Load houses (public) on mount
   useEffect(() => {
     fetchHouses()
@@ -380,186 +353,17 @@ export default function App() {
         <>
               {activeTab === "browse" && (
                 <div className="space-y-6 md:space-y-8 animate-fadeIn">
-                  {/* Visual Header / Search / Filter row */}
-                  <div className="bg-white rounded-[10px] border border-neutral-200 p-5 md:p-8 space-y-6">
-                    <div className="flex flex-col md:flex-row md:items-center gap-4">
-                      {/* Search Bar inside card */}
-                      <div className="relative w-full">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#008000]" />
-                        <input
-                          type="text"
-                          placeholder={T.app.searchPlaceholder}
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full text-xs md:text-sm pl-10 pr-4 py-3 rounded-[10px] border border-neutral-200 focus:border-blue-400 focus:outline-hidden bg-neutral-50 focus:bg-white text-neutral-800 transition-all font-bold"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Advanced Spec Filters — unified pill selects */}
-                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-blue-50 md:flex md:flex-wrap md:items-center">
-                      {/* Rooms */}
-                      <div className="relative min-w-0">
-                        <select
-                          value={minRooms}
-                          onChange={(e) => setMinRooms(Number(e.target.value))}
-                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minRooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
-                            minRooms > 0
-                              ? "bg-white border-[#008000] text-[#008000] hover:border-[#008000]"
-                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
-                          }`}
-                        >
-                          <option value="0">{T.app.roomsLabel}</option>
-                          <option value="1">{T.app.rooms1Plus}</option>
-                          <option value="2">{T.app.rooms2Plus}</option>
-                          <option value="3">{T.app.rooms3Plus}</option>
-                          <option value="4">{T.app.rooms4Plus}</option>
-                        </select>
-                        {minRooms > 0 ? (
-                          <button
-                            type="button"
-                            onClick={() => setMinRooms(0)}
-                            aria-label={T.app.roomsFilterResetAriaLabel}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
-                          >
-                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                          </button>
-                        ) : (
-                          <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        )}
-                      </div>
-
-                      {/* Bathrooms */}
-                      <div className="relative min-w-0">
-                        <select
-                          value={minBathrooms}
-                          onChange={(e) => setMinBathrooms(Number(e.target.value))}
-                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minBathrooms > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
-                            minBathrooms > 0
-                              ? "bg-white border-[#008000] text-[#008000] hover:border-[#008000]"
-                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
-                          }`}
-                        >
-                          <option value="0">{T.app.bathroomsLabel}</option>
-                          <option value="1">{T.app.bathrooms1Plus}</option>
-                          <option value="2">{T.app.bathrooms2Plus}</option>
-                          <option value="3">{T.app.bathrooms3Plus}</option>
-                        </select>
-                        {minBathrooms > 0 ? (
-                          <button
-                            type="button"
-                            onClick={() => setMinBathrooms(0)}
-                            aria-label={T.app.bathroomsFilterResetAriaLabel}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
-                          >
-                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                          </button>
-                        ) : (
-                          <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        )}
-                      </div>
-
-                      {/* Area */}
-                      <div className="relative min-w-0">
-                        <select
-                          value={minArea}
-                          onChange={(e) => setMinArea(Number(e.target.value))}
-                          className={`w-full appearance-none text-[11px] md:text-xs font-bold pl-3 md:pl-4 ${minArea > 0 ? "pr-8" : "pr-7 md:pr-9"} py-2.5 rounded-[10px] border transition-all cursor-pointer focus:outline-hidden truncate ${
-                            minArea > 0
-                              ? "bg-white border-[#008000] text-[#008000] hover:border-[#008000]"
-                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
-                          }`}
-                        >
-                          <option value="0">{T.app.areaLabel}</option>
-                          <option value="10">{T.app.area10Plus}</option>
-                          <option value="20">{T.app.area20Plus}</option>
-                          <option value="30">{T.app.area30Plus}</option>
-                          <option value="40">{T.app.area40Plus}</option>
-                        </select>
-                        {minArea > 0 ? (
-                          <button
-                            type="button"
-                            onClick={() => setMinArea(0)}
-                            aria-label={T.app.areaFilterResetAriaLabel}
-                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
-                          >
-                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                          </button>
-                        ) : (
-                          <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        )}
-                      </div>
-
-                      {/* Visit Date Range */}
-                      <div ref={visitDateRef} className="relative min-w-0 col-span-3 md:col-span-1">
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          aria-label={T.app.visitDateLabel}
-                          onClick={() => setVisitDateOpen((v) => !v)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                              setVisitDateOpen((v) => !v);
-                            }
-                          }}
-                          className={`min-w-0 flex items-center gap-1.5 text-[11px] md:text-xs font-bold pl-3 md:pl-4 pr-2 py-2.5 rounded-[10px] border transition-all cursor-pointer ${
-                            visitDateFrom || visitDateTo
-                              ? "bg-white border-[#008000] text-[#008000]"
-                              : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
-                          }`}
-                        >
-                          <Calendar className="w-3.5 h-3.5 shrink-0 text-[#008000]" />
-                          <span className="shrink-0">{T.app.visitDateLabel}</span>
-                          {(visitDateFrom || visitDateTo) && (
-                            <span className="flex-1 min-w-0 flex items-center justify-center gap-1">
-                              <span>{formatVisitDate(visitDateFrom)}</span>
-                              <span className="text-neutral-400">~</span>
-                              <span>{formatVisitDate(visitDateTo)}</span>
-                            </span>
-                          )}
-                          {(visitDateFrom || visitDateTo) && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setVisitDateFrom("");
-                                setVisitDateTo("");
-                              }}
-                              aria-label={T.app.visitDateResetAriaLabel}
-                              className="w-5 h-5 shrink-0 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
-                            >
-                              <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                            </button>
-                          )}
-                        </div>
-                        {visitDateOpen && (
-                          <div className="absolute left-0 top-full mt-1 z-50 rounded-[10px] border border-neutral-200 bg-white shadow-lg">
-                              <CalendarPicker
-                                mode="range"
-                                selected={visitDateRange}
-                                onSelect={(range) => {
-                                  setVisitDateFrom(range?.from ? format(range.from, "yyyy-MM-dd") : "");
-                                  setVisitDateTo(range?.to ? format(range.to, "yyyy-MM-dd") : "");
-                                }}
-                                numberOfMonths={1}
-                                locale={ko}
-                                defaultMonth={visitDateRange?.from}
-                                className="p-3 pointer-events-auto"
-                              />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-
-                  </div>
+                  <BrowseFilters
+                    filters={{ searchQuery, minRooms, minBathrooms, minArea, visitDateFrom, visitDateTo }}
+                    onChange={(filters) => {
+                      setSearchQuery(filters.searchQuery);
+                      setMinRooms(filters.minRooms);
+                      setMinBathrooms(filters.minBathrooms);
+                      setMinArea(filters.minArea);
+                      setVisitDateFrom(filters.visitDateFrom);
+                      setVisitDateTo(filters.visitDateTo);
+                    }}
+                  />
 
                   {/* Platform Houses Grid */}
                   {filteredHouses.length === 0 ? (

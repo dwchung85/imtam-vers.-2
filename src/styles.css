@@ -46,6 +46,9 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-filter: var(--filter);
+  --color-filter-surface: var(--filter-surface);
+  --color-filter-muted: var(--filter-muted);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -62,6 +65,9 @@
 }
 
 :root {
+  --filter: oklch(0.51975 0.17686 142.495);
+  --filter-surface: oklch(1 0 0);
+  --filter-muted: oklch(0.96 0.025 142.495);
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -98,6 +104,9 @@
 }
 
 .dark {
+  --filter: oklch(0.75 0.17 142.495);
+  --filter-surface: oklch(0.208 0.042 265.755);
+  --filter-muted: oklch(0.3 0.045 142.495);
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
