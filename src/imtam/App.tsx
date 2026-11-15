@@ -20,7 +20,7 @@ import {
   updateHouseApprovalDb,
 } from "./dbService";
 
-import { Search, Info, Compass, LogIn } from "lucide-react";
+import { Search, Info, Compass, LogIn, Calendar } from "lucide-react";
 import { T } from "./strings";
 import { payTourFromWallet } from "./tossCheckout";
 import PaymentCloseButton from "./components/PaymentCloseButton";
@@ -43,6 +43,8 @@ export default function App() {
   const [minRooms, setMinRooms] = useState<number>(0);
   const [minBathrooms, setMinBathrooms] = useState<number>(0);
   const [minArea, setMinArea] = useState<number>(0);
+  const [visitDateFrom, setVisitDateFrom] = useState<string>("");
+  const [visitDateTo, setVisitDateTo] = useState<string>("");
 
   // Load houses (public) on mount
   useEffect(() => {
@@ -305,7 +307,14 @@ export default function App() {
     const houseArea = house.area ?? 24;
     const areaMatch = minArea === 0 || houseArea >= minArea;
 
-    return searchMatch && roomsMatch && bathroomsMatch && areaMatch;
+    // Visit date range match: house must have at least one available date inside the range
+    const dateRangeMatch =
+      (!visitDateFrom && !visitDateTo) ||
+      (house.availableDates ?? []).some(
+        (d) => (!visitDateFrom || d >= visitDateFrom) && (!visitDateTo || d <= visitDateTo),
+      );
+
+    return searchMatch && roomsMatch && bathroomsMatch && areaMatch && dateRangeMatch;
   });
 
   // --- 알림 배지: 내가 처리해야 할 항목 개수 ---
@@ -457,6 +466,48 @@ export default function App() {
                           <svg className="absolute right-2.5 md:right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-neutral-500" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
+                        )}
+                      </div>
+
+                      {/* Visit Date Range */}
+                      <div
+                        className={`relative min-w-0 col-span-3 md:col-span-1 flex items-center gap-1.5 text-[11px] md:text-xs font-bold pl-3 md:pl-4 pr-2 py-1.5 rounded-[10px] border transition-all ${
+                          visitDateFrom || visitDateTo
+                            ? "bg-white border-[#008000] text-[#008000]"
+                            : "bg-white border-neutral-200 text-neutral-700 hover:border-blue-300"
+                        }`}
+                      >
+                        <Calendar className="w-3.5 h-3.5 shrink-0 text-[#008000]" />
+                        <span className="shrink-0">{T.app.visitDateLabel}</span>
+                        <input
+                          type="date"
+                          value={visitDateFrom}
+                          max={visitDateTo || undefined}
+                          onChange={(e) => setVisitDateFrom(e.target.value)}
+                          aria-label={T.app.visitDateStartAriaLabel}
+                          className="w-[7.6rem] bg-transparent focus:outline-hidden text-inherit"
+                        />
+                        <span className="text-neutral-400">~</span>
+                        <input
+                          type="date"
+                          value={visitDateTo}
+                          min={visitDateFrom || undefined}
+                          onChange={(e) => setVisitDateTo(e.target.value)}
+                          aria-label={T.app.visitDateEndAriaLabel}
+                          className="w-[7.6rem] bg-transparent focus:outline-hidden text-inherit"
+                        />
+                        {(visitDateFrom || visitDateTo) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setVisitDateFrom("");
+                              setVisitDateTo("");
+                            }}
+                            aria-label={T.app.visitDateResetAriaLabel}
+                            className="w-5 h-5 shrink-0 rounded-full bg-[#008000]/10 hover:bg-[#008000]/20 flex items-center justify-center text-[#008000] transition-colors cursor-pointer"
+                          >
+                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                          </button>
                         )}
                       </div>
                     </div>
