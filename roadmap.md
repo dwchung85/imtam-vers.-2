@@ -1,5 +1,7 @@
 # Tasks
 
+- [x] Link the user-owned Google Maps connection for custom-domain rendering and verify its browser key is synced; live Maps checks require the user to republish and validate on imtam.com.
+
 - [x] Add a top-right X that closes Toss checkout and cancels the unpaid order; verified actual Toss frame dismissal, saved cancellation, and mobile retry.
 
 - [x] Connect Toss Payments account-transfer checkout after booking confirmation, collecting 100% of the tour cost for IMTAM (test keys saved).
