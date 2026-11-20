@@ -162,7 +162,7 @@ export default function HostDashboard({
           const canvas = document.createElement("canvas");
           let width = img.width;
           let height = img.height;
-          const MAX_DIM = 1024; // High definition but light file footprint
+          const MAX_DIM = 900; // Plenty for phone/desktop viewing, light file footprint
 
           if (width > MAX_DIM || height > MAX_DIM) {
             if (width > height) {
@@ -179,8 +179,8 @@ export default function HostDashboard({
           const ctx = canvas.getContext("2d");
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            // Convert to web-optimized JPEG at 75% quality (around ~80KB-120KB)
-            const compressed = canvas.toDataURL("image/jpeg", 0.75);
+            // Convert to web-optimized JPEG at 70% quality (around ~60KB-100KB)
+            const compressed = canvas.toDataURL("image/jpeg", 0.7);
             resolve(compressed);
           } else {
             resolve(e.target?.result as string);
