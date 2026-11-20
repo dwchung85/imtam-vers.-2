@@ -32,6 +32,7 @@ type HouseRow = {
   lng?: number | null;
   approval_status?: string | null;
   reject_reason?: string | null;
+  residency_verified?: boolean | null;
 };
 
 type BookingRow = {
@@ -76,7 +77,7 @@ function houseFromRow(r: HouseRow): House {
     area: r.area ?? undefined,
     residencyDocRegistration: r.residency_doc_registration ?? '',
     residencyDocUtility: r.residency_doc_utility ?? '',
-    residencyVerified: Boolean(r.residency_doc_registration && r.residency_doc_utility),
+    residencyVerified: r.residency_verified ?? Boolean(r.residency_doc_registration && r.residency_doc_utility),
     lat: r.lat ?? undefined,
     lng: r.lng ?? undefined,
     approvalStatus: (r.approval_status ?? 'pending') as 'pending' | 'approved' | 'rejected',
@@ -89,7 +90,7 @@ function bookingFromRow(r: BookingRow): Booking {
     id: r.id,
     houseId: r.house_id,
     houseTitle: r.house_title,
-    houseImage: r.house_image,
+    houseImage: r.house_image ?? '',
     housePricePerVisit: r.house_price_per_visit,
     guestId: r.guest_id,
     guestName: r.guest_name,
@@ -132,16 +133,40 @@ export async function fetchProfile(userId: string): Promise<UserProfile | null> 
 // ============================
 // Houses
 // ============================
+// 목록에는 대표 사진 1장만 받고, 전체 사진·증빙 문서는 상세/관리자 화면에서만 받는다.
+const HOUSE_LIST_COLS =
+  'id, title, description, price_per_visit, image_url, location, location_detail, host_id, host_name, host_avatar, amenities, max_guests, rating, reviews_count, available_dates, available_time_slots, rooms, bathrooms, area, lat, lng, approval_status, reject_reason, residency_verified';
+
+export async function fetchHouseFull(houseId: string): Promise<House | null> {
+  const { data, error } = await supabase
+    .from('houses')
+    .select('id, title, description, price_per_visit, image_url, image_urls, location, location_detail, host_id, host_name, host_avatar, amenities, max_guests, rating, reviews_count, available_dates, available_time_slots, rooms, bathrooms, area, lat, lng, approval_status, reject_reason, residency_verified')
+    .eq('id', houseId)
+    .maybeSingle();
+  if (error || !data) return null;
+  return houseFromRow(data as unknown as HouseRow);
+}
+
+// 관리자 심사용: 사진·증빙 문서 포함 전체
+export async function fetchHousesFull(): Promise<House[]> {
+  const { data, error } = await supabase.from('houses').select('*').order('created_at', { ascending: false });
+  if (error) {
+    console.error('fetchHousesFull error', error);
+    return [];
+  }
+  return (data as HouseRow[]).map(houseFromRow);
+}
+
 export async function fetchHouses(): Promise<House[]> {
   const { data, error } = await supabase
     .from('houses')
-    .select('*')
+    .select(HOUSE_LIST_COLS)
     .order('created_at', { ascending: false });
   if (error) {
     console.error('fetchHouses error', error);
     return [];
   }
-  return (data as HouseRow[]).map(houseFromRow);
+  return (data as unknown as HouseRow[]).map(houseFromRow);
 }
 
 export async function addHouseListingDb(
@@ -187,13 +212,14 @@ export async function addHouseListingDb(
 export async function fetchBookings(): Promise<Booking[]> {
   const { data, error } = await supabase
     .from('bookings')
-    .select('*')
+    // 사진 사본(house_image)은 받지 않고 화면에서 집 목록의 대표 사진을 쓴다.
+    .select('id, house_id, house_title, house_price_per_visit, guest_id, guest_name, visit_date, visit_time_slot, total_visitors, total_price, status, rating, created_at, payment_status')
     .order('created_at', { ascending: false });
   if (error) {
     console.error('fetchBookings error', error);
     return [];
   }
-  return (data as BookingRow[]).map(bookingFromRow);
+  return (data as unknown as BookingRow[]).map(bookingFromRow);
 }
 
 // 특정 매물의 날짜·시간대별 예약 인원 집계 (남은 자리 계산용)

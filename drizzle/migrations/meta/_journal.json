@@ -50,6 +50,13 @@
       "when": 1794731599404,
       "tag": "0006_restrict_profiles_select",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795213732891,
+      "tag": "0007_houses_residency_verified",
+      "breakpoints": true
     }
   ]
 }

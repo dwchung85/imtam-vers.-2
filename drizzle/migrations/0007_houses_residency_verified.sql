@@ -1,0 +1,1 @@
+ALTER TABLE public.houses ADD COLUMN IF NOT EXISTS residency_verified boolean GENERATED ALWAYS AS (residency_doc_registration <> '' AND residency_doc_utility <> '') STORED;

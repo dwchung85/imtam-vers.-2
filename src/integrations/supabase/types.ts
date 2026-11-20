@@ -134,6 +134,7 @@ export type Database = {
           reject_reason: string
           residency_doc_registration: string
           residency_doc_utility: string
+          residency_verified: boolean | null
           reviewed_at: string | null
           reviewed_by: string | null
           reviews_count: number
@@ -166,6 +167,7 @@ export type Database = {
           reject_reason?: string
           residency_doc_registration?: string
           residency_doc_utility?: string
+          residency_verified?: boolean | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           reviews_count?: number
@@ -198,6 +200,7 @@ export type Database = {
           reject_reason?: string
           residency_doc_registration?: string
           residency_doc_utility?: string
+          residency_verified?: boolean | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           reviews_count?: number

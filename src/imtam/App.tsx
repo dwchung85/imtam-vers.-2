@@ -11,6 +11,8 @@ import AuthModal from "./components/AuthModal";
 import { supabase } from "@/integrations/supabase/client";
 import {
   fetchHouses,
+  fetchHouseFull,
+  fetchHousesFull,
   fetchBookings,
   fetchProfile,
   addHouseListingDb,
@@ -55,7 +57,9 @@ export default function App() {
 
   // Wire Supabase auth: listener + initial session check
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      // 토큰 갱신 때마다 전체 데이터를 다시 받지 않도록 건너뜀
+      if (event === "TOKEN_REFRESHED") return;
       const userId = session?.user?.id;
       if (userId) {
         // Defer extra calls to avoid deadlock
@@ -83,31 +87,29 @@ export default function App() {
       }
     });
 
-    // Initial session
-    supabase.auth.getSession().then(({ data }) => {
-      const userId = data.session?.user?.id;
-      if (userId) {
-        fetchProfile(userId).then((p) => {
-          if (p) {
-            setCurrentUser(p);
-            checkIsAdmin(userId)
-              .then(setIsAdmin)
-              .catch(() => {});
-            fetchHouses()
-              .then(setHouses)
-              .catch(() => {});
-            fetchBookings()
-              .then(setBookings)
-              .catch(() => {});
-          }
-        });
-      }
-    });
-
     return () => {
       sub.subscription.unsubscribe();
     };
   }, []);
+
+  // 관리자 탭에서만 사진·증빙 문서를 포함한 전체 매물을 받는다
+  const [adminHouses, setAdminHouses] = useState<House[]>([]);
+  useEffect(() => {
+    if (activeTab === "admin" && isAdmin) fetchHousesFull().then(setAdminHouses).catch(() => {});
+  }, [activeTab, isAdmin]);
+
+  // 상세 화면을 열면 전체 사진을 추가로 불러온다
+  const openHouse = (h: House) => {
+    setSelectedHouse(h);
+    fetchHouseFull(h.id)
+      .then((full) => full && setSelectedHouse((cur) => (cur?.id === full.id ? { ...cur, ...full } : cur)))
+      .catch(() => {});
+  };
+
+  // 예약 기록에는 사진 사본이 없으므로 집 목록의 대표 사진을 붙인다
+  const bookingsView = bookings.map((b) =>
+    b.houseImage ? b : { ...b, houseImage: houses.find((h) => h.id === b.houseId)?.imageUrl ?? "" },
+  );
 
   // 예약 상태가 바뀌면(승인/거절/완료) 양쪽 화면에 실시간 반영
   useEffect(() => {
@@ -158,6 +160,7 @@ export default function App() {
     const updated = await updateHouseApprovalDb(houseId, status, currentUser.id, rejectReason);
     if (updated) {
       setHouses((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
+      setAdminHouses((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
     }
   };
 
@@ -378,7 +381,7 @@ export default function App() {
                           <HouseCard
                             key={house.id}
                             house={house}
-                            onClick={() => setSelectedHouse(house)}
+                            onClick={() => openHouse(house)}
                             isOwnListing={currentUser ? house.hostId === currentUser.id : false}
                           />
                         ))}
@@ -392,7 +395,7 @@ export default function App() {
               {activeTab === "guest" &&
                 (currentUser ? (
                   <GuestDashboard
-                    bookings={bookings}
+                    bookings={bookingsView}
                     currentUserId={currentUser.id}
                     onCancelBooking={handleCancelBooking}
                     onSubmitReview={handleSubmitReview}
@@ -406,11 +409,11 @@ export default function App() {
                 (currentUser ? (
                   <HostDashboard
                     houses={houses}
-                    bookings={bookings}
+                    bookings={bookingsView}
                     currentUserId={currentUser.id}
                     onAddHouse={handleAddHouseListing}
                     onUpdateBookingStatus={handleUpdateBookingStatus}
-                    onSelectHouse={(h) => setSelectedHouse(h)}
+                    onSelectHouse={openHouse}
                   />
                 ) : (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
@@ -421,9 +424,9 @@ export default function App() {
                 (currentUser ? (
                   <MyInfoDashboard
                     houses={houses}
-                    bookings={bookings}
+                    bookings={bookingsView}
                     currentUser={currentUser}
-                    onSelectHouse={(h) => setSelectedHouse(h)}
+                    onSelectHouse={openHouse}
                      onProfileUpdated={setCurrentUser}
                   />
                 ) : (
@@ -435,7 +438,7 @@ export default function App() {
                 (!currentUser ? (
                   <LoginRequired onOpenAuth={() => setIsAuthModalOpen(true)} />
                 ) : isAdmin ? (
-                  <AdminDashboard houses={houses} onReviewHouse={handleReviewHouse} />
+                  <AdminDashboard houses={adminHouses} onReviewHouse={handleReviewHouse} />
                 ) : (
                   <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl p-6 max-w-md mx-auto space-y-3">
                     <h3 className="text-lg font-bold text-neutral-800">{T.admin.noAccessTitle}</h3>
