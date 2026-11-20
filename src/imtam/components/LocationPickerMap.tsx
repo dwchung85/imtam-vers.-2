@@ -25,7 +25,18 @@ function loadMapsApi(): Promise<void> {
       window.__imtamMapsCallbacks = [];
     };
     const script = document.createElement("script");
-    const key = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
+    // Lovable 공용 키는 *.lovable.app / *.lovableproject.com 전용,
+    // 커스텀 도메인(imtam.com)용 키는 커넥터가 심어준 환경변수 사용.
+    // 접속 주소에 따라 허용된 키를 자동으로 고른다.
+    const LOVABLE_MANAGED_KEY = "AIzaSyDjX4YpvFl1FaREcNugk7SslGTGRtWnG_0";
+    const host = window.location.hostname;
+    const isLovableHost =
+      host === "localhost" ||
+      host.endsWith(".lovable.app") ||
+      host.endsWith(".lovableproject.com");
+    const key = isLovableHost
+      ? LOVABLE_MANAGED_KEY
+      : import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
     const channel = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"];
     script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&callback=__imtamInitMaps${channel ? `&channel=${channel}` : ""}`;
     script.async = true;

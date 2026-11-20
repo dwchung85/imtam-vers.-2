@@ -18,4 +18,4 @@ Toss Payments money flows (checkout confirm, refund on cancel/reject, completion
 Dismiss Toss checkout through the SDK payment.destroy() API and server-side unpaid-order cleanup; render the app close control in a manual top-layer popover so it remains accessible above provider frames without editing their DOM.
 - Prepaid wallet balances change only through the service-role `wallet_apply` SQL function (atomic, no negative balance, idempotent per type+ref), called from server functions; browsers can only read their own wallet.
 
-- Maps rendering uses the connector-synced public browser key; authenticated geocoding keeps the managed server connection because website-restricted browser keys cannot authorize server requests.
+- Maps rendering picks the browser key by hostname: the Lovable-managed key (referrer-locked to *.lovable.app/*.lovableproject.com) on Lovable hosts, the connector-synced custom-domain key elsewhere; authenticated geocoding keeps the managed server connection because website-restricted browser keys cannot authorize server requests.
