@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-function loadMapsApi(): Promise<void> {
+export function loadMapsApi(): Promise<void> {
   return new Promise((resolve, reject) => {
     if (window.__imtamMapsReady && (window as any).google?.maps) {
       resolve();

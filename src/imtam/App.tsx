@@ -22,8 +22,9 @@ import {
   updateHouseApprovalDb,
 } from "./dbService";
 
-import { Info, Compass, LogIn } from "lucide-react";
+import { Info, Compass, LogIn, List, Map as MapIcon, X } from "lucide-react";
 import BrowseFilters from "./components/BrowseFilters";
+import HousesMap from "./components/HousesMap";
 import { T } from "./strings";
 import { payTourFromWallet } from "./tossCheckout";
 import PaymentCloseButton from "./components/PaymentCloseButton";
@@ -287,6 +288,18 @@ export default function App() {
   };
 
   // --- Filtering listings ---
+  const [browseView, setBrowseView] = useState<"list" | "map">("list");
+  const [mapSelectedId, setMapSelectedId] = useState<string | null>(null);
+  useEffect(() => {
+    const v = window.localStorage.getItem("imtam_browse_view");
+    if (v === "map" || v === "list") setBrowseView(v);
+  }, []);
+  const changeBrowseView = (v: "list" | "map") => {
+    setBrowseView(v);
+    setMapSelectedId(null);
+    window.localStorage.setItem("imtam_browse_view", v);
+  };
+
   const filteredHouses = houses.filter((house) => {
     // 관리자 승인이 완료된 매물만 둘러보기에 노출
     if ((house.approvalStatus ?? "pending") !== "approved") return false;
@@ -426,8 +439,79 @@ export default function App() {
                     }}
                   />
 
-                  {/* Platform Houses Grid */}
-                  {filteredHouses.length === 0 ? (
+                  <div className="flex justify-end">
+                    <div className="inline-flex rounded-[10px] border border-[#008000] overflow-hidden" role="group" aria-label="보기 방식">
+                      {([["list", "목록", List], ["map", "지도", MapIcon]] as const).map(([v, label, Icon]) => (
+                        <button
+                          key={v}
+                          type="button"
+                          aria-pressed={browseView === v}
+                          onClick={() => changeBrowseView(v)}
+                          className={`flex items-center gap-1.5 px-4 h-9 text-sm font-bold ${browseView === v ? "bg-[#008000] text-white" : "bg-white text-[#008000]"}`}
+                        >
+                          <Icon className="w-4 h-4" />
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {browseView === "map" && filteredHouses.length > 0 ? (
+                    <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-6">
+                      <div className="hidden md:block md:h-[calc(100dvh-260px)] md:min-h-[480px] overflow-y-auto pr-1 space-y-4">
+                        {filteredHouses.map((house) => (
+                          <div
+                            key={house.id}
+                            onMouseEnter={() => setMapSelectedId(house.id)}
+                            className={`rounded-[10px] ${mapSelectedId === house.id ? "ring-2 ring-[#008000]" : ""}`}
+                          >
+                            <HouseCard
+                              house={house}
+                              onClick={() => openHouse(house)}
+                              isOwnListing={currentUser ? house.hostId === currentUser.id : false}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="relative">
+                        <HousesMap
+                          houses={filteredHouses}
+                          selectedId={mapSelectedId}
+                          onSelect={(id) => {
+                            setMapSelectedId(id);
+                            if (id && window.matchMedia("(min-width: 768px)").matches) {
+                              document.getElementById(`house-card-${id}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                            }
+                          }}
+                          className="w-full h-[calc(100dvh-230px)] min-h-[420px] md:h-[calc(100dvh-260px)] md:min-h-[480px] rounded-[10px] border border-neutral-200 overflow-hidden"
+                        />
+                        {(() => {
+                          const sel = filteredHouses.find((h) => h.id === mapSelectedId);
+                          if (!sel) return null;
+                          return (
+                            <div className="md:hidden absolute left-3 right-3 bottom-3 z-10">
+                              <div className="relative bg-white rounded-[10px] border border-neutral-200 flex overflow-hidden cursor-pointer" onClick={() => openHouse(sel)}>
+                                <img src={sel.imageUrl} alt={sel.title} className="w-28 h-28 object-cover shrink-0" />
+                                <div className="p-3 pr-9 min-w-0 flex flex-col justify-center gap-1">
+                                  <div className="font-bold text-sm text-neutral-900 truncate">{sel.title}</div>
+                                  <div className="text-xs text-neutral-500 truncate">{sel.location}</div>
+                                  <div className="text-sm font-black text-neutral-600">₩{sel.pricePerVisit.toLocaleString("ko-KR")}</div>
+                                </div>
+                                <button
+                                  type="button"
+                                  aria-label="닫기"
+                                  onClick={(e) => { e.stopPropagation(); setMapSelectedId(null); }}
+                                  className="absolute top-2 right-2 p-1 text-neutral-500"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  ) : filteredHouses.length === 0 ? (
                     <div className="text-center py-20 bg-white border border-neutral-250 rounded-3xl p-6">
                       <Info className="w-12 h-12 text-blue-500/30 mx-auto mb-3" />
                       <h3 className="font-bold text-neutral-800 text-lg">{T.app.noMatchingHouses}</h3>
