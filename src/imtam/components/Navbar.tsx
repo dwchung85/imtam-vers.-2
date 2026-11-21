@@ -12,7 +12,7 @@ interface NavbarProps {
   onOpenAuth: () => void;
   onLogout: () => void;
   onResetToHome?: () => void;
-  guestBadge?: number;
+  guestAlert?: boolean;
   hostBadge?: number;
   isAdmin?: boolean;
   adminBadge?: number;
@@ -38,7 +38,7 @@ export default function Navbar({
   onOpenAuth,
   onLogout,
   onResetToHome,
-  guestBadge = 0,
+  guestAlert = false,
   hostBadge = 0,
   isAdmin = false,
   adminBadge = 0,
@@ -99,7 +99,9 @@ export default function Navbar({
             >
               <Calendar className="w-3.5 h-3.5" />
               {T.navbar.myTourBookings}
-              <Badge count={guestBadge} />
+              {guestAlert && (
+                <span aria-label="새 알림" className="ml-0.5 w-4 h-4 inline-flex items-center justify-center rounded-full bg-rose-500 text-white text-[10px] font-black">!</span>
+              )}
 
             </button>
             <button
@@ -244,10 +246,8 @@ export default function Navbar({
           >
             <div className="relative">
               <Calendar className="w-4 h-4" />
-              {guestBadge > 0 && (
-                <span className="absolute -top-1 -right-2 min-w-[14px] h-3.5 px-1 inline-flex items-center justify-center rounded-full bg-blue-600 text-white text-[8px] font-black">
-                  {guestBadge > 9 ? '9+' : guestBadge}
-                </span>
+              {guestAlert && (
+                <span aria-label="새 알림" className="absolute -top-1 -right-2 w-3.5 h-3.5 inline-flex items-center justify-center rounded-full bg-rose-500 text-white text-[9px] font-black">!</span>
               )}
             </div>
             <span>{T.navbar.mobileBookingHistory}</span>

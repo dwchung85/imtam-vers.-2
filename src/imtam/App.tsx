@@ -37,6 +37,7 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   
+  const [seenGuestAlerts, setSeenGuestAlerts] = useState<string[] | null>(null);
   const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host" | "myinfo" | "admin">("browse");
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
@@ -325,13 +326,44 @@ export default function App() {
   const hostBadge = currentUser
     ? bookings.filter((b) => myHouseIds.includes(b.houseId) && b.status === "pending").length
     : 0;
-  const guestBadge = currentUser
-    ? bookings.filter(
-        (b) =>
-          b.guestId === currentUser.id &&
-          (b.status === "confirmed" || (b.status === "completed" && typeof b.rating !== "number")),
-      ).length
-    : 0;
+  // 예약 내역 알림: 예약 신청·수락·거절(취소)·투어 전날 이벤트 중 아직 확인 안 한 것이 있으면 느낌표
+  const tomorrow = (() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  })();
+  const guestAlertKeys = currentUser
+    ? bookings
+        .filter(
+          (b) => b.guestId === currentUser.id && b.paymentStatus !== "unpaid" && b.paymentStatus !== "failed",
+        )
+        .flatMap((b) => {
+          const keys: string[] = [];
+          if (b.status === "pending" || b.status === "confirmed" || b.status === "cancelled") keys.push(`${b.id}:${b.status}`);
+          if (b.status === "confirmed" && b.visitDate === tomorrow) keys.push(`${b.id}:eve`);
+          return keys;
+        })
+    : [];
+  const seenStorageKey = currentUser ? `imtam_seen_guest_alerts_${currentUser.id}` : "";
+  useEffect(() => {
+    if (!seenStorageKey) return setSeenGuestAlerts([]);
+    try {
+      setSeenGuestAlerts(JSON.parse(localStorage.getItem(seenStorageKey) || "[]"));
+    } catch {
+      setSeenGuestAlerts([]);
+    }
+  }, [seenStorageKey]);
+  const guestAlertSig = guestAlertKeys.join("|");
+  useEffect(() => {
+    if (activeTab !== "guest" || !seenStorageKey || seenGuestAlerts === null) return;
+    if (guestAlertKeys.every((k) => seenGuestAlerts.includes(k))) return;
+    const merged = Array.from(new Set([...seenGuestAlerts, ...guestAlertKeys]));
+    setSeenGuestAlerts(merged);
+    localStorage.setItem(seenStorageKey, JSON.stringify(merged));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, guestAlertSig, seenStorageKey, seenGuestAlerts]);
+  const guestAlert =
+    seenGuestAlerts !== null && guestAlertKeys.some((k) => !seenGuestAlerts.includes(k));
   const adminBadge = isAdmin ? houses.filter((h) => (h.approvalStatus ?? "pending") === "pending").length : 0;
 
   return (
@@ -344,7 +376,7 @@ export default function App() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onLogout={handleLogout}
         onResetToHome={handleResetToHome}
-        guestBadge={guestBadge}
+        guestAlert={guestAlert}
         hostBadge={hostBadge}
         isAdmin={isAdmin}
         adminBadge={adminBadge}
