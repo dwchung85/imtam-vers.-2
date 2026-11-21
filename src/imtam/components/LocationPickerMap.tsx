@@ -1,40 +1,48 @@
 import React, { useEffect, useRef, useState } from "react";
+import { getMapsBrowserConfig } from "@/lib/maps.functions";
 
 declare global {
   interface Window {
     __imtamMapsReady?: boolean;
-    __imtamMapsCallbacks?: Array<() => void>;
-    __imtamMapsLoading?: boolean;
     __imtamInitMaps?: () => void;
   }
 }
 
+let mapsApiPromise: Promise<void> | null = null;
+
 export function loadMapsApi(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (window.__imtamMapsReady && (window as any).google?.maps) {
-      resolve();
-      return;
-    }
-    window.__imtamMapsCallbacks = window.__imtamMapsCallbacks || [];
-    window.__imtamMapsCallbacks.push(resolve);
-    if (window.__imtamMapsLoading) return;
-    window.__imtamMapsLoading = true;
-    window.__imtamInitMaps = () => {
-      window.__imtamMapsReady = true;
-      (window.__imtamMapsCallbacks || []).forEach((cb) => cb());
-      window.__imtamMapsCallbacks = [];
-    };
-    const script = document.createElement("script");
-    // 커스텀 도메인(imtam.com)용으로 발급받은 키를 모든 주소에서 사용.
-    // 이 키의 Google Cloud 허용 웹사이트에 imtam.com과 Lovable 미리보기 주소가
-    // 모두 등록되어 있어야 한다.
-    const key = "AIzaSyBmvJph4LmrbtW7skeczzpBIyb9WWzFKo4";
-    const channel = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"];
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&callback=__imtamInitMaps${channel ? `&channel=${channel}` : ""}`;
-    script.async = true;
-    script.onerror = () => reject(new Error("지도를 불러오지 못했습니다."));
-    document.head.appendChild(script);
-  });
+  if (window.__imtamMapsReady && (window as any).google?.maps) return Promise.resolve();
+  if (mapsApiPromise) return mapsApiPromise;
+
+  mapsApiPromise = getMapsBrowserConfig()
+    .then(({ browserKey }) => new Promise<void>((resolve, reject) => {
+      window.__imtamInitMaps = () => {
+        window.__imtamMapsReady = true;
+        resolve();
+      };
+      const script = document.createElement("script");
+      const params = new URLSearchParams({
+        key: browserKey,
+        loading: "async",
+        callback: "__imtamInitMaps",
+        language: "ko",
+        region: "KR",
+      });
+      const channel = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"];
+      if (channel) params.set("channel", channel);
+      script.src = `https://maps.googleapis.com/maps/api/js?${params}`;
+      script.async = true;
+      script.onerror = () => {
+        script.remove();
+        reject(new Error("지도를 불러오지 못했습니다."));
+      };
+      document.head.appendChild(script);
+    }))
+    .catch((error: unknown) => {
+      mapsApiPromise = null;
+      throw error;
+    });
+  return mapsApiPromise;
 }
 
 interface Props {
