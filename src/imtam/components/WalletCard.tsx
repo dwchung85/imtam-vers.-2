@@ -59,7 +59,7 @@ export default function WalletCard() {
       <div>
         <h4 className="font-bold text-neutral-900 text-sm md:text-base flex items-center gap-2">
           <Wallet className="w-4 h-4 text-[#008000]" />
-          <span>선불 잔액</span>
+          <span>임탐머니</span>
         </h4>
         <div className="mt-2 text-2xl md:text-3xl font-black text-neutral-900">
           ₩{(data?.balance ?? 0).toLocaleString()}
