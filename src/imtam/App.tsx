@@ -38,6 +38,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   
   const [seenGuestAlerts, setSeenGuestAlerts] = useState<string[] | null>(null);
+  const [seenHostAlerts, setSeenHostAlerts] = useState<string[] | null>(null);
   const [activeTab, setActiveTab] = useState<"browse" | "guest" | "host" | "myinfo" | "admin">("browse");
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
@@ -322,10 +323,35 @@ export default function App() {
   });
 
   // --- 알림 배지: 내가 처리해야 할 항목 개수 ---
+  // 내정보 알림: 처리 대기(신청됨) 예약 중 아직 확인 안 한 것이 있으면 숫자로 표시
   const myHouseIds = currentUser ? houses.filter((h) => h.hostId === currentUser.id).map((h) => h.id) : [];
-  const hostBadge = currentUser
-    ? bookings.filter((b) => myHouseIds.includes(b.houseId) && b.status === "pending").length
-    : 0;
+  const hostAlertKeys = currentUser
+    ? bookings
+        .filter((b) => myHouseIds.includes(b.houseId) && b.status === "pending")
+        .map((b) => `${b.id}:pending`)
+    : [];
+  const hostSeenStorageKey = currentUser ? `imtam_seen_host_alerts_${currentUser.id}` : "";
+  useEffect(() => {
+    if (!hostSeenStorageKey) return setSeenHostAlerts([]);
+    try {
+      setSeenHostAlerts(JSON.parse(localStorage.getItem(hostSeenStorageKey) || "[]"));
+    } catch {
+      setSeenHostAlerts([]);
+    }
+  }, [hostSeenStorageKey]);
+  const hostAlertSig = hostAlertKeys.join("|");
+  useEffect(() => {
+    if (activeTab !== "myinfo" || !hostSeenStorageKey || seenHostAlerts === null) return;
+    if (hostAlertKeys.every((k) => seenHostAlerts.includes(k))) return;
+    const merged = Array.from(new Set([...seenHostAlerts, ...hostAlertKeys]));
+    setSeenHostAlerts(merged);
+    localStorage.setItem(hostSeenStorageKey, JSON.stringify(merged));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, hostAlertSig, hostSeenStorageKey, seenHostAlerts]);
+  const hostBadge =
+    seenHostAlerts === null
+      ? 0
+      : hostAlertKeys.filter((k) => !seenHostAlerts.includes(k)).length;
   // 예약 내역 알림: 예약 신청·수락·거절(취소)·투어 전날 이벤트 중 아직 확인 안 한 것이 있으면 느낌표
   const tomorrow = (() => {
     const d = new Date();
