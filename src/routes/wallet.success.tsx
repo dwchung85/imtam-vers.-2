@@ -14,9 +14,9 @@ export const Route = createFileRoute("/wallet/success")({
   head: () => ({
     meta: [
       { title: "충전 완료 | IMTAM" },
-      { name: "description", content: "IMTAM 선불 잔액 충전 결과를 확인합니다." },
+      { name: "description", content: "IMTAM 임탐머니 충전 결과를 확인합니다." },
       { property: "og:title", content: "충전 완료 | IMTAM" },
-      { property: "og:description", content: "IMTAM 선불 잔액 충전 결과를 확인합니다." },
+      { property: "og:description", content: "IMTAM 임탐머니 충전 결과를 확인합니다." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },

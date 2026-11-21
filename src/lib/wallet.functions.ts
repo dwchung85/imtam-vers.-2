@@ -54,7 +54,7 @@ export const createTopup = createServerFn({ method: "POST" })
     return {
       orderId,
       amount: data.amount,
-      orderName: `IMTAM 선불 충전 ${data.amount.toLocaleString()}원`,
+      orderName: `IMTAM 임탐머니 충전 ${data.amount.toLocaleString()}원`,
       customerKey: context.userId,
       customerName: profile?.name ?? undefined,
       clientKey,
