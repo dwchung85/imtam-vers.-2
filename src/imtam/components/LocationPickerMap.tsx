@@ -28,7 +28,7 @@ function loadMapsApi(): Promise<void> {
     // 커스텀 도메인(imtam.com)용으로 발급받은 키를 모든 주소에서 사용.
     // 이 키의 Google Cloud 허용 웹사이트에 imtam.com과 Lovable 미리보기 주소가
     // 모두 등록되어 있어야 한다.
-    const key = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
+    const key = "AIzaSyBmvJph4LmrbtW7skeczzpBIyb9WWzFKo4";
     const channel = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"];
     script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&callback=__imtamInitMaps${channel ? `&channel=${channel}` : ""}`;
     script.async = true;
