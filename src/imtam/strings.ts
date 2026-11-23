@@ -78,6 +78,9 @@ export const T = {
     firstVisit: "첫 방문이신가요?",
     goToLogin: "여기서 로그인",
     goToSignup: "이메일 가입하기",
+    googleLogin: "Google로 계속하기",
+    orDivider: "또는",
+    googleError: "구글 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.",
   },
   houseCard: {
     ownListingBadge: "Owner",
