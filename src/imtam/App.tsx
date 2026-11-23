@@ -598,6 +598,7 @@ export default function App() {
           onBook={handleBookHouse}
           
           currentUserId={currentUser?.id || ""}
+          onRequireLogin={() => setIsAuthModalOpen(true)}
         />
       )}
 

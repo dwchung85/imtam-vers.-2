@@ -27,9 +27,10 @@ interface HouseDetailProps {
     bookingData: Omit<Booking, "id" | "guestId" | "guestName" | "status" | "createdAt">,
   ) => Promise<string | null>;
   currentUserId: string;
+  onRequireLogin?: () => void;
 }
 
-export default function HouseDetail({ house, onClose, onBook, currentUserId }: HouseDetailProps) {
+export default function HouseDetail({ house, onClose, onBook, currentUserId, onRequireLogin }: HouseDetailProps) {
   // 호스트가 등록한 방문 가능 일정만 사용 (가짜 일정 생성 없음)
   const resolvedDates = house.availableDates ?? [];
   const resolvedTimeSlots = house.availableTimeSlots ?? [];
@@ -41,6 +42,10 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
   const [hearted, setHearted] = useState<boolean>(false);
   useEffect(() => {
     let c = false;
+    if (!currentUserId) {
+      setHearted(false);
+      return;
+    }
     fetchFavoriteIds(currentUserId).then((ids) => {
       if (!c) setHearted(ids.includes(house.id));
     });
@@ -95,6 +100,10 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
     e.preventDefault();
     setBookingError(null);
 
+    if (!currentUserId) {
+      onRequireLogin?.();
+      return;
+    }
     if (!hasSchedule) {
       setBookingError(T.houseDetail.hostScheduleMissingError);
       return;
@@ -234,7 +243,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId }: H
                     <button
                       onClick={async () => {
                         if (!currentUserId) {
-                          alert("찜하려면 로그인이 필요합니다.");
+                          onRequireLogin?.();
                           return;
                         }
                         const next = !hearted;
