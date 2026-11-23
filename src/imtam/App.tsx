@@ -24,6 +24,7 @@ import {
 
 import { Info, Compass, LogIn, List, Map as MapIcon, X } from "lucide-react";
 import BrowseFilters from "./components/BrowseFilters";
+import IntroHero from "./components/IntroHero";
 import HousesMap from "./components/HousesMap";
 import { T } from "./strings";
 import { payTourFromWallet } from "./tossCheckout";
@@ -427,6 +428,12 @@ export default function App() {
         <>
               {activeTab === "browse" && (
                 <div className="space-y-6 md:space-y-8 animate-fadeIn">
+                  <IntroHero
+                    onBrowse={() =>
+                      document.getElementById("browse-results")?.scrollIntoView({ behavior: "smooth", block: "start" })
+                    }
+                    onRegister={() => (currentUser ? setActiveTab("host") : setIsAuthModalOpen(true))}
+                  />
                   <BrowseFilters
                     filters={{ searchQuery, minRooms, minBathrooms, minArea, visitDateFrom, visitDateTo }}
                     onChange={(filters) => {
@@ -438,6 +445,8 @@ export default function App() {
                       setVisitDateTo(filters.visitDateTo);
                     }}
                   />
+
+                  <div id="browse-results" className="scroll-mt-24" />
 
                   <div className="flex justify-end">
                     <div className="inline-flex rounded-[10px] border border-[#008000] overflow-hidden" role="group" aria-label="보기 방식">
