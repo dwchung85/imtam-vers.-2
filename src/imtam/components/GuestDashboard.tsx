@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Booking } from '../types';
 import { Calendar, CheckCircle, Clock, AlertCircle, Star, Award } from 'lucide-react';
 import { T } from '../strings';
+import TourCostHelp from './TourCostHelp';
 
 interface GuestDashboardProps {
   bookings: Booking[];
@@ -108,7 +109,7 @@ export default function GuestDashboard({ bookings, currentUserId, onCancelBookin
                   {/* Payment total */}
                   <div className="border-t border-neutral-100 pt-3.5">
                     <div className="flex justify-between text-sm text-neutral-900 font-bold font-mono">
-                      <span>{T.guest.tourCostLabel}</span>
+                      <div className="flex items-center gap-1"><span>{T.guest.tourCostLabel}</span><TourCostHelp align="start" side="bottom" /></div>
                       <span className="text-blue-600 font-black">₩{booking.totalPrice.toLocaleString()}</span>
                     </div>
                     {(booking.paymentStatus === 'paid' || booking.paymentStatus === 'refunded') && (

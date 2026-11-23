@@ -1,6 +1,7 @@
 import { House } from '../types';
 import { Star, MapPin, ShieldCheck } from 'lucide-react';
 import { T } from "../strings";
+import TourCostHelp from "./TourCostHelp";
 
 interface HouseCardProps {
   key?: string;
@@ -89,6 +90,7 @@ export default function HouseCard({ house, onClick, isOwnListing = false }: Hous
           <div className="border-t border-neutral-100 my-2 pt-2.5 flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-base md:text-lg font-black text-neutral-600">
               <span>{T.houseCard.tourBookingLabel}</span>
+              <TourCostHelp align="start" side="bottom" />
             </div>
             
             <div className="text-right">

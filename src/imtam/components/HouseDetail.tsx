@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { fetchFavoriteIds, setFavorite } from "../favorites";
 import { House, Booking, SlotLoad } from "../types";
 import LocationPickerMap from "./LocationPickerMap";
+import TourCostHelp from "./TourCostHelp";
 import {
   X,
   Star,
@@ -479,7 +480,7 @@ export default function HouseDetail({ house, onClose, onBook, currentUserId, onR
                     {/* Cost Split block */}
                     <div className="space-y-2 pt-3.5 border-t border-neutral-200 text-xs text-neutral-600">
                       <div className="flex justify-between font-bold text-neutral-900 text-sm">
-                        <span>{T.houseDetail.tourCostLabel}</span>
+                        <div className="flex items-center gap-1"><span>{T.houseDetail.tourCostLabel}</span><TourCostHelp align="start" side="bottom" /></div>
                         <span className="text-neutral-900 font-black text-base">₩{totalPrice.toLocaleString()}</span>
                       </div>
                     </div>
